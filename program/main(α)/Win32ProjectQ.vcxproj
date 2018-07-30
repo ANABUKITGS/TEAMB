@@ -12,6 +12,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="base_data.cpp" />
+    <ClCompile Include="boss.cpp" />
+    <ClCompile Include="boss_manager.cpp" />
     <ClCompile Include="effect.cpp" />
     <ClCompile Include="effect_manager.cpp" />
     <ClCompile Include="enemy.cpp" />
@@ -34,6 +36,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="base_data.h" />
+    <ClInclude Include="boss.h" />
+    <ClInclude Include="boss_manager.h" />
     <ClInclude Include="effect.h" />
     <ClInclude Include="effect_manager.h" />
     <ClInclude Include="enemy.h" />

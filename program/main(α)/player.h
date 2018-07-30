@@ -12,6 +12,7 @@ const float PLAYER_FRICTION = 5.0f;
 const int PLAYER_HP = 64;
 const float PLAYER_MASS = 0.5f;
 
+
 enum PlayerDirection{
 	PLAYER_DOWN, PLAYER_DL = 3, PLAYER_LEFT = 6, PLAYER_DR = 9, 
 	PLAYER_RIGHT = 12, PLAYER_UL = 15, PLAYER_UP = 18, PLAYER_UR = 21
