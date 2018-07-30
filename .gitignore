@@ -1,4 +1,5 @@
 ﻿/program/main(α)/Log.txt
+/program/main(α)/*.sdf
 /program/main(α)/*.ilk
 /program/main(α)/*.pdb
 /program/main(α)/*.tlog
