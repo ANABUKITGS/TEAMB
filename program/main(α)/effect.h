@@ -11,7 +11,7 @@ using namespace std;
 
 const int STAN_NUM = 10;
 const int KNOCK_BACK_NUM = 16;
-const int BOMB_CHARGE_NUM = 14;
+const int BOMB_CHARGE_NUM = 15;
 const int BOMB_NUM = 8;
 
 enum TYPE{
@@ -21,9 +21,10 @@ enum TYPE{
 class CEffectData : public CBaseData{
 public:
 	CEffectData();
-	CEffectData(CVector2D _pos, bool _living, float _rad, float _exrate, int _animtype, float _velocity, float _mass, int _hp, float _friction, float _collision, float _type);
+	CEffectData(CVector2D _pos, bool _living, float _rad, float _exrate, int _animtype, float _velocity, float _mass, int _hp, float _friction, float _collision, float _type, int _rate);
 	CEffectData(CBaseData _temp);
 	~CEffectData(){};
+	int m_rate;
 };
 
 class CEffect : public CTask{

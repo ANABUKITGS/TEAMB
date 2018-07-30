@@ -6,8 +6,9 @@ CEffectData::CEffectData()
 :CBaseData()
 {}
 
-CEffectData::CEffectData(CVector2D _pos, bool _living, float _rad, float _exrate, int _animtype, float _velocity, float _mass, int _hp, float _friction, float _collision, float _type)
+CEffectData::CEffectData(CVector2D _pos, bool _living, float _rad, float _exrate, int _animtype, float _velocity, float _mass, int _hp, float _friction, float _collision, float _type, int _rate)
 : CBaseData(_pos, _living, _rad, _exrate, _animtype, _velocity, _mass,_hp, _friction,_collision,_type)
+, m_rate(_rate)
 {
 }
 
@@ -36,13 +37,15 @@ void CEffect::Update(){
 		(*it)->m_amine_rate++;
 
 		if ((*it)->m_type == CHARGE_BOMB){
-			if ((*it)->m_amine_rate % (*it)->m_animtype == 0){
+			if ((*it)->m_amine_rate / (*it)->m_rate % (*it)->m_animtype == (*it)->m_animtype - 1){
 				(*it)->m_type = BOMB;
+				(*it)->m_animtype = BOMB_NUM;
 				(*it)->m_amine_rate = 1;
+				(*it)->m_rate = 1;
 			}
 		}
 
-		if ((*it)->m_amine_rate % (*it)->m_animtype == 0)
+		if ((*it)->m_amine_rate / (*it)->m_rate % (*it)->m_animtype == (*it)->m_animtype - 1)
 			(*it)->m_living = false;
 
 		if ((*it)->m_type == BOMB){
@@ -66,7 +69,7 @@ void CEffect::Update(){
 
 void CEffect::Draw(){
 	for (auto it = m_effects.begin(); it != m_effects.end(); it++){
-		DrawRotaGraph((*it)->m_pos.getX(), (*it)->m_pos.getY(), (*it)->m_exrate, (*it)->m_rad, m_effect_img[(*it)->m_type][(*it)->m_amine_rate], TRUE, FALSE);
+		DrawRotaGraph((*it)->m_pos.getX(), (*it)->m_pos.getY(), (*it)->m_exrate, (*it)->m_rad, m_effect_img[(*it)->m_type][(*it)->m_amine_rate / (*it)->m_rate % (*it)->m_animtype], TRUE, FALSE);
 	}
 }
 

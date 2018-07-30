@@ -8,7 +8,7 @@
 #include "player_manager.h"
 #include "effect_manager.h"
 #include "ui_manager.h"
-#include "boss_manager.h"
+//#include "boss_manager.h"
 
 //コンストラクタ
 CGameScreen::CGameScreen()
@@ -36,7 +36,7 @@ void CGameScreen::Init(){
 	CTaskManager::GetInstance()->Add(new CPlayer);
 	CTaskManager::GetInstance()->Add(new CField);
 	CTaskManager::GetInstance()->Add(new CEnemy);
-	CTaskManager::GetInstance()->Add(new CBoss);
+	//CTaskManager::GetInstance()->Add(new CBoss);
 	CTaskManager::GetInstance()->Add(new CEffect);
 	CTaskManager::GetInstance()->Add(new CUi);
 }
