@@ -1,0 +1,43 @@
+﻿2018/07/30 12:46:19 にビルドを開始しました。
+     1>ノード 2 上のプロジェクト "C:\Users\清原一真\Documents\GitHub\ゲームデータ\Task_list_変更\Win32ProjectQ.vcxproj" (Build ターゲット)。
+     1>ClCompile:
+         F:\VS\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D _MBCS /Gm /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt effect.cpp effect_manager.cpp game_screen.cpp player.cpp player_attack.cpp
+         player_attack.cpp
+     1>c:\users\清原一真\documents\github\ゲームデータ\task_list_変更\player_attack.cpp(11): warning C4244: '=' : 'const float' から 'int' への変換です。データが失われる可能性があります。
+     1>c:\users\清原一真\documents\github\ゲームデータ\task_list_変更\player_attack.cpp(32): warning C4244: '引数' : 'int' から 'float' への変換です。データが失われる可能性があります。
+         effect.cpp
+     1>c:\users\清原一真\documents\github\ゲームデータ\task_list_変更\effect.cpp(11): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
+     1>c:\users\清原一真\documents\github\ゲームデータ\task_list_変更\effect.cpp(56): warning C4244: '-=' : 'float' から 'int' への変換です。データが失われる可能性があります。
+     1>c:\users\清原一真\documents\github\ゲームデータ\task_list_変更\effect.cpp(69): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
+         コードを生成中...
+         スキップ中... (関連する変更は検出されませんでした)
+         player.cpp
+         game_screen.cpp
+         effect_manager.cpp
+       Link:
+         F:\VS\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\清原一真\Documents\GitHub\ゲームデータ\Task_list_変更\Debug\Win32ProjectQ.exe" /INCREMENTAL /NOLOGO /LIBPATH:"F:\授業用\C言語\C言語\DxLib_VC\プロジェクトに追加すべきファイル_VC用" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\清原一真\Documents\GitHub\ゲームデータ\Task_list_変更\Debug\Win32ProjectQ.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\清原一真\Documents\GitHub\ゲームデータ\Task_list_変更\Debug\Win32ProjectQ.lib" /MACHINE:X86 Debug\base_data.obj
+         Debug\effect.obj
+         Debug\effect_manager.obj
+         Debug\enemy.obj
+         Debug\enemy_manager.obj
+         Debug\enemy_move.obj
+         Debug\field.obj
+         Debug\field_manager.obj
+         Debug\game.obj
+         Debug\game_screen.obj
+         Debug\gametitle_screen.obj
+         Debug\myLib.obj
+         Debug\player.obj
+         Debug\player_attack.obj
+         Debug\player_manager.obj
+         Debug\task.obj
+         Debug\task_manager.obj
+         Debug\ui.obj
+         Debug\ui_manager.obj
+         Debug\win_main.obj
+         Win32ProjectQ.vcxproj -> C:\Users\清原一真\Documents\GitHub\ゲームデータ\Task_list_変更\Debug\Win32ProjectQ.exe
+     1>プロジェクト "C:\Users\清原一真\Documents\GitHub\ゲームデータ\Task_list_変更\Win32ProjectQ.vcxproj" (Build ターゲット) のビルドが完了しました。
+
+ビルドに成功しました。
+
+経過時間 00:00:02.50
