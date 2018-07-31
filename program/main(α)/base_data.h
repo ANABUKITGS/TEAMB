@@ -79,6 +79,7 @@ public:
 	//リストにタスク格納処理
 	void AddTaskInner(CBaseData* task);
 
+	list<CBaseData*> *GetCharaData(){ return &m_chara_data; };
 };
 
 #endif _BASE_DATA_H_

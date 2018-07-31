@@ -97,10 +97,11 @@ void CCharaData::KillAll(){
 
 void CCharaData::Counter(){
 	for (auto it = m_chara_data.begin(); it != m_chara_data.end(); it++){
-		printfDx("base HP %d ", (*it)->m_hp);
+		printfDx("base Type %d ", (*it)->m_type);
+		printfDx("HP %d ", (*it)->m_hp);
 		printfDx("mass %f ", (*it)->m_mass);
 		printfDx("Velo %f ", (*it)->m_velocity);
-		printfDx("rad %f\n ", degree((*it)->m_rad));
+		printfDx("rad %f\n", degree((*it)->m_rad));
 	}
 }
 

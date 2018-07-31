@@ -29,9 +29,14 @@ const float ENEMY_COLLISION = 15.0f;
 const float ENEMY_LOCATE_COLLISION = 200.0f;;
 
 const float PLAYER_RANGE = 100.0f;
+const float PLAYER_BOMB_RANGE = 150.0f;
+
 const float PLAYER_ATTACK_KNOCK_BACK = 3.5f;
 const float PLAYER_ATTACK_STAN = 120.0f;
+const float PLAYER_STAN_EXRATE = 1.5f;
 const float PLAYER_ATTACK_BOMB = 32.0f;
+const float PLAYER_BOMB_EXRATE = 1.0f;
+const float PLAYER_BOMB_KNOCK_BACK = 8.0f;
 
 const int ENEMY_CHANGE = 600;
 const int ENEMY_MOVE = 360;

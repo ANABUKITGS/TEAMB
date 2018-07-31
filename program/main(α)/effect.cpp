@@ -49,15 +49,19 @@ void CEffect::Update(){
 			(*it)->m_living = false;
 
 		if ((*it)->m_type == BOMB){
-			if ((*it)->m_amine_rate % (*it)->m_animtype == 3){
-				for (auto it1 = CEnemyManager::GetInstance()->GetEnemyAdress()->GetEnemyData()->begin();
-					it1 != CEnemyManager::GetInstance()->GetEnemyAdress()->GetEnemyData()->end(); it1++){
+			if ((*it)->m_amine_rate % (*it)->m_animtype == 4){
+				for (auto it1 = CCharaData::GetInstance()->GetCharaData()->begin()/*CEnemyManager::GetInstance()->GetEnemyAdress()->GetEnemyData()->begin()*/;
+					it1 != CCharaData::GetInstance()->GetCharaData()->end()/*CEnemyManager::GetInstance()->GetEnemyAdress()->GetEnemyData()->end()*/; it1++){
 					if (IsHitCircle((*it)->m_collision, ENEMY_COLLISION, CVector2D((*it)->m_pos.getX(),
 						(*it)->m_pos.getY()), (*it1)->m_pos)){
-						//(*it1)->m_rad = (*it)->m_rad;
-						//(*it1)->m_velocity = PLAYER_ATTACK_KNOCK_BACK;
-						(*it1)->m_hp -= (int)PLAYER_ATTACK_BOMB * (*it)->m_mass;
-						//(*it1)->m_control = false;
+						(*it1)->m_rad = PosRad((*it)->m_pos, (*it1)->m_pos);
+						(*it1)->m_velocity = PLAYER_BOMB_KNOCK_BACK;
+						//(*it1)->m_hp -= (int)PLAYER_ATTACK_BOMB * (*it)->m_mass;
+						if ((*it1)->m_type == PLAYER)
+							(*it1)->m_hp -= (int)(PLAYER_ATTACK_BOMB * (*it)->m_mass) / 3;
+						else
+							(*it1)->m_hp -= (int)PLAYER_ATTACK_BOMB * (*it)->m_mass;
+						(*it1)->m_control = false;
 					}
 				}
 			}
