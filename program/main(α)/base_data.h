@@ -53,7 +53,7 @@ private:
 	static CCharaData* m_pInstance;
 	list<CBaseData*> m_chara_data;
 	int m_ehp_img[2];
-	int m_hhp_img;
+	int m_hhp_img[2];
 public:
 	
 	CCharaData();

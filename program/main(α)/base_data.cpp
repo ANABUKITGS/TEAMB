@@ -76,7 +76,8 @@ void CBaseData::Update(){
 CCharaData::CCharaData(){
 	m_ehp_img[0] = LoadGraph("media\\img\\enemy_hp.jpg");
 	m_ehp_img[1] = LoadGraph("media\\img\\enemy_hp_b1.jpg");
-	m_hhp_img = LoadGraph("media\\img\\hero_hp2.jpg");
+	m_hhp_img[0] = LoadGraph("media\\img\\hero_hp2.jpg");
+	m_hhp_img[1] = LoadGraph("media\\img\\hero_hp2_b1.jpg");
 }
 
 void CCharaData::AddTaskInner(CBaseData* task){
@@ -190,7 +191,8 @@ void CCharaData::Draw(){
 			DrawRectGraph((*it)->m_pos.getX() - 32 + (*it)->m_hp, (*it)->m_pos.getY() - 25, 0, 0, (*it)->m_damage, 4, m_ehp_img[1], FALSE, FALSE);
 		}
 		if ((*it)->m_type == PLAYER){
-			DrawRectGraph((*it)->m_pos.getX() - 32, (*it)->m_pos.getY() - 47, 0, 0, (*it)->m_hp, 8, m_hhp_img, FALSE, FALSE);
+			DrawRectGraph((*it)->m_pos.getX() - 32, (*it)->m_pos.getY() - 47, 0, 0, (*it)->m_hp, 8, m_hhp_img[0], FALSE, FALSE);
+			DrawRectGraph((*it)->m_pos.getX() - 32 + (*it)->m_hp, (*it)->m_pos.getY() - 47, 0, 0, (*it)->m_damage, 8, m_hhp_img[1], FALSE, FALSE);
 		}
 		if ((*it)->m_damage > 0){
 			(*it)->m_damage--;

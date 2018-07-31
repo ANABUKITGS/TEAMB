@@ -56,13 +56,15 @@ void CEffect::Update(){
 						(*it)->m_pos.getY()), (*it1)->m_pos)){
 						(*it1)->m_rad = PosRad((*it)->m_pos, (*it1)->m_pos);
 						(*it1)->m_velocity = PLAYER_BOMB_KNOCK_BACK;
-						//(*it1)->m_hp -= (int)PLAYER_ATTACK_BOMB * (*it)->m_mass;
-						if ((*it1)->m_type == PLAYER)
-							(*it1)->m_hp -= (int)(PLAYER_ATTACK_BOMB * (*it)->m_mass) / 3;
-						else
-							(*it1)->m_hp -= (int)PLAYER_ATTACK_BOMB * (*it)->m_mass;
+						if ((*it1)->m_type == PLAYER){
+							(*it1)->m_damage = (int)PLAYER_ATTACK_BOMB * (*it)->m_mass / 3;
+							(*it1)->m_hp -= (*it1)->m_damage;
+						}
+						else{
+							(*it1)->m_damage = (int)PLAYER_ATTACK_BOMB * (*it)->m_mass;
+							(*it1)->m_hp -= (*it1)->m_damage;
+						}
 						(*it1)->m_control = false;
-						(*it1)->m_damage = (int)PLAYER_ATTACK_BOMB * (*it)->m_mass;
 					}
 				}
 			}
