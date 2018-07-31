@@ -120,7 +120,7 @@ void CEnemy::Reflect(CEnemyData &cd,CVector2D &_pos){
 
 void CEnemy::Draw(){
 	for (auto it = m_enemys.begin(); it != m_enemys.end(); it++){
-		DrawRotaGraph((*it)->m_pos.getX(), (*it)->m_pos.getY(), (*it)->m_exrate, (*it)->m_rad, m_enemy_img[0],
+		DrawRotaGraph((*it)->m_pos.getX(), (*it)->m_pos.getY(), (*it)->m_exrate, (*it)->m_rad - degree(90), m_enemy_img[0],
 			TRUE,FALSE);
 	}
 }

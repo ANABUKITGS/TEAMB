@@ -13,8 +13,8 @@ void CMovePattern1::Move(CEnemyData *cd, CVector2D &_pos){
 
 	if (cd->m_control){
 		if (cd->m_locate){
-			float _rad = PosRad(cd->m_pos, temp->m_pos);
-			_pos += CVector2D(cd->m_velocity * cos(_rad), cd->m_velocity * sin(_rad));
+			cd->m_rad = PosRad(cd->m_pos, temp->m_pos);
+			_pos += CVector2D(cd->m_velocity * cos(cd->m_rad), cd->m_velocity * sin(cd->m_rad));
 		}
 		else{
 			if (cd->m_counter < ENEMY_MOVE){
