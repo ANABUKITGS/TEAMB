@@ -1,5 +1,5 @@
-﻿/program/main(α)/Log.txt
-/program/main(α)/*.sdf
-/program/main(α)/*.suo
-/program/main(α)/*.pdb
-/program/main(α)/*.tlog
+﻿program/main(α)/Log.txt
+program/main(α)/*.sdf
+program/main(α)/*.suo
+program/main(α)/*.pdb
+program/main(α)/*.tlog
