@@ -93,6 +93,12 @@
     <ClCompile Include="boss.cpp">
       <Filter>ソース ファイル\game_main関連</Filter>
     </ClCompile>
+    <ClCompile Include="item.cpp">
+      <Filter>ソース ファイル\game_main関連</Filter>
+    </ClCompile>
+    <ClCompile Include="item_manager.cpp">
+      <Filter>ソース ファイル\game_main関連</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h">
@@ -156,6 +162,12 @@
       <Filter>ヘッダー ファイル\game_main関連</Filter>
     </ClInclude>
     <ClInclude Include="boss.h">
+      <Filter>ヘッダー ファイル\game_main関連</Filter>
+    </ClInclude>
+    <ClInclude Include="item.h">
+      <Filter>ヘッダー ファイル\game_main関連</Filter>
+    </ClInclude>
+    <ClInclude Include="item_manager.h">
       <Filter>ヘッダー ファイル\game_main関連</Filter>
     </ClInclude>
   </ItemGroup>

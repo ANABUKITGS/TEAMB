@@ -14,6 +14,7 @@ const int KNOCK_BACK_NUM = 16;
 const int BOMB_CHARGE_NUM = 15;
 const int BOMB_NUM = 8;
 
+//m_typeÇ≈égópÇµÇƒÇ¢ÇÈÅ@
 enum TYPE{
 	KNOCK_BACK, STAN, CHARGE_BOMB, BOMB
 };
