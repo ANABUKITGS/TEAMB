@@ -62,6 +62,7 @@ void CEffect::Update(){
 						else
 							(*it1)->m_hp -= (int)PLAYER_ATTACK_BOMB * (*it)->m_mass;
 						(*it1)->m_control = false;
+						(*it1)->m_damage = (int)PLAYER_ATTACK_BOMB * (*it)->m_mass;
 					}
 				}
 			}

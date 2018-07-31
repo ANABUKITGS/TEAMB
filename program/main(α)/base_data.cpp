@@ -22,6 +22,7 @@ CBaseData::CBaseData(CVector2D _pos, bool _living, float _alpha, float _rad, flo
 , m_control(true)
 , m_type(_type)
 , m_timer(0)
+, m_damage(0)
 {
 	CCharaData::GetInstance()->AddTaskInner(this);
 }
@@ -42,6 +43,7 @@ CBaseData::CBaseData(CVector2D _pos, bool _living, float _alpha, float _rad, flo
 , m_control(true)
 , m_type(_type)
 , m_timer(0)
+, m_damage(0)
 {
 }
 
@@ -61,6 +63,7 @@ CBaseData::CBaseData(CVector2D _pos, bool _living, float _rad, float _exrate, in
 , m_control(true)
 , m_type(_type)
 , m_timer(0)
+, m_damage(0)
 {
 }
 
@@ -71,7 +74,8 @@ void CBaseData::Update(){
 }
 
 CCharaData::CCharaData(){
-	m_ehp_img = LoadGraph("media\\img\\enemy_hp.jpg");
+	m_ehp_img[0] = LoadGraph("media\\img\\enemy_hp.jpg");
+	m_ehp_img[1] = LoadGraph("media\\img\\enemy_hp_b1.jpg");
 	m_hhp_img = LoadGraph("media\\img\\hero_hp2.jpg");
 }
 
@@ -182,10 +186,14 @@ void CCharaData::CBank(){
 void CCharaData::Draw(){
 	for (auto it = m_chara_data.begin(); it != m_chara_data.end(); it++){
 		if ((*it)->m_type == ENEMY){
-			DrawRectGraph((*it)->m_pos.getX() - 32, (*it)->m_pos.getY() - 25, 0, 0, (*it)->m_hp, 4, m_ehp_img, FALSE, FALSE);
+			DrawRectGraph((*it)->m_pos.getX() - 32, (*it)->m_pos.getY() - 25, 0, 0, (*it)->m_hp, 4, m_ehp_img[0], FALSE, FALSE);
+			DrawRectGraph((*it)->m_pos.getX() - 32 + (*it)->m_hp, (*it)->m_pos.getY() - 25, 0, 0, (*it)->m_damage, 4, m_ehp_img[1], FALSE, FALSE);
 		}
 		if ((*it)->m_type == PLAYER){
 			DrawRectGraph((*it)->m_pos.getX() - 32, (*it)->m_pos.getY() - 47, 0, 0, (*it)->m_hp, 8, m_hhp_img, FALSE, FALSE);
+		}
+		if ((*it)->m_damage > 0){
+			(*it)->m_damage--;
 		}
 	}
 }
