@@ -18,10 +18,14 @@ enum BossType{
 class CBossData : public CBaseData{
 public:
 	CBossData();
-	CBossData(CVector2D _pos, bool _living, float _alpha, float _rad, float _exrate, int _animtype, float _velocity, float _mass, int _hp, float _friction, float _collision, int _type);
+	//座標		・生きてる		・角度		・大きさ	・アニメーション	・速度			・質量		・体力			・摩擦	・当たり判定の大きさ	・種類
+	CBossData(CVector2D _pos, bool _living, float _rad, float _exrate, int _animtype, float _velocity, float _mass, int _hp, float _friction, float _collision, int _type);
+
+	//座標		・生きてる		・透過値		・角度		・大きさ	・アニメーション	・速度			・質量		・体力			・摩擦	・当たり判定の大きさ	・種類
+	//CBossData(CVector2D _pos, bool _living, float _alpha, float _rad, float _exrate, int _animtype, float _velocity, float _mass, int _hp, float _friction, float _collision, float _type);
 	CBossData(CBaseData _temp);
 	~CBossData(){};
-	float k = 0;
+	float m_yup = 0;
 };
 
 class CBoss : public CTask{
