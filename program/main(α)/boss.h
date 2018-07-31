@@ -19,14 +19,15 @@ class CBossData : public CBaseData{
 public:
 	CBossData();
 	CBossData(CVector2D _pos, bool _living, float _alpha, float _rad, float _exrate, int _animtype, float _velocity, float _mass, int _hp, float _friction, float _collision, int _type);
+	CBossData(CBaseData _temp);
 	~CBossData(){};
 	float k = 0;
 };
 
 class CBoss : public CTask{
 private:
-	vector<CBossData> m_bos;
-	list<CBossData> m_bo;
+	vector<CBossData> m_bo;
+	list<CBossData*> m_bos;
 	CBossData m_bossy;
 	float i;
 	int m_boss_img[5];

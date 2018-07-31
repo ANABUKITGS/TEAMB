@@ -1,12 +1,20 @@
 #include "boss.h"
 #include "boss_manager.h"
 
-CBossData::CBossData(){
+CBossData::CBossData()
+:CBaseData()
+{
 
 }
 
 CBossData::CBossData(CVector2D _pos, bool _living, float _alpha, float _rad, float _exrate, int _animtype, float _velocity, float _mass, int _hp, float _friction, float _collision, int _type)
 : CBaseData(_pos, _living, _alpha, _rad, _exrate, _animtype, _velocity, _mass, _hp, _friction, _collision, _type)
+{
+
+}
+
+CBossData::CBossData(CBaseData _temp)
+: CBaseData(_temp.m_pos, _temp.m_living, _temp.m_alpha, _temp.m_rad, _temp.m_exrate, _temp.m_animtype, _temp.m_velocity, _temp.m_mass, _temp.m_hp, _temp.m_friction, _temp.m_collision, _temp.m_type)
 {
 
 }
@@ -39,7 +47,8 @@ CBoss::CBoss(){
 		}
 		m_base.m_type = m_bossy.m_type;
 		//座標/生きているかどうか/透過値/角度（ラジアン）/大きさ/アニメーションの種類/速度/質量/アニメーション/体力/摩擦/当たり判定の大きさ/操作可能/種類/何らかの時間
-		m_bo.push_back(CBossData(CVector2D(m_base.m_pos.getX(), m_base.m_pos.getY()), true, 0, 0.0f, 0, 0, m_base.m_velocity, 0, 0, 0, 0, m_base.m_type));
+		CBaseData *_temp = new CBaseData(m_base.m_pos, true, 0, 0, 0, 0, m_base.m_velocity, 0, 0, 0, 0, m_base.m_type);
+		m_bos.push_back(new CBossData(*_temp));
 	}
 	//ボス胴体
 	m_boss_img[0] = LoadGraph("media\\img\\boss.png");
@@ -60,10 +69,10 @@ CBoss::CBoss(){
 
 void CBoss::Update(){
 	CVector2D _pos_;
-	for (auto it = m_bo.begin(); it != m_bo.end(); it++){
-		if (it->m_type != 0){
-			_pos_ = it->m_pos;
-			Move(*it,_pos_);
+	for (auto it = m_bos.begin(); it != m_bos.end(); it++){
+		if ((*it)->m_type != 0){
+			_pos_ = (*it)->m_pos;
+			Move(*(*it), _pos_);
 		}
 	}
 }
@@ -79,8 +88,8 @@ void CBoss::Move(CBossData &cd, CVector2D &_pos){
 	cd.m_pos = _pos;
 }
 void CBoss::Draw(){
-	for (auto it = m_bo.begin(); it != m_bo.end(); it++){
-		DrawRotaGraph((int)it->m_pos.getX() + 500, (int)it->m_pos.getY(), 1, 0, m_boss_img[(int)it->m_type], TRUE, FALSE);
+	for (auto it = m_bos.begin(); it != m_bos.end(); it++){
+		DrawRotaGraph((int)(*it)->m_pos.getX() + 500, (int)(*it)->m_pos.getY(), 1, 0, m_boss_img[(int)(*it)->m_type], TRUE, FALSE);
 	}
 
 #if defined(_DEBUG) | defined(DEBUG)
