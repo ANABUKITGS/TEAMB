@@ -11,6 +11,8 @@ class CScreen
 {
 public:
 	virtual SCREEN GetNextScreen() = 0;		//Ÿ‚ÌƒXƒNƒŠ[ƒ“‚ğ¦‚·
+	CScreen(){}
+	virtual ~CScreen(){}
 	virtual void Init(){}
 	virtual void Load(){}
 	virtual void Release(){}
