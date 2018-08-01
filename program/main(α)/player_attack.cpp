@@ -4,8 +4,8 @@
 
 void CStan::Type(CPlayerData *cd){
 	CEffectData *temp = new CEffectData(CVector2D(cd->m_pos.getX(), cd->m_pos.getY()), true, 0, PLAYER_STAN_EXRATE * (1 + (int)cd->m_chage_count * 0.1f), STAN_NUM, 0, 10, 99, 0, PLAYER_STAN_COLLISION * (1 + (int)cd->m_chage_count * 0.1f), STAN, 1);
-	for (auto it = CEnemyManager::GetInstance()->GetEnemyAdress()->GetEnemyData()->begin();
-		it != CEnemyManager::GetInstance()->GetEnemyAdress()->GetEnemyData()->end(); it++){
+	for (auto it = CCharaData::GetInstance()->GetCharaData()->begin();
+		it != CCharaData::GetInstance()->GetCharaData()->end(); it++){
 		if (IsHitCircle(temp->m_collision, ENEMY_COLLISION, CVector2D(cd->m_pos.getX(), cd->m_pos.getY()), (*it)->m_pos)){
 			(*it)->m_control = false;
 			(*it)->m_timer = PLAYER_ATTACK_STAN * (int)cd->m_chage_count;
@@ -16,8 +16,8 @@ void CStan::Type(CPlayerData *cd){
 
 void CKnockBack::Type(CPlayerData *cd){
 	CEffectData *temp = new CEffectData(CVector2D(cd->m_pos.getX() + PLAYER_RANGE * cos(cd->m_rad), cd->m_pos.getY() + PLAYER_RANGE * sin(cd->m_rad)), true, cd->m_rad + radian(90), 1.0f, KNOCK_BACK_NUM, 0, 10, 99, 0, PLAYER_KNOCK_BACK_COLLISION, KNOCK_BACK,1);
-	for (auto it = CEnemyManager::GetInstance()->GetEnemyAdress()->GetEnemyData()->begin();
-		it != CEnemyManager::GetInstance()->GetEnemyAdress()->GetEnemyData()->end(); it++){
+	for (auto it = CCharaData::GetInstance()->GetCharaData()->begin();
+		it != CCharaData::GetInstance()->GetCharaData()->end(); it++){
 		if (IsHitCircle(temp->m_collision, ENEMY_COLLISION, CVector2D(cd->m_pos.getX() + PLAYER_RANGE * cos(cd->m_rad),
 			cd->m_pos.getY() + PLAYER_RANGE * sin(cd->m_rad)), (*it)->m_pos)){
 			(*it)->m_rad = cd->m_rad;

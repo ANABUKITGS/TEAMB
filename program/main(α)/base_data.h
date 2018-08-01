@@ -60,13 +60,15 @@ public:
 	~CCharaData(){};
 
 	//Õ“Ë‚Ì”½Ë
-	void CBank();
+	void CBank(CBaseData* cd1, CBaseData* cd2);
 	//‘Síœ
 	void KillAll();			
 	//”
 	void Counter();			
 	//íœ
 	void Delete();
+
+	void Update();
 	//•`‰æ
 	void Draw();
 

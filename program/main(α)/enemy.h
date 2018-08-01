@@ -12,7 +12,7 @@ const float ENEMY_SPEED = 1.5f;
 const float ENEMY_MASS = 1.0f;
 const float ENEMY_FRICTION = 0.1f;
 const float ENEMY_HP = 64;
-const int MAX_ENEMY = 10;
+const int MAX_ENEMY = 20;
 
 
 enum EnemyDirection{
@@ -50,8 +50,8 @@ class CEnemy : public CTask{
 private:
 	list<CEnemyData*> m_enemys;
 	int m_enemy_img[24];
-	int m_hp;
-	int m_count;
+	int m_count;			//出現用カウンター
+	int m_dead_count;		//死亡数
 public:
 	CEnemy();
 	~CEnemy(){};
@@ -62,6 +62,7 @@ public:
 	void Move(int key);
 	void Reflect(CEnemyData &cd,CVector2D &_pos);
 	list<CEnemyData*> *GetEnemyData(){ return &m_enemys; };
+	int GetDeadCount(){ return m_dead_count; };
 };
 
 class CMovePattern1 : public CBaseEemeyMove{

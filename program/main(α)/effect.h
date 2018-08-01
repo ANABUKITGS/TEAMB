@@ -3,9 +3,7 @@
 
 #include "task.h"
 #include "base_data.h"
-#include <vector>
 #include <list>
-#include <algorithm>
 
 using namespace std;
 
@@ -15,7 +13,7 @@ const int BOMB_CHARGE_NUM = 15;
 const int BOMB_NUM = 8;
 
 //m_typeÇ≈égópÇµÇƒÇ¢ÇÈÅ@
-enum TYPE{
+enum EFFECT_TYPE{
 	KNOCK_BACK, STAN, CHARGE_BOMB, BOMB
 };
 
@@ -41,7 +39,7 @@ public:
 	void Draw();
 	void Delete();
 
-	void Bomb();
+	void Bomb(CEffectData* cd);
 
 	list<CEffectData*> *GetEffectData(){ return &m_effects; };
 };

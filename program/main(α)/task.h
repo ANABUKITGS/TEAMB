@@ -21,6 +21,7 @@ enum E_DrawPrio
 {
 	eDWP_Tutorial = 0,
 	eDWP_FIELD,
+	eDWP_ITEM,
 	eDWP_ENEMY,
 	eDWP_BOSS,
 	eDWP_PLAYER,

@@ -36,42 +36,47 @@ void CEffect::Update(){
 	for (auto it = m_effects.begin(); it != m_effects.end(); it++){
 		(*it)->m_amine_rate++;
 
-		if ((*it)->m_type == CHARGE_BOMB){
-			if ((*it)->m_amine_rate / (*it)->m_rate % (*it)->m_animtype == (*it)->m_animtype - 1){
-				(*it)->m_type = BOMB;
-				(*it)->m_animtype = BOMB_NUM;
-				(*it)->m_amine_rate = 1;
-				(*it)->m_rate = 1;
-			}
+		Bomb((*it));
+
+	}
+
+	Delete();
+}
+
+void CEffect::Bomb(CEffectData* cd){
+	if (cd->m_type == CHARGE_BOMB){
+		if (cd->m_amine_rate / cd->m_rate % cd->m_animtype == cd->m_animtype - 1){
+			cd->m_type = BOMB;
+			cd->m_animtype = BOMB_NUM;
+			cd->m_amine_rate = 1;
+			cd->m_rate = 1;
 		}
+	}
 
-		if ((*it)->m_amine_rate / (*it)->m_rate % (*it)->m_animtype == (*it)->m_animtype - 1)
-			(*it)->m_living = false;
+	if (cd->m_amine_rate / cd->m_rate % cd->m_animtype == cd->m_animtype - 1)
+		cd->m_living = false;
 
-		if ((*it)->m_type == BOMB){
-			if ((*it)->m_amine_rate % (*it)->m_animtype == 4){
-				for (auto it1 = CCharaData::GetInstance()->GetCharaData()->begin()/*CEnemyManager::GetInstance()->GetEnemyAdress()->GetEnemyData()->begin()*/;
-					it1 != CCharaData::GetInstance()->GetCharaData()->end()/*CEnemyManager::GetInstance()->GetEnemyAdress()->GetEnemyData()->end()*/; it1++){
-					if (IsHitCircle((*it)->m_collision, ENEMY_COLLISION, CVector2D((*it)->m_pos.getX(),
-						(*it)->m_pos.getY()), (*it1)->m_pos)){
-						(*it1)->m_rad = PosRad((*it)->m_pos, (*it1)->m_pos);
-						(*it1)->m_velocity = PLAYER_BOMB_KNOCK_BACK;
-						if ((*it1)->m_type == PLAYER){
-							(*it1)->m_damage = (int)PLAYER_ATTACK_BOMB * (*it)->m_mass / 3;
-							(*it1)->m_hp -= (*it1)->m_damage;
-						}
-						else{
-							(*it1)->m_damage = (int)PLAYER_ATTACK_BOMB * (*it)->m_mass;
-							(*it1)->m_hp -= (*it1)->m_damage;
-						}
-						(*it1)->m_control = false;
+	if (cd->m_type == BOMB){
+		if (cd->m_amine_rate % cd->m_animtype == 4){
+			for (auto it1 = CCharaData::GetInstance()->GetCharaData()->begin();
+				it1 != CCharaData::GetInstance()->GetCharaData()->end(); it1++){
+				if (IsHitCircle(cd->m_collision, (*it1)->m_collision, CVector2D(cd->m_pos.getX(),
+					cd->m_pos.getY()), (*it1)->m_pos)){
+					(*it1)->m_rad = PosRad(cd->m_pos, (*it1)->m_pos);
+					(*it1)->m_velocity = PLAYER_BOMB_KNOCK_BACK;
+					if ((*it1)->m_type == PLAYER){
+						(*it1)->m_damage = (int)PLAYER_ATTACK_BOMB * cd->m_mass / 3;
+						(*it1)->m_hp -= (*it1)->m_damage;
 					}
+					else{
+						(*it1)->m_damage = (int)PLAYER_ATTACK_BOMB * cd->m_mass;
+						(*it1)->m_hp -= (*it1)->m_damage;
+					}
+					(*it1)->m_control = false;
 				}
 			}
 		}
 	}
-
-	Delete();
 }
 
 void CEffect::Draw(){

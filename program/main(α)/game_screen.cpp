@@ -9,6 +9,7 @@
 #include "effect_manager.h"
 #include "ui_manager.h"
 #include "boss_manager.h"
+#include "item_manager.h"
 
 //コンストラクタ
 CGameScreen::CGameScreen()
@@ -35,10 +36,11 @@ void CGameScreen::Init(){
 	//CTaskManager::GetInstance()->Add( new CFrame);
 	CTaskManager::GetInstance()->Add(new CPlayer);
 	CTaskManager::GetInstance()->Add(new CField);
-	CTaskManager::GetInstance()->Add(new CBoss);
+	//CTaskManager::GetInstance()->Add(new CBoss);
 	CTaskManager::GetInstance()->Add(new CEnemy);
 	CTaskManager::GetInstance()->Add(new CEffect);
 	CTaskManager::GetInstance()->Add(new CUi);
+	CTaskManager::GetInstance()->Add(new CItem);
 }
 
 //実行処理
@@ -47,7 +49,7 @@ void CGameScreen::Update()
 	if (CheckHitKey(KEY_INPUT_E) == 1) m_state = TITLE_SCREEN;
 	CTaskManager::GetInstance()->UpdateAll();
 
-	CCharaData::GetInstance()->CBank();
+	CCharaData::GetInstance()->Update();
 	CCharaData::GetInstance()->Delete();
 
 #if defined(_DEBUG) | defined(DEBUG)

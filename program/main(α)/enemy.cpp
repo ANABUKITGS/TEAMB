@@ -27,8 +27,10 @@ CEnemy::CEnemy(){
 	m_priority = eDWP_ENEMY;
 	m_update_priority = 2;
 	m_draw_priority = 2;
-	m_count = 1;
 	
+	m_count = 1;
+	m_dead_count = 0;
+
 	CEnemyManager::GetInstance()->Init(this);
 
 }
@@ -36,6 +38,7 @@ CEnemy::CEnemy(){
 void CEnemy::Delete(){
 	for (auto it = m_enemys.begin(); it != m_enemys.end();){
 		if ((*it)->m_living == false){
+			m_dead_count++;
 			it = m_enemys.erase(it);
 			continue;
 		}
@@ -45,6 +48,9 @@ void CEnemy::Delete(){
 
 void CEnemy::Update(){
 	CVector2D _pos;
+
+	m_dead_count = 0;
+
 	for (auto it = m_enemys.begin(); it != m_enemys.end(); it++){
 
 		_pos = (*it)->m_pos;
@@ -60,19 +66,21 @@ void CEnemy::Update(){
 				(*it)->m_timer--;
 		}
 
-		//ˆÓ¯‚ª–³‚¯‚ê‚ÎˆÈ‰º‚Ìˆ—
-		if (!(*it)->m_control){
-			_pos += CVector2D((*it)->m_velocity * cos((*it)->m_rad), (*it)->m_velocity * sin((*it)->m_rad));
+		//ˆÓ¯‚ª–³‚¯‚ê‚ÎˆÈ‰º‚Ìˆ—(‚«”ò‚Î‚µ‚É’Ê‚é)
+		{
+			if (!(*it)->m_control){
+				_pos += CVector2D((*it)->m_velocity * cos((*it)->m_rad), (*it)->m_velocity * sin((*it)->m_rad));
 
-			if ((*it)->m_velocity <= 0){
-				(*it)->m_velocity = 0;
-				(*it)->m_control = true;
+				if ((*it)->m_velocity <= 0){
+					(*it)->m_velocity = 0;
+					(*it)->m_control = true;
+				}
+				else
+					(*it)->m_velocity -= (*it)->m_friction;
 			}
 			else
-				(*it)->m_velocity -= (*it)->m_friction;
+				(*it)->m_velocity = ENEMY_SPEED;
 		}
-		else
-			(*it)->m_velocity = ENEMY_SPEED;
 
 		//”½Ëˆ—
 		Reflect(*(*it), _pos);
