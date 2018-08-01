@@ -23,7 +23,7 @@ int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hPrevinstance, LPSTR IpCmdLine
 
 		if (CheckHitKey(KEY_INPUT_ESCAPE) == 1) exit(-1);
 		//ウィンドウが閉じられたもしくはエラーの場合ゲームを消す//
-		if (ProcessMessage() == -1) exit(-1);
+		if (ProcessMessage() != 0) exit(-1);
 
 #if defined( _DEBUG ) | defined( DEBUG )
 #endif

@@ -47,6 +47,10 @@ void CItem::Update(){
 		//”½ŽËˆ—
 		Reflect((*it));
 
+		if ((*it)->m_animtype > 3)
+			(*it)->m_animtype = 0;
+
+
 		(*it)->m_y_up += 2;
 		if ((*it)->m_y_up > 360){
 			(*it)->m_y_up = 0;
@@ -70,21 +74,24 @@ void CItem::Reflect(CItemData* cd){
 	if (cd->m_pos.getY() > 720){
 		cd->m_rad = cd->m_rad*(-1);
 		cd->m_pos.setY(720 * 2 - cd->m_pos.getY());
+		cd->m_animtype++;
 	}
 	else if (cd->m_pos.getY() < 0){
 		cd->m_rad = cd->m_rad*(-1);
 		cd->m_pos.setY(-cd->m_pos.getY());
+		cd->m_animtype++;
 	}
 
 	if (cd->m_pos.getX() > 1280){
 		cd->m_rad = PI - cd->m_rad;
 		cd->m_pos.setX(1280 * 2 - cd->m_pos.getX());
+		cd->m_animtype++;
 	}
 	else if (cd->m_pos.getX() < 0){
 		cd->m_rad = PI - cd->m_rad;
 		cd->m_pos.setX(-cd->m_pos.getX());
+		cd->m_animtype++;
 	}
-
 }
 
 void CItem::Draw(){
@@ -96,6 +103,7 @@ void CItem::Draw(){
 void CItem::Delete(){
 	for (auto it = m_items.begin(); it != m_items.end();){
 		if ((*it)->m_living == false){
+
 			it = m_items.erase(it);
 			continue;
 		}

@@ -52,6 +52,9 @@ public:
 
 	float m_chage_count;	//ƒ`ƒƒ[ƒW—Ê
 	int m_attack_type;		//UŒ‚‚Ìí—Ş
+	float m_stan;
+	float m_knock_back;
+	float m_bomb;
 };
 
 class CPlayer : public CTask{

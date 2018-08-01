@@ -54,7 +54,6 @@ void CGameScreen::Update()
 
 #if defined(_DEBUG) | defined(DEBUG)
 	//CCharaData::GetInstance()->Counter();
-	Fps();
 #endif
 }
 
@@ -66,6 +65,9 @@ void CGameScreen::Draw()
 		(255, 255, 255));
 	CTaskManager::GetInstance()->DrawAll();
 	CCharaData::GetInstance()->Draw();
+#if defined(_DEBUG) | defined(DEBUG)
+	Fps();
+#endif
 }
 
 //次のステージへ
