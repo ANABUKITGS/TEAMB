@@ -15,12 +15,23 @@
 CGameScreen::CGameScreen()
 {
 	m_state = GAME_SCREEN;
-	CTaskManager::GetInstance()->KillAll();
 }
 
 //デストラクタ
 CGameScreen::~CGameScreen(){
-	
+	/*CTaskManager::GetInstance()->KillAll();
+	CCharaData::ClearInstance();
+	CCharaData::GetInstance()->KillAll();
+	CItemManager::GetInstance()->GetItemAdress()->KillAll();
+	CItemManager::ClearInstance();
+	CEnemyManager::GetInstance()->GetEnemyAdress()->KillAll();
+	CEnemyManager::ClearInstance();
+	CEffectManager::GetInstance()->GetEffectAdress()->KillAll();
+	CEffectManager::ClearInstance();
+	CPlayerManager::GetInstance()->GetPlayerAdress()->Kill();
+	CPlayerManager::ClearInstance();
+	CUiManager::GetInstance()->GetUiAdress()->KillAll();
+	CUiManager::ClearInstance();*/
 }
 
 //ロード
@@ -33,7 +44,6 @@ void CGameScreen::Release(){}
 //初期化
 void CGameScreen::Init(){
 	//ここでタスク生成
-	//CTaskManager::GetInstance()->Add( new CFrame);
 	CTaskManager::GetInstance()->Add(new CPlayer);
 	CTaskManager::GetInstance()->Add(new CField);
 	//CTaskManager::GetInstance()->Add(new CBoss);
@@ -46,14 +56,23 @@ void CGameScreen::Init(){
 //実行処理
 void CGameScreen::Update()
 {
-	if (CheckHitKey(KEY_INPUT_E) == 1) m_state = TITLE_SCREEN;
+	if (CheckHitKey(KEY_INPUT_E) == 1){
+		m_state = TITLE_SCREEN;
+		CTaskManager::GetInstance()->KillAll();
+		CCharaData::GetInstance()->KillAll();
+		CItemManager::GetInstance()->GetItemAdress()->KillAll();
+		CEnemyManager::GetInstance()->GetEnemyAdress()->KillAll();
+		CEffectManager::GetInstance()->GetEffectAdress()->KillAll();
+		CPlayerManager::GetInstance()->GetPlayerAdress()->Kill();
+		CUiManager::GetInstance()->GetUiAdress()->KillAll();
+	}
 	CTaskManager::GetInstance()->UpdateAll();
 
 	CCharaData::GetInstance()->Update();
 	CCharaData::GetInstance()->Delete();
 
 #if defined(_DEBUG) | defined(DEBUG)
-	//CCharaData::GetInstance()->Counter();
+	CCharaData::GetInstance()->Counter();
 #endif
 }
 

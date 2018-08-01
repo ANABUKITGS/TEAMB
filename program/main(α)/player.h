@@ -69,6 +69,8 @@ public:
 	void Update() ;
 	void Draw() ;
 
+	void Kill();
+
 	//ˆÚ“®ˆ—
 	void Move(int key);
 	//UŒ‚Ø‚è‘Ö‚¦

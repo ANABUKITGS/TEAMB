@@ -46,6 +46,14 @@ void CEnemy::Delete(){
 	}
 }
 
+void CEnemy::KillAll(){
+	for (auto it = m_enemys.begin(); it != m_enemys.end();){
+		it = m_enemys.erase(it);
+		continue;
+		it++;
+	}
+}
+
 void CEnemy::Update(){
 	CVector2D _pos;
 

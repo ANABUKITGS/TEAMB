@@ -29,6 +29,9 @@ public:
 	~CUi(){};
 	void Update();
 	void Draw();
+
+	void KillAll();
+
 	void ChengeIcon(int _type);
 };
 

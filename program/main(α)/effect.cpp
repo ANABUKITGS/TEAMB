@@ -94,3 +94,11 @@ void CEffect::Delete(){
 		it++;
 	}
 }
+
+void CEffect::KillAll(){
+	for (auto it = m_effects.begin(); it != m_effects.end();){
+		it = m_effects.erase(it);
+		continue;
+		it++;
+	}
+}

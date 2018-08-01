@@ -39,6 +39,8 @@ public:
 
 	void Update();
 	void Draw();
+	
+	void KillAll();
 	void Delete();
 	//ƒAƒCƒeƒ€‚Ì¶¬
 	void Create();

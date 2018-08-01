@@ -37,6 +37,8 @@ public:
 
 	void Update();
 	void Draw();
+
+	void KillAll();
 	void Delete();
 
 	void Bomb(CEffectData* cd);

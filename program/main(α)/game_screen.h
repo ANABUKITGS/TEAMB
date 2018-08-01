@@ -5,8 +5,6 @@
 //ヘッダーファイル
 #include "myLib.h"
 #include "screen.h"
-//#include "map.h"
-#include "player.h"
 
 //プロトタイプ
 struct GameData;
@@ -25,7 +23,6 @@ public:
 	void Draw();
 private:
 	SCREEN m_state;
-	//Map		map;
 };
 
 #endif GAME_SCREEN_H

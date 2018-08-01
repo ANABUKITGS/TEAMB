@@ -50,3 +50,11 @@ void CUi::Draw(){
 			TRUE, FALSE);
 	}
 }
+
+void CUi::KillAll(){
+	for (auto it = m_list_ui.begin(); it != m_list_ui.end();){
+		it = m_list_ui.erase(it);
+		continue;
+		it++;
+	}
+}

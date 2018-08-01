@@ -260,3 +260,7 @@ void CPlayer::Draw(){
 	DrawFormatString(20, 560, color_white, "Pat %d", m_player->m_attack_type);
 #endif
 }
+
+void CPlayer::Kill(){
+	delete m_player;
+}

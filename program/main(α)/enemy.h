@@ -58,7 +58,10 @@ public:
 
 	void Update();
 	void Draw();
+
+	void KillAll();
 	void Delete();
+	
 	void Move(int key);
 	void Reflect(CEnemyData &cd,CVector2D &_pos);
 	list<CEnemyData*> *GetEnemyData(){ return &m_enemys; };

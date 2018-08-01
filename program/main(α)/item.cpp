@@ -110,3 +110,11 @@ void CItem::Delete(){
 		it++;
 	}
 }
+
+void CItem::KillAll(){
+	for (auto it = m_items.begin(); it != m_items.end();){
+		it = m_items.erase(it);
+		continue;
+		it++;
+	}
+}

@@ -97,7 +97,12 @@ void CCharaData::ClearInstance(){
 }
 
 void CCharaData::KillAll(){
-	if (m_chara_data.size() != NULL) m_chara_data.clear();
+	for (auto it = m_chara_data.begin(); it != m_chara_data.end();){
+		it = m_chara_data.erase(it);
+		continue;
+		it++;
+	}
+	//if (m_chara_data.size() != NULL) m_chara_data.clear();
 }
 
 void CCharaData::Counter(){
