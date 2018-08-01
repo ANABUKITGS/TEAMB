@@ -199,9 +199,9 @@ void CPlayer::Move(int key){
 
 void CPlayer::Change(int key){
 	bool _f = false;
-	if (_f = IsKeyTrigger(key, PAD_INPUT_5, KEY_PAD_INPUT_5) == true)
+	if (_f = IsKeyTrigger(key, PAD_INPUT_7, KEY_PAD_INPUT_7) == true)
 		m_player->m_attack_type--;
-	else if (_f = IsKeyTrigger(key, PAD_INPUT_6, KEY_PAD_INPUT_6) == true)
+	else if (_f = IsKeyTrigger(key, PAD_INPUT_8, KEY_PAD_INPUT_8) == true)
 		m_player->m_attack_type++;
 
 	if (m_player->m_attack_type > 2)
@@ -223,7 +223,7 @@ void CPlayer::Change(int key){
 }
 
 void CPlayer::Attack(int key){
-	int _type = LongPress(key, PAD_INPUT_1);
+	int _type = LongPress(key, PAD_INPUT_2);
 	int static _temp;
 	if (_type == RELEASE){
 		m_player->Action();
@@ -258,6 +258,5 @@ void CPlayer::Draw(){
 	DrawFormatString(20, 500, color_white, "P_degree %.1f", degree(m_player->m_rad));
 	DrawFormatString(20, 540, color_white, "P_c_c %.1f", m_player->m_chage_count);
 	DrawFormatString(20, 560, color_white, "Pat %d", m_player->m_attack_type);
-	Fps();
 #endif
 }

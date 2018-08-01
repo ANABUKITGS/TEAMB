@@ -53,7 +53,8 @@ void CGameScreen::Update()
 	CCharaData::GetInstance()->Delete();
 
 #if defined(_DEBUG) | defined(DEBUG)
-	CCharaData::GetInstance()->Counter();
+	//CCharaData::GetInstance()->Counter();
+	Fps();
 #endif
 }
 

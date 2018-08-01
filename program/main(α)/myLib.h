@@ -21,7 +21,7 @@ const int KEY_DATA = 7;				//KeyNumÇÃå¬êîï™
 
 const float PLAYER_KNOCK_BACK_COLLISION = 80.0f;
 const float PLAYER_STAN_COLLISION = 137.0f;
-const float PLAYER_BOMB_COLLISION = 192.0f;
+const float PLAYER_BOMB_COLLISION = 152.0f;
 const float ENEMY_ATTACK_COLLISION = 30.0f;
 
 const float PLAYER_COLLISION = 25.0f;
@@ -42,7 +42,7 @@ const int ENEMY_CHANGE = 600;
 const int ENEMY_MOVE = 360;
 const int ENEMY_WAIT = 600;
 
-const int ITEM_CREATE_NUM = 5;
+const int ITEM_CREATE_NUM = 10;
 
 enum UpdatePriority{
 	UDP_FRAME1, UDP_FRAME2, UDP_CARD, UDP_EFFECT, UDP_FIELD, UDP_UI, UDP_NULL
@@ -53,7 +53,7 @@ enum DrawPriority{
 };
 
 enum KeyNum{
-	KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT, KEY_Z_PAD_INPUT_1, KEY_PAD_INPUT_5, KEY_PAD_INPUT_6
+	KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT, KEY_Z_PAD_INPUT_1, KEY_PAD_INPUT_7, KEY_PAD_INPUT_8
 };
 
 enum KeyState{	//ï˙èoÅAâüÇµÇƒÇ¢ÇÈÅAâüÇµÇƒÇ¢Ç»Ç¢
