@@ -36,6 +36,7 @@ public:
 	int m_type;				//í—Ş
 	int m_timer;			//‰½‚ç‚©‚ÌŠÔ
 	int m_damage;			//ƒ_ƒ[ƒW—Ê
+	bool m_invincible;		//–³“G‚©‚Ç‚¤‚©
 	CBaseData();
 	//CharaData‚É•Û‘¶
 	CBaseData(CVector2D _pos, bool _living, float _alpha, float _rad, float _exrate, int _animtype, float _velocity, float _mass, int _hp, float _friction, float _collision, int _type);

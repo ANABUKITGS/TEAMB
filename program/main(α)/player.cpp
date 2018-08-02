@@ -25,7 +25,7 @@ CRadTable rad_table[] = {
 };
 
 CPlayerData::CPlayerData()
-:CBaseData()
+:CBaseData(CVector2D(0,0),false,0,0,0,0,0,0,0,0)
 {
 
 }
@@ -44,6 +44,7 @@ CPlayer::CPlayer()
 	//LoadDivGraph("media\\img\\hero.png", 24, 6, 4, 75, 150, m_player_img, 0);
 	LoadDivGraph("media\\img\\hero_a2a.png", 24, 6, 4, 71, 70, m_player_img, 0);
 	LoadDivGraph("media\\img\\charge.png", 10, 2, 5, 384, 384, m_player_charge_img, 0);
+	LoadDivGraph("media\\img\\avoid_aria.png", 16, 2, 8, 384, 384, m_player_avoid_img, 0);
 
 	for (auto &pat : player_attack_table){
 		if (m_player->m_attack_type == pat.m_type){
@@ -53,6 +54,7 @@ CPlayer::CPlayer()
 	}
 
 	m_player->m_charge_effect = CBaseData(m_player->m_pos, false, m_player->m_rad, 0.6f, 0, 0, 0, 0, 0, 0, 0);
+	m_player->m_avoid_effect = CBaseData(m_player->m_pos, false, m_player->m_rad, 0.6f, 0, 0, 0, 0, 0, 0, 0);
 
 	m_priority = eDWP_PLAYER;
 	m_update_priority = 2;
@@ -69,6 +71,24 @@ void CPlayer::Update(){
 	Change(key);
 
 	Attack(key);
+
+	Avoid(key);
+
+	//チャージエフェクト
+	if (m_player->m_charge_effect.m_living == true)
+		m_player->m_charge_effect.m_amine_rate++;
+	if (m_player->m_charge_effect.m_amine_rate == 10){
+		m_player->m_charge_effect.m_living = false;
+		m_player->m_charge_effect.m_amine_rate = 0;
+	}
+
+	//回避エフェクト
+	if (m_player->m_avoid_effect.m_living == true)
+		m_player->m_avoid_effect.m_amine_rate++;
+	if (m_player->m_avoid_effect.m_amine_rate == 16){
+		m_player->m_avoid_effect.m_living = false;
+		m_player->m_avoid_effect.m_amine_rate = 0;
+	}
 
 }
 
@@ -169,14 +189,6 @@ void CPlayer::Move(int key){
 		else
 			m_player->m_amine_rate = 6;
 	}
-
-	if (m_player->m_charge_effect.m_living == true)
-		m_player->m_charge_effect.m_amine_rate++;
-	if (m_player->m_charge_effect.m_amine_rate == 10){
-		m_player->m_charge_effect.m_living = false;
-		m_player->m_charge_effect.m_amine_rate = 0;
-	}
-
 #if defined(_DEBUG) | defined(DEBUG)
 
 
@@ -193,7 +205,6 @@ void CPlayer::Move(int key){
 	m_player->m_pos = CVector2D(_hx, _hy);
 
 #if defined(_DEBUG) | defined(DEBUG)
-
 #endif
 }
 
@@ -243,12 +254,75 @@ void CPlayer::Attack(int key){
 	}
 }
 
+void CPlayer::Avoid(int key){
+	if (m_player->m_control){
+		if (!m_player->m_avoid_effect.m_living){
+			if (IsKeyTrigger(key, PAD_INPUT_3, KEY_PAD_INPUT_3)){
+				m_player->m_invincible = true;
+				m_player->m_velocity = 19.0f;
+				m_player->m_timer = 10;
+				m_player->m_avoid_effect.m_living = true;
+				m_player->m_avoid_effect.m_pos = m_player->m_pos;
+			}
+		}
+		if (m_player->m_invincible == true){
+
+			//回避時の分身生成
+			if (m_player->m_timer % 2 == 0){
+				for (int i = 3; i > 0; i--){
+					m_p_avatar[i] = m_p_avatar[i - 1];
+				}
+				m_p_avatar[0] = *m_player;
+				m_p_avatar[0].m_timer = 9;
+			}
+
+			if (m_player->m_timer > 0){
+				m_player->m_timer--;
+				m_player->m_velocity -= 0.5f;
+			}
+			else{
+				m_player->m_velocity = PLAYER_SPEED;
+				m_player->m_invincible = false;
+			}
+		}
+	}
+	//分身の削除
+	if (m_p_avatar[0].m_timer != 0){
+		for (int i = 0; i < 4; i++){
+			m_p_avatar[i].m_timer--;
+			if (m_p_avatar[i].m_timer == 0){
+				m_p_avatar[i].m_living = false;
+				m_p_avatar[i].m_pos = CVector2D(-99, -99);
+			}
+		}
+	}
+}
+
 void CPlayer::Draw(){
 
+	//チャージエフェクト
 	if(m_player->m_charge_effect.m_living)
 		DrawRotaGraph(m_player->m_pos.getX()-2, m_player->m_pos.getY()+27, m_player->m_charge_effect.m_exrate,
 		0, m_player_charge_img[m_player->m_charge_effect.m_amine_rate], TRUE, FALSE);
+	
+	//回避エフェクト
+	if (m_player->m_avoid_effect.m_living)
+		DrawRotaGraph(m_player->m_avoid_effect.m_pos.getX() - 2, m_player->m_avoid_effect.m_pos.getY() + 27, m_player->m_avoid_effect.m_exrate,
+		0, m_player_avoid_img[m_player->m_avoid_effect.m_amine_rate], TRUE, FALSE);
 
+	//分身
+	if (m_p_avatar[0].m_living == true){
+		SetDrawBright(0, 0, 255);
+		SetDrawBlendMode(DX_BLENDMODE_ADD, 255);
+		for (int i = 0; i < 4; i++){
+			DrawRotaGraph(m_p_avatar[i].m_pos.getX(), m_p_avatar[i].m_pos.getY(), m_p_avatar[i].m_exrate,
+				0, m_player_img[m_p_avatar[i].m_animtype + m_p_avatar[i].m_amine_rate / 6 % 3], TRUE, FALSE);
+		}
+		SetDrawBright(255, 255, 255);
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	}
+
+	//プレイヤー
 	DrawRotaGraph(m_player->m_pos.getX(), m_player->m_pos.getY(), m_player->m_exrate,
 		0, m_player_img[m_player->m_animtype + m_player->m_amine_rate / 6 % 3], TRUE, FALSE);
 

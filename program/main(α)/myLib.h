@@ -17,14 +17,14 @@
 #define ARRAY_SIZE(a)				(sizeof(a)/sizeof(a[0]))
 
 const float PI = 3.1415926535f;
-const int KEY_DATA = 7;				//KeyNum‚ÌŒÂ”•ª
+const int KEY_DATA = 8;				//KeyNum‚ÌŒÂ”•ª
 
 const float PLAYER_KNOCK_BACK_COLLISION = 80.0f;
 const float PLAYER_STAN_COLLISION = 137.0f;
 const float PLAYER_BOMB_COLLISION = 152.0f;
 const float ENEMY_ATTACK_COLLISION = 30.0f;
 
-const float PLAYER_COLLISION = 25.0f;
+const float PLAYER_COLLISION = 20.0f;
 const float ENEMY_COLLISION = 15.0f;
 const float ENEMY_LOCATE_COLLISION = 200.0f;;
 
@@ -53,14 +53,12 @@ enum DrawPriority{
 };
 
 enum KeyNum{
-	KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT, KEY_Z_PAD_INPUT_1, KEY_PAD_INPUT_7, KEY_PAD_INPUT_8
+	KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT, KEY_Z_PAD_INPUT_2, KEY_PAD_INPUT_7, KEY_PAD_INPUT_8, KEY_PAD_INPUT_3
 };
 
 enum KeyState{	//•úoA‰Ÿ‚µ‚Ä‚¢‚éA‰Ÿ‚µ‚Ä‚¢‚È‚¢
 	RELEASE, PRESSING, SEPARATE,
 };
-
-bool IsXKeyTrigger(int key);
 
 bool IsKeyTrigger(int _key, int _key_type, int _num);
 

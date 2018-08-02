@@ -52,20 +52,6 @@ bool CVector2D::operator!=(const CVector2D& ope){
 	return FALSE;
 }
 
-bool IsXKeyTrigger(int key){
-	static int g_xkey_prev;
-	if (key & PAD_INPUT_2){
-		if (g_xkey_prev == false){
-			g_xkey_prev = true;
-			return true;
-		}
-	}
-	else{
-		g_xkey_prev = false;
-	}
-	return false;
-}
-
 //ƒ{ƒ^ƒ““ü—Íˆ—
 bool IsKeyTrigger(int _key,int _key_type,int _num){
 	static int key_prev[KEY_DATA];

@@ -23,6 +23,7 @@ CBaseData::CBaseData(CVector2D _pos, bool _living, float _alpha, float _rad, flo
 , m_type(_type)
 , m_timer(0)
 , m_damage(0)
+, m_invincible(false)
 {
 	CCharaData::GetInstance()->AddTaskInner(this);
 }
@@ -44,6 +45,7 @@ CBaseData::CBaseData(CVector2D _pos, bool _living, float _alpha, float _rad, flo
 , m_type(_type)
 , m_timer(0)
 , m_damage(0)
+, m_invincible(false)
 {
 }
 
@@ -64,6 +66,7 @@ CBaseData::CBaseData(CVector2D _pos, bool _living, float _rad, float _exrate, in
 , m_type(_type)
 , m_timer(0)
 , m_damage(0)
+, m_invincible(false)
 {
 }
 
@@ -102,7 +105,6 @@ void CCharaData::KillAll(){
 		continue;
 		it++;
 	}
-	//if (m_chara_data.size() != NULL) m_chara_data.clear();
 }
 
 void CCharaData::Counter(){
@@ -128,17 +130,20 @@ void CCharaData::Delete(){
 void CCharaData::Update(){
 
 	for (auto it1 = m_chara_data.begin(); it1 != m_chara_data.end(); it1++){
+		if ((*it1)->m_hp < 1){ (*it1)->m_living = false; continue; }
 		for (auto it2 = m_chara_data.begin(); it2 != m_chara_data.end(); it2++){
 			if ((*it1)->m_pos != (*it2)->m_pos){
 				if (IsHitCircle((*it1)->m_collision, (*it2)->m_collision, (*it1)->m_pos, (*it2)->m_pos)){
-					if ((*it1)->m_type != ITEM && (*it2)->m_type != ITEM){
-						CBank(*it1, *it2);
-					}
-					if ((*it1)->m_type == ITEM && (*it2)->m_type == PLAYER){
-						(*it1)->m_living = false;
-					}
-					if ((*it2)->m_type == ITEM && (*it1)->m_type == PLAYER){
-						(*it2)->m_living = false;
+					if (!(*it1)->m_invincible && !(*it2)->m_invincible){
+						if ((*it1)->m_type != ITEM && (*it2)->m_type != ITEM){
+							CBank(*it1, *it2);
+						}
+						else if ((*it1)->m_type == ITEM && (*it2)->m_type == PLAYER){
+							(*it1)->m_living = false;
+						}
+						else if ((*it2)->m_type == ITEM && (*it1)->m_type == PLAYER){
+							(*it2)->m_living = false;
+						}
 					}
 				}
 			}

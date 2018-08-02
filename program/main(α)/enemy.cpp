@@ -94,10 +94,6 @@ void CEnemy::Update(){
 		Reflect(*(*it), _pos);
 
 		(*it)->m_pos = _pos;
-
-		if ((*it)->m_hp < 1){
-			(*it)->m_living = false;
-		}
 	}
 	//íœ
 	Delete();

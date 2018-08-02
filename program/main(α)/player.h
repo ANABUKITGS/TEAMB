@@ -49,6 +49,7 @@ public:
 	~CPlayerData(){};
 	
 	CBaseData m_charge_effect;		//チャージエフェクト
+	CBaseData m_avoid_effect;		//回避エフェクト
 
 	float m_chage_count;	//チャージ量
 	int m_attack_type;		//攻撃の種類
@@ -60,8 +61,10 @@ public:
 class CPlayer : public CTask{
 private:
 	CPlayerData *m_player;
+	CPlayerData m_p_avatar[4];
 	int m_player_img[24];
 	int m_player_charge_img[10];
+	int m_player_avoid_img[16];
 public:
 	CPlayer();
 	~CPlayer(){};
@@ -75,12 +78,15 @@ public:
 	void Move(int key);
 	//攻撃切り替え
 	void Change(int key);
+	//回避
+	void Avoid(int key);
+	//攻撃
+	void Attack(int key);
+
 	//使用していない//
 	void Pad();
 	void Keyboard();
-	////
-
-	void Attack(int key);
+	////////////
 
 	inline CPlayerData* GetData(){ return m_player; };
 };
