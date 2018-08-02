@@ -111,8 +111,9 @@ void CCharaData::Counter(){
 	for (auto it = m_chara_data.begin(); it != m_chara_data.end(); it++){
 		printfDx("base Type %d ", (*it)->m_type);
 		printfDx("HP %d ", (*it)->m_hp);
-		printfDx("mass %f ", (*it)->m_mass);
-		printfDx("Velo %f ", (*it)->m_velocity);
+		//printfDx("mass %f ", (*it)->m_mass);
+		//printfDx("Velo %f ", (*it)->m_velocity);
+		printfDx("cont %d ", (*it)->m_control);
 		printfDx("rad %f\n", degree((*it)->m_rad));
 	}
 }
@@ -130,7 +131,7 @@ void CCharaData::Delete(){
 void CCharaData::Update(){
 
 	for (auto it1 = m_chara_data.begin(); it1 != m_chara_data.end(); it1++){
-		if ((*it1)->m_hp < 1){ (*it1)->m_living = false; continue; }
+		if ((*it1)->m_hp < 1){ (*it1)->m_living = false; continue; }		//HP‚ª0‚È‚ç¶‚«‚Ä‚¢‚È‚¢
 		for (auto it2 = m_chara_data.begin(); it2 != m_chara_data.end(); it2++){
 			if ((*it1)->m_pos != (*it2)->m_pos){
 				if (IsHitCircle((*it1)->m_collision, (*it2)->m_collision, (*it1)->m_pos, (*it2)->m_pos)){

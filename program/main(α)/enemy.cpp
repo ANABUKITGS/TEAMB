@@ -1,7 +1,8 @@
 #include "enemy.h"
 #include "enemy_manager.h"
 
-CMovePattern1 mP1;
+CMovePattern1 MP1;
+CAttackPattern1 AP1;
 
 CEnemyData::CEnemyData(){
 
@@ -9,16 +10,24 @@ CEnemyData::CEnemyData(){
 
 CEnemyData::CEnemyData(CVector2D _pos, bool _living, float _alpha, float _rad, float _exrate, int _animtype, float _velocity, float _mass, int _hp, float _friction, float _collision, float _type)
 :CBaseData(_pos, _living, _alpha, _rad, _exrate, _animtype, _velocity, _mass, _hp, _friction, _collision,_type)
+, BEMove(&MP1)
+, BEAttack(&AP1)
 , m_counter(0)
+, m_locate(false)
+, m_attack_flag(false)
+, m_attack_cool_time(0)
 {
-	BEMove = &mP1;
 }
 
 CEnemyData::CEnemyData(CBaseData _temp)
 :CBaseData(_temp.m_pos, _temp.m_living, _temp.m_alpha, _temp.m_rad, _temp.m_exrate, _temp.m_animtype, _temp.m_velocity, _temp.m_mass, _temp.m_hp, _temp.m_friction, _temp.m_collision, _temp.m_type)
+, BEMove(&MP1)
+, BEAttack(&AP1)
 , m_counter(0)
+, m_locate(false)
+, m_attack_flag(false)
+, m_attack_cool_time(0)
 {
-	BEMove = &mP1;
 }
 
 CEnemy::CEnemy(){
@@ -67,33 +76,43 @@ void CEnemy::Update(){
 		{
 			(*it)->m_counter++;
 
-			//タイマーが０なら移動処理
-			if ((*it)->m_timer == 0)
+			//タイマーが０なら移動処理（スタン）
+			if ((*it)->m_timer == 0){
 				(*it)->Mover(_pos);
+			}
 			else if ((*it)->m_timer > 0)
 				(*it)->m_timer--;
 		}
 
 		//意識が無ければ以下の処理(吹き飛ばし時に通る)
 		{
+			//意識なし
 			if (!(*it)->m_control){
 				_pos += CVector2D((*it)->m_velocity * cos((*it)->m_rad), (*it)->m_velocity * sin((*it)->m_rad));
 
 				if ((*it)->m_velocity <= 0){
-					(*it)->m_velocity = 0;
-					(*it)->m_control = true;
+					if ((*it)->m_timer == 0){
+						(*it)->m_velocity = 0;
+						(*it)->m_control = true;
+					}
 				}
 				else
 					(*it)->m_velocity -= (*it)->m_friction;
 			}
-			else
+			//意識あり
+			else{
 				(*it)->m_velocity = ENEMY_SPEED;
+
+				//攻撃処理
+				(*it)->Attacker();
+			}
 		}
 
 		//反射処理
 		Reflect(*(*it), _pos);
 
 		(*it)->m_pos = _pos;
+
 	}
 	//削除
 	Delete();
@@ -134,5 +153,10 @@ void CEnemy::Draw(){
 	for (auto it = m_enemys.begin(); it != m_enemys.end(); it++){
 		DrawRotaGraph((*it)->m_pos.getX(), (*it)->m_pos.getY(), (*it)->m_exrate, (*it)->m_rad - degree(90), m_enemy_img[0],
 			TRUE,FALSE);
+		/*printfDx("enemy Type %d ", (*it)->m_type);
+		printfDx("HP %d ", (*it)->m_hp);
+		printfDx("mass %f ", (*it)->m_mass);
+		printfDx("Velo %f ", (*it)->m_velocity);
+		printfDx("rad %f\n", degree((*it)->m_rad));*/
 	}
 }

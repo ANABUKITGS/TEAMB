@@ -32,6 +32,10 @@ class CBaseEemeyMove{
 public:
 	virtual void Move(CEnemyData *cd, CVector2D &_pos){};
 };
+class CBaseEemeyAttack{
+public:
+	virtual void Attack(CEnemyData *cd){};
+};
 
 class CEnemyData : public CBaseData{
 public:
@@ -39,11 +43,17 @@ public:
 	CEnemyData(CVector2D _pos, bool _living, float _alpha, float _rad, float _exrate, int _animtype, float _velocity, float _mass, int _hp, float _friction, float _collision, float _type);
 	CEnemyData(CBaseData _temp);
 	~CEnemyData(){};
+	
 	CBaseEemeyMove *BEMove;
 	void Mover(CVector2D &_pos){ if (BEMove != NULL)BEMove->Move(this,_pos); };
+	CBaseEemeyAttack *BEAttack;
+	void Attacker(){ if (BEAttack != NULL)BEAttack->Attack(this); };
+	
 	int m_counter;	//移動の切り替え用
 	int m_rand;		//使用していない
 	bool m_locate;	//見つけているかどうか
+	bool m_attack_flag;		//攻撃するかどうか
+	int m_attack_cool_time;		//攻撃クールタイム
 };
 
 class CEnemy : public CTask{
@@ -71,6 +81,11 @@ public:
 class CMovePattern1 : public CBaseEemeyMove{
 public:
 	void Move(CEnemyData *cd, CVector2D &_pos);
+};
+
+class CAttackPattern1 : public CBaseEemeyAttack{
+public:
+	void Attack(CEnemyData *cd);
 };
 
 #endif ENEMY_H

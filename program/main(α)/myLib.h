@@ -19,30 +19,35 @@
 const float PI = 3.1415926535f;
 const int KEY_DATA = 8;				//KeyNumÇÃå¬êîï™
 
-const float PLAYER_KNOCK_BACK_COLLISION = 80.0f;
+const float PLAYER_KNOCK_BACK_COLLISION = 80.0f;	//ìñÇΩÇËîªíËÇÃëÂÇ´Ç≥
 const float PLAYER_STAN_COLLISION = 137.0f;
 const float PLAYER_BOMB_COLLISION = 152.0f;
-const float ENEMY_ATTACK_COLLISION = 30.0f;
+const float ENEMY_ATTACK_COLLISION = 35.0f;
 
 const float PLAYER_COLLISION = 20.0f;
 const float ENEMY_COLLISION = 15.0f;
 const float ENEMY_LOCATE_COLLISION = 200.0f;;
 
-const float PLAYER_RANGE = 100.0f;
+const float PLAYER_RANGE = 100.0f;					//é©ã@ÇÃéÀíˆ
 const float PLAYER_BOMB_RANGE = 150.0f;
 
-const float PLAYER_ATTACK_KNOCK_BACK = 4.0f;
+const float PLAYER_ATTACK_KNOCK_BACK = 4.0f;		//é©ã@ÇÃçUåÇån
 const float PLAYER_ATTACK_STAN = 120.0f;
 const float PLAYER_STAN_EXRATE = 1.5f;
 const float PLAYER_ATTACK_BOMB = 32.0f;
 const float PLAYER_BOMB_EXRATE = 1.0f;
 const float PLAYER_BOMB_KNOCK_BACK = 8.0f;
 
+const float ENEMY_ATTACK_KNOCK_BACK = 17.0f;		//ìGÇÃçUåÇån
+const float ENEMY_ATTACK_DAMAGE = 6.0f;
+const int ENEMY_ATTACK_COOL_TIME = 50;
+const float ENEMY_ATTACK_EXRATE = 0.6f;
+const float ENEMY_RANGE = 10.0f;
 const int ENEMY_CHANGE = 600;
 const int ENEMY_MOVE = 360;
 const int ENEMY_WAIT = 600;
 
-const int ITEM_CREATE_NUM = 10;
+const int ITEM_CREATE_NUM = 10;						//ÉAÉCÉeÉÄån
 
 enum UpdatePriority{
 	UDP_FRAME1, UDP_FRAME2, UDP_CARD, UDP_EFFECT, UDP_FIELD, UDP_UI, UDP_NULL
