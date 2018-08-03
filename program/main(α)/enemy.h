@@ -8,7 +8,7 @@
 using namespace std;
 
 const float ENEMY_EXRATE = 0.7f;
-const float ENEMY_SPEED = 1.5f;
+const float ENEMY_SPEED = 1.3f;
 const float ENEMY_MASS = 1.0f;
 const float ENEMY_FRICTION = 0.1f;
 const float ENEMY_HP = 64;

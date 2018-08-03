@@ -25,6 +25,11 @@ public:
 	virtual void Type(CPlayerData *cd){};
 };
 
+class CBaseControlType{
+public:
+	virtual void Type(CPlayerData *cd, int key, float &_fx, float &_fy){};
+};
+
 class CPAtable{
 public:
 	int m_type;
@@ -43,6 +48,8 @@ class CPlayerData : public CBaseData{
 public:
 	CBasePAType *AttackType;
 	void Action(){ if (AttackType != NULL)AttackType->Type(this); };
+	CBaseControlType *ControlType;
+	void Control(int key, float &_fx, float &_fy){ if (ControlType != NULL)ControlType->Type(this,key,_fx,_fy); };
 
 	CPlayerData();
 	CPlayerData(CVector2D _pos, bool _living, float _alpha, float _rad, float _exrate, int _animtype, float _velocity, float _mass, int _hp, float _friction, float _collision, float _type);
@@ -56,6 +63,9 @@ public:
 	float m_stan;
 	float m_knock_back;
 	float m_bomb;
+#if defined(_DEBUG) | defined(DEBUG)
+	bool m_control_type;	//操作タイプ
+#endif
 };
 
 class CPlayer : public CTask{
@@ -83,16 +93,14 @@ public:
 	//攻撃
 	void Attack(int key);
 
-	//使用していない//
-	void Pad();
-	void Keyboard();
-	////////////
-
 	inline CPlayerData* GetData(){ return m_player; };
 };
 
 class CStan			: public CBasePAType{ void Type(CPlayerData *cd); };
 class CKnockBack	: public CBasePAType{ void Type(CPlayerData *cd); };
 class CBomb			: public CBasePAType{ void Type(CPlayerData *cd); };
+
+class CPad		: public CBaseControlType{ void Type(CPlayerData *cd, int key, float &_fx, float &_fy); };
+class CKeyBoard : public CBaseControlType{ void Type(CPlayerData *cd, int key, float &_fx, float &_fy); };
 
 #endif PLAYER_H

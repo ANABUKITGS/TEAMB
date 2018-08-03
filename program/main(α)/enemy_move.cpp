@@ -42,14 +42,16 @@ void CMovePattern1::Move(CEnemyData *cd, CVector2D &_pos){
 }
 
 void CAttackPattern1::Attack(CEnemyData *cd){
-	CPlayerData *temp = CPlayerManager::GetInstance()->GetPlayerAdress()->GetData();
+	CPlayerData *_temp1 = CPlayerManager::GetInstance()->GetPlayerAdress()->GetData();
 	if (!cd->m_attack_flag){
-		if (IsHitCircle(ENEMY_ATTACK_COLLISION, temp->m_collision,
-			CVector2D(cd->m_pos.getX() + ENEMY_RANGE * cos(cd->m_rad), cd->m_pos.getY() + ENEMY_RANGE * sin(cd->m_rad)), temp->m_pos)){
-			CEffectData *temp = new CEffectData(CVector2D(cd->m_pos.getX() + ENEMY_RANGE * cos(cd->m_rad), cd->m_pos.getY() + ENEMY_RANGE * sin(cd->m_rad)), true, cd->m_rad, ENEMY_ATTACK_EXRATE, ENEMY_ATTACK_NUM, 0, 1.0f, 0, 0, ENEMY_ATTACK_COLLISION, ENEMY_ATTACK, 1, &EMP3);
-			CEffectManager::GetInstance()->GetEffectAdress()->GetEffectData()->push_back(temp);
+		if (IsHitCircle(ENEMY_ATTACK_COLLISION, _temp1->m_collision,
+			CVector2D(cd->m_pos.getX() + ENEMY_RANGE * cos(cd->m_rad), cd->m_pos.getY() + ENEMY_RANGE * sin(cd->m_rad)), _temp1->m_pos)){
+
+			CEffectData *_temp2 = new CEffectData(CVector2D(cd->m_pos.getX() + ENEMY_RANGE * cos(cd->m_rad), cd->m_pos.getY() + ENEMY_RANGE * sin(cd->m_rad)), true, cd->m_rad, ENEMY_ATTACK_EXRATE, ENEMY_ATTACK_NUM, 0, 1.0f, 0, 0, ENEMY_ATTACK_COLLISION, ENEMY_ATTACK, 1, &EMP3);
+			CEffectManager::GetInstance()->GetEffectAdress()->GetEffectData()->push_back(_temp2);
 			cd->m_attack_flag = true;
 			cd->m_attack_cool_time = ENEMY_ATTACK_COOL_TIME;
+
 		}
 	}
 	if (cd->m_attack_cool_time > 0){

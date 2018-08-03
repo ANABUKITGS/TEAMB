@@ -17,7 +17,7 @@
 #define ARRAY_SIZE(a)				(sizeof(a)/sizeof(a[0]))
 
 const float PI = 3.1415926535f;
-const int KEY_DATA = 8;				//KeyNumの個数分
+const int KEY_DATA = 9;				//KeyNumの個数分
 
 const float PLAYER_KNOCK_BACK_COLLISION = 80.0f;	//当たり判定の大きさ
 const float PLAYER_STAN_COLLISION = 137.0f;
@@ -32,7 +32,7 @@ const float PLAYER_RANGE = 100.0f;					//自機の射程
 const float PLAYER_BOMB_RANGE = 150.0f;
 
 const float PLAYER_ATTACK_KNOCK_BACK = 4.0f;		//自機の攻撃系
-const float PLAYER_ATTACK_STAN = 120.0f;
+const float PLAYER_ATTACK_STAN = 160.0f;
 const float PLAYER_STAN_EXRATE = 1.5f;
 const float PLAYER_ATTACK_BOMB = 32.0f;
 const float PLAYER_BOMB_EXRATE = 1.0f;
@@ -40,7 +40,7 @@ const float PLAYER_BOMB_KNOCK_BACK = 8.0f;
 
 const float ENEMY_ATTACK_KNOCK_BACK = 17.0f;		//敵の攻撃系
 const float ENEMY_ATTACK_DAMAGE = 6.0f;
-const int ENEMY_ATTACK_COOL_TIME = 50;
+const int ENEMY_ATTACK_COOL_TIME = 70;
 const float ENEMY_ATTACK_EXRATE = 0.6f;
 const float ENEMY_RANGE = 10.0f;
 const int ENEMY_CHANGE = 600;
@@ -58,7 +58,8 @@ enum DrawPriority{
 };
 
 enum KeyNum{
-	KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT, KEY_Z_PAD_INPUT_2, KEY_PAD_INPUT_7, KEY_PAD_INPUT_8, KEY_PAD_INPUT_3
+	KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT, KEY_Z_PAD_INPUT_2,
+	KEY_PAD_INPUT_7, KEY_PAD_INPUT_8, KEY_PAD_INPUT_3, KEY_PAD_INPUT_10
 };
 
 enum KeyState{	//放出、押している、押していない

@@ -43,14 +43,16 @@ void CEffectMovePattern2::Move(CEffectData *cd){
 //“G‚ÌUŒ‚
 void CEffectMovePattern3::Move(CEffectData *cd){
 	if (cd->m_amine_rate % cd->m_animtype == 4){
-		CPlayerData *temp = CPlayerManager::GetInstance()->GetPlayerAdress()->GetData();
-		if (IsHitCircle(ENEMY_ATTACK_COLLISION, temp->m_collision,
-		CVector2D(cd->m_pos.getX(), cd->m_pos.getY()), temp->m_pos)){
-		temp->m_rad = cd->m_rad;
-		temp->m_velocity = ENEMY_ATTACK_KNOCK_BACK * temp->m_mass;
-		temp->m_control = false;
-		temp->m_damage = ENEMY_ATTACK_DAMAGE;
-		temp->m_hp -= temp->m_damage;
+		CPlayerData *_temp = CPlayerManager::GetInstance()->GetPlayerAdress()->GetData();
+		if (!_temp->m_invincible){
+			if (IsHitCircle(ENEMY_ATTACK_COLLISION, _temp->m_collision,
+				CVector2D(cd->m_pos.getX(), cd->m_pos.getY()), _temp->m_pos)){
+				_temp->m_rad = cd->m_rad;
+				_temp->m_velocity = ENEMY_ATTACK_KNOCK_BACK * _temp->m_mass;
+				_temp->m_control = false;
+				_temp->m_damage = ENEMY_ATTACK_DAMAGE;
+				_temp->m_hp -= _temp->m_damage;
+			}
 		}
 	}
 }

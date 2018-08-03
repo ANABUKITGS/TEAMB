@@ -50,7 +50,7 @@ void CGameScreen::Init(){
 //ŽÀsˆ—
 void CGameScreen::Update()
 {
-	if (CheckHitKey(KEY_INPUT_E) == 1)m_state = TITLE_SCREEN;
+	if (CheckHitKey(KEY_INPUT_P) == 1)m_state = TITLE_SCREEN;
 	CTaskManager::GetInstance()->UpdateAll();
 
 	CCharaData::GetInstance()->Update();

@@ -40,7 +40,7 @@ public:
 	CBaseData();
 	//CharaData‚É•Û‘¶
 	CBaseData(CVector2D _pos, bool _living, float _alpha, float _rad, float _exrate, int _animtype, float _velocity, float _mass, int _hp, float _friction, float _collision, int _type);
-	//•Û‘¶‚³‚ê‚È‚¢ HP‚ª‚È‚¢
+	//•Û‘¶‚³‚ê‚È‚¢ HP‚Æ“–‚½‚è”»’è‚ª‚È‚¢
 	CBaseData(CVector2D _pos, bool _living, float _alpha, float _rad, float _exrate, int _animtype, float _velocity, float _mass, float _friction,int _type);
 	//alpha‚ª‚È‚¢
 	CBaseData(CVector2D _pos, bool _living, float _rad, float _exrate, int _animtype, float _velocity, float _mass, int _hp, float _friction, float _collision, int _type);

@@ -7,6 +7,9 @@ CStan		stan;
 CKnockBack	knock_back;
 CBomb		bomb;
 
+CPad		pad;
+CKeyBoard	keyboard;
+
 CPAtable player_attack_table[] = {
 	{0,&stan},
 	{1,&knock_back},
@@ -41,6 +44,8 @@ CPlayer::CPlayer()
 {
 	m_player = new CPlayerData(CVector2D(640, 360), true, 256, 0, PLAYER_EXRATE, 0, PLAYER_SPEED, PLAYER_MASS, PLAYER_HP, PLAYER_FRICTION, PLAYER_COLLISION, PLAYER);
 	m_player->m_chage_count = 1.0f;
+	m_player->m_control_type = false;
+	m_player->ControlType = &pad;
 	//LoadDivGraph("media\\img\\hero.png", 24, 6, 4, 75, 150, m_player_img, 0);
 	LoadDivGraph("media\\img\\hero_a2a.png", 24, 6, 4, 71, 70, m_player_img, 0);
 	LoadDivGraph("media\\img\\charge.png", 10, 2, 5, 384, 384, m_player_charge_img, 0);
@@ -94,13 +99,27 @@ void CPlayer::Update(){
 
 void CPlayer::Move(int key){
 
+	float _fx = 0, _fy = 0;
+
 	float _hx = m_player->m_pos.getX();
 	float _hy = m_player->m_pos.getY();
+
+#if defined(_DEBUG) | defined(DEBUG)
+	if (IsKeyTrigger(key, PAD_INPUT_10, KEY_PAD_INPUT_10)){
+		if (m_player->m_control_type == true){
+			m_player->ControlType = &keyboard;
+			m_player->m_control_type = false;
+		}
+		else{
+			m_player->ControlType = &pad;
+			m_player->m_control_type = true;
+		}
+	}
+#endif
 
 	////動いているかどうか////
 	bool _flag = false;
 
-	////パッド用////
 	{
 		if (m_player->m_control == false){
 			_hx += cos(m_player->m_rad) * m_player->m_velocity;
@@ -115,73 +134,36 @@ void CPlayer::Move(int key){
 		}
 		else{
 
-			float _fx = 0, _fy = 0;
+			m_player->Control(key, _fx, _fy);
 
-			////スティックの座標受け取り用////
-			int _sx = 0, _sy = 0;
+			_hx += _fx; _hy += _fy;
 
-			GetJoypadAnalogInput(&_sx, &_sy, DX_INPUT_PAD1);
+			float _rad = PosRad(_fx, _fy);
 
-			if (_sx == 0 && _sy == 0)_flag = false;
+			//アニメーションの決定
+			if (_fx == 0 && _fy == 0)_flag = false;
 			else{
-				_fx = _sx;	_fy = _sy;
-
-				MyVec2Normalize(_fx, _fy, _fx, _fy);
-
-				_fx = _fx * m_player->m_velocity;
-				_fy = _fy * m_player->m_velocity;
-
-				_hx += _fx;
-				_hy += _fy;
-
-				//角度の算出
-				float _f = PosRad(_fx, _fy);
-
-				//アニメーションの決定
 				for (auto& rt : rad_table){
 					//右のアニメーションは分解して最大値と最小値を別々でとること
-					if (degree(_f) > 337.5f){
+					if (degree(_rad) > 337.5f){
 						m_player->m_animtype = rt.m_type;
 						_flag = true;
 						break;
 					}
-					if (degree(_f) < 22.5f){
+					if (degree(_rad) < 22.5f){
 						m_player->m_animtype = rt.m_type;
 						_flag = true;
 						break;
 					}
 
-					if (degree(_f) > rt.m_min_rad && degree(_f) < rt.m_max_rad){
+					if (degree(_rad) > rt.m_min_rad && degree(_rad) < rt.m_max_rad){
 						m_player->m_animtype = rt.m_type;
 						_flag = true;
 						break;
 					}
 				}
-				m_player->m_rad = _f;
+				m_player->m_rad = _rad;
 			}
-#if defined(_DEBUG) | defined(DEBUG)
-			//printfDx(" %f , %f \n", _fx, _fy);
-			//printfDx("角度1 %f \n", degree(m_player->m_rad));
-
-			//to do 角度によって画像の変更を行う
-			/*if (key & PAD_INPUT_DOWN){
-				_hy += m_player->m_velocity;
-				m_player->m_rad = radian(90);
-			}
-			if (key & PAD_INPUT_LEFT){
-				_hx -= m_player->m_velocity;
-				m_player->m_rad = radian(180);
-			}
-			if (key & PAD_INPUT_RIGHT){
-				_hx += m_player->m_velocity;
-				m_player->m_rad = radian(0);
-			}
-			if (key & PAD_INPUT_UP){
-				_hy -= m_player->m_velocity;
-				m_player->m_rad = radian(270);
-			}*/
-
-#endif
 		}
 		//アニメーション処理
 		if (_flag == true)
@@ -189,10 +171,6 @@ void CPlayer::Move(int key){
 		else
 			m_player->m_amine_rate = 6;
 	}
-#if defined(_DEBUG) | defined(DEBUG)
-
-
-#endif
 
 	//マップ当たり判定
 	if (_hy < 45 || _hy > 675){
@@ -205,6 +183,8 @@ void CPlayer::Move(int key){
 	m_player->m_pos = CVector2D(_hx, _hy);
 
 #if defined(_DEBUG) | defined(DEBUG)
+
+
 #endif
 }
 
@@ -286,6 +266,7 @@ void CPlayer::Avoid(int key){
 			}
 		}
 	}
+
 	//分身の削除
 	if (m_p_avatar[0].m_timer != 0){
 		for (int i = 0; i < 4; i++){
@@ -296,6 +277,7 @@ void CPlayer::Avoid(int key){
 			}
 		}
 	}
+
 }
 
 void CPlayer::Draw(){
