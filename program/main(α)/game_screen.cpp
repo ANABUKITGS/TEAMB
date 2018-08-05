@@ -10,6 +10,7 @@
 #include "ui_manager.h"
 #include "boss_manager.h"
 #include "item_manager.h"
+#include "change_manager.h"
 
 //コンストラクタ
 CGameScreen::CGameScreen()
@@ -26,6 +27,7 @@ CGameScreen::~CGameScreen(){
 	CEffectManager::GetInstance()->GetEffectAdress()->KillAll();
 	CPlayerManager::GetInstance()->GetPlayerAdress()->Kill();
 	CUiManager::GetInstance()->GetUiAdress()->KillAll();
+	CChangeManager::GetInstance()->GetChangeAdress()->Kill();
 }
 
 //ロード
@@ -45,11 +47,17 @@ void CGameScreen::Init(){
 	CTaskManager::GetInstance()->Add(new CEffect);
 	CTaskManager::GetInstance()->Add(new CUi);
 	CTaskManager::GetInstance()->Add(new CItem);
+	new CChange(0,2);
 }
 
 //実行処理
 void CGameScreen::Update()
 {
+	if (CPlayerManager::GetInstance()->GetPlayerAdress()->GetData()->m_hp < 1)
+	{
+		CChangeManager::GetInstance()->GetChangeAdress()->Update();
+		if (CChangeManager::GetInstance()->GetChangeAdress()->GetOut())m_state = TITLE_SCREEN;
+	}
 	if (CheckHitKey(KEY_INPUT_P) == 1)m_state = TITLE_SCREEN;
 	CTaskManager::GetInstance()->UpdateAll();
 
@@ -65,10 +73,17 @@ void CGameScreen::Update()
 void CGameScreen::Draw()
 {
 	ClearDrawScreen();
-	DrawString(10, 100, "Game Screen\n Hit E key to Title Screen", GetColor
-		(255, 255, 255));
+
 	CTaskManager::GetInstance()->DrawAll();
 	CCharaData::GetInstance()->Draw();
+
+	CChangeManager::GetInstance()->GetChangeAdress()->Draw();
+
+	DrawString(930, 90, "Game Screen Hit E key to Title Screen", GetColor
+		(255, 255, 255));
+	DrawString(1000, 110, "Change Control Hit Spase key(keyboard or pad)", GetColor
+		(255, 255, 255));
+
 #if defined(_DEBUG) | defined(DEBUG)
 	Fps();
 #endif

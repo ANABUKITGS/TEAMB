@@ -37,6 +37,7 @@ void CBomb::Type(CPlayerData *cd){
 	CEffectManager::GetInstance()->GetEffectAdress()->GetEffectData()->push_back(temp);
 }
 
+
 void CPad::Type(CPlayerData *cd, int key, float &_fx, float &_fy){
 	////スティックの座標受け取り用////
 	int _sx = 0, _sy = 0;
@@ -67,4 +68,20 @@ void CKeyBoard::Type(CPlayerData *cd, int key, float &_fx, float &_fy){
 	if (key & PAD_INPUT_UP){
 		_fy -= cd->m_velocity;
 	}
+}
+
+void CStanUp::Type(CPlayerData *cd){
+	cd->m_stan += ITEM_STAN_UP;
+}
+
+void CKnockBackUp::Type(CPlayerData *cd){
+	cd->m_knock_back += ITEM_KNOCK_BACK_UP;
+}
+
+void CBombUp::Type(CPlayerData *cd){
+	cd->m_bomb += ITEM_BOMB_UP;
+}
+
+void CHeelUp::Type(CPlayerData *cd){
+	cd->m_hp += ITEM_HEEL_UP;
 }

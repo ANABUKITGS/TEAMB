@@ -16,7 +16,7 @@ const float ITEM_COLLISION = 32.0f;
 
 //m_animtypeÇ≈égópÇµÇƒÇ¢ÇÈÅ@
 enum ITEM_TYPE{
-	STAN_ITEM, KNOCK_BACK_ITEM, BOMB_ITEM, HEEL
+	STAN_ITEM, KNOCK_BACK_ITEM, BOMB_ITEM, HEEL_ITEM
 };
 
 class CItemData : public CBaseData{

@@ -48,6 +48,10 @@ const int ENEMY_MOVE = 360;
 const int ENEMY_WAIT = 600;
 
 const int ITEM_CREATE_NUM = 10;						//ƒAƒCƒeƒ€Œn
+const float ITEM_STAN_UP = 0.2f;
+const float ITEM_KNOCK_BACK_UP = 0.2f;
+const float ITEM_BOMB_UP = 0.2f;
+const int ITEM_HEEL_UP = 20;
 
 enum UpdatePriority{
 	UDP_FRAME1, UDP_FRAME2, UDP_CARD, UDP_EFFECT, UDP_FIELD, UDP_UI, UDP_NULL

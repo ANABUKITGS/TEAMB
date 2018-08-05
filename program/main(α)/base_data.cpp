@@ -139,12 +139,6 @@ void CCharaData::Update(){
 						if ((*it1)->m_type != ITEM && (*it2)->m_type != ITEM){
 							CBank(*it1, *it2);
 						}
-						else if ((*it1)->m_type == ITEM && (*it2)->m_type == PLAYER){
-							(*it1)->m_living = false;
-						}
-						else if ((*it2)->m_type == ITEM && (*it1)->m_type == PLAYER){
-							(*it2)->m_living = false;
-						}
 					}
 				}
 			}

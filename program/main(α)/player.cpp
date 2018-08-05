@@ -2,6 +2,7 @@
 #include "enemy_manager.h"
 #include "effect_manager.h"
 #include "ui_manager.h"
+#include "item_manager.h"
 
 CStan		stan;
 CKnockBack	knock_back;
@@ -9,6 +10,11 @@ CBomb		bomb;
 
 CPad		pad;
 CKeyBoard	keyboard;
+
+CStanUp			item_stan;
+CKnockBackUp	item_knock_back;
+CBombUp			item_bomb;
+CHeelUp			item_heel;
 
 CPAtable player_attack_table[] = {
 	{0,&stan},
@@ -27,6 +33,13 @@ CRadTable rad_table[] = {
 	{ 315,337.5f,292.5f, PLAYER_UR }
 };
 
+CItemTable item_table[] = {
+	{ STAN_ITEM, &item_stan },
+	{ KNOCK_BACK_ITEM, &item_knock_back },
+	{ BOMB_ITEM, &item_bomb },
+	{ HEEL_ITEM, &item_heel },
+};
+
 CPlayerData::CPlayerData()
 :CBaseData(CVector2D(0,0),false,0,0,0,0,0,0,0,0)
 {
@@ -37,6 +50,9 @@ CPlayerData::CPlayerData(CVector2D _pos, bool _living, float _alpha, float _rad,
 : CBaseData(_pos, _living, _alpha, _rad, _exrate, _animtype, _velocity, _mass, _hp, _friction, _collision,_type)
 , m_chage_count(0)
 , m_attack_type(0)
+, m_stan(1)
+, m_knock_back(1)
+, m_bomb(1)
 {
 }
 
@@ -78,6 +94,8 @@ void CPlayer::Update(){
 	Attack(key);
 
 	Avoid(key);
+
+	ItemGet();
 
 	//チャージエフェクト
 	if (m_player->m_charge_effect.m_living == true)
@@ -190,10 +208,15 @@ void CPlayer::Move(int key){
 
 void CPlayer::Change(int key){
 	bool _f = false;
-	if (_f = IsKeyTrigger(key, PAD_INPUT_7, KEY_PAD_INPUT_7) == true)
+	int _direction = 0;
+	if (_f = IsKeyTrigger(key, PAD_INPUT_7, KEY_PAD_INPUT_7) == true){
+		_direction = -1;
 		m_player->m_attack_type--;
-	else if (_f = IsKeyTrigger(key, PAD_INPUT_8, KEY_PAD_INPUT_8) == true)
+	}
+	else if (_f = IsKeyTrigger(key, PAD_INPUT_8, KEY_PAD_INPUT_8) == true){
+		_direction = 1;
 		m_player->m_attack_type++;
+	}
 
 	if (m_player->m_attack_type > 2)
 		m_player->m_attack_type = 0;
@@ -204,13 +227,14 @@ void CPlayer::Change(int key){
 		for (auto &pat : player_attack_table){
 			if (m_player->m_attack_type == pat.m_type){
 				m_player->AttackType = pat.BaseAttackType;
+				CUiManager::GetInstance()->GetUiAdress()->SetChangeFlag(_f);
 				break;
 			}
 		}
 	}
 
 	//UI//
-	CUiManager::GetInstance()->GetUiAdress()->ChengeIcon(m_player->m_attack_type);
+	CUiManager::GetInstance()->GetUiAdress()->ChengeIcon(_direction);
 }
 
 void CPlayer::Attack(int key){
@@ -280,6 +304,21 @@ void CPlayer::Avoid(int key){
 
 }
 
+void CPlayer::ItemGet(){
+	for (auto it = CItemManager::GetInstance()->GetItemAdress()->GetItemData()->begin(); it != CItemManager::GetInstance()->GetItemAdress()->GetItemData()->end(); it++){
+		if (IsHitCircle(m_player->m_collision, (*it)->m_collision, m_player->m_pos, (*it)->m_pos)){
+			(*it)->m_living = false;
+			for (auto &item_type : item_table){
+				if ((*it)->m_animtype == item_type.m_i_type){
+					m_player->ItemType = item_type.ItemType;
+					break;
+				}
+			}
+			m_player->ItemAction();
+		}
+	}
+}
+
 void CPlayer::Draw(){
 
 	//チャージエフェクト
@@ -318,5 +357,7 @@ void CPlayer::Draw(){
 }
 
 void CPlayer::Kill(){
+	delete &m_player->m_avoid_effect;
+	delete &m_player->m_charge_effect;
 	delete m_player;
 }
