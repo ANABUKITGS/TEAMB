@@ -26,7 +26,7 @@ CEffect::CEffect(){
 	LoadDivGraph("media\\img\\knock_back.png", 16, 2, 8, 240, 240, m_effect_img[KNOCK_BACK], 0);
 	LoadDivGraph("media\\img\\stan_b1.png", 10, 5, 2, 192, 192, m_effect_img[STAN], 0);
 	LoadDivGraph("media\\img\\bomb_cha0.png", 14, 5, 3, 128, 128, m_effect_img[CHARGE_BOMB], 0);
-	LoadDivGraph("media\\img\\bomb_a2.png", 13, 2, 7, 274, 274, m_effect_img[BOMB], 0);
+	LoadDivGraph("media\\img\\exp.png", 14, 2, 7, 256, 256, m_effect_img[BOMB], 0);		//ïœçX
 	//LoadDivGraph("media\\img\\explosion.png", 11, 4, 3, 256, 256, m_effect_img[BOMB], 0);
 	LoadDivGraph("media\\img\\e_attack.png", 8, 2, 4, 384, 384, m_effect_img[ENEMY_ATTACK], 0);
 	

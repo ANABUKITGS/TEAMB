@@ -10,7 +10,7 @@ using namespace std;
 const int STAN_NUM = 10;
 const int KNOCK_BACK_NUM = 16;
 const int BOMB_CHARGE_NUM = 15;
-const int BOMB_NUM = 8;
+const int BOMB_NUM = 14;
 const int ENEMY_ATTACK_NUM = 8;
 
 //m_typeÇ≈égópÇµÇƒÇ¢ÇÈÅ@
