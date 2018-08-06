@@ -34,7 +34,7 @@ const float PLAYER_BOMB_RANGE = 150.0f;
 const float PLAYER_ATTACK_KNOCK_BACK = 4.0f;		//é©ã@ÇÃçUåÇån
 const float PLAYER_ATTACK_STAN = 160.0f;
 const float PLAYER_STAN_EXRATE = 1.5f;
-const float PLAYER_ATTACK_BOMB = 32.0f;
+const float PLAYER_ATTACK_BOMB = 24.0f;
 const float PLAYER_BOMB_EXRATE = 1.0f;
 const float PLAYER_BOMB_KNOCK_BACK = 8.0f;
 
@@ -48,9 +48,9 @@ const int ENEMY_MOVE = 360;
 const int ENEMY_WAIT = 600;
 
 const int ITEM_CREATE_NUM = 10;						//ÉAÉCÉeÉÄån
-const float ITEM_STAN_UP = 0.2f;
-const float ITEM_KNOCK_BACK_UP = 0.2f;
-const float ITEM_BOMB_UP = 0.2f;
+const float ITEM_STAN_UP = 0.1f;
+const float ITEM_KNOCK_BACK_UP = 0.1f;
+const float ITEM_BOMB_UP = 0.1f;
 const int ITEM_HEEL_UP = 20;
 
 enum UpdatePriority{
