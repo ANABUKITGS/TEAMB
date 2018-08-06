@@ -1,0 +1,110 @@
+﻿2018/08/06 11:27:17 にビルドを開始しました。
+     1>ノード 2 上のプロジェクト "C:\Users\清原一真\Documents\GitHub\game_team_B\TEAMB\program\main(α)\Win32ProjectQ.vcxproj" (Build ターゲット)。
+     1>ClCompile:
+         F:\VS\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D _MBCS /Gm /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt base_data.cpp boss.cpp boss_manager.cpp change.cpp change_manager.cpp effect.cpp effect_manager.cpp effect_move.cpp enemy.cpp enemy_manager.cpp enemy_move.cpp field.cpp field_manager.cpp game.cpp game_screen.cpp gametitle_screen.cpp item.cpp item_manager.cpp myLib.cpp player.cpp player_attack.cpp player_manager.cpp task.cpp task_manager.cpp ui.cpp ui_manager.cpp win_main.cpp
+         base_data.cpp
+     1>c:\users\清原一真\documents\github\game_team_b\teamb\program\main(α)\base_data.cpp(207): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
+     1>c:\users\清原一真\documents\github\game_team_b\teamb\program\main(α)\base_data.cpp(208): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
+     1>c:\users\清原一真\documents\github\game_team_b\teamb\program\main(α)\base_data.cpp(211): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
+     1>c:\users\清原一真\documents\github\game_team_b\teamb\program\main(α)\base_data.cpp(212): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
+         コードを生成中...
+         コンパイル中...
+         win_main.cpp
+         ui_manager.cpp
+         ui.cpp
+     1>c:\users\清原一真\documents\github\game_team_b\teamb\program\main(α)\ui.cpp(21): warning C4244: '引数' : 'const float' から 'int' への変換です。データが失われる可能性があります。
+     1>c:\users\清原一真\documents\github\game_team_b\teamb\program\main(α)\ui.cpp(23): warning C4244: '引数' : 'const float' から 'int' への変換です。データが失われる可能性があります。
+     1>c:\users\清原一真\documents\github\game_team_b\teamb\program\main(α)\ui.cpp(86): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
+     1>c:\users\清原一真\documents\github\game_team_b\teamb\program\main(α)\ui.cpp(91): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
+         task_manager.cpp
+         task.cpp
+         player_manager.cpp
+         player_attack.cpp
+     1>c:\users\清原一真\documents\github\game_team_b\teamb\program\main(α)\player_attack.cpp(14): warning C4244: '=' : 'const float' から 'int' への変換です。データが失われる可能性があります。
+     1>c:\users\清原一真\documents\github\game_team_b\teamb\program\main(α)\player_attack.cpp(36): warning C4244: '引数' : 'int' から 'float' への変換です。データが失われる可能性があります。
+     1>c:\users\清原一真\documents\github\game_team_b\teamb\program\main(α)\player_attack.cpp(48): warning C4244: '=' : 'int' から 'float' への変換です。データが失われる可能性があります。
+         player.cpp
+     1>c:\users\清原一真\documents\github\game_team_b\teamb\program\main(α)\player.cpp(34): warning C4244: '初期化中' : 'float' から 'int' への変換です。データが失われる可能性があります。
+     1>c:\users\清原一真\documents\github\game_team_b\teamb\program\main(α)\player.cpp(56): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
+     1>c:\users\清原一真\documents\github\game_team_b\teamb\program\main(α)\player.cpp(247): warning C4305: '+=' : 'double' から 'float' へ切り詰めます。
+     1>c:\users\清原一真\documents\github\game_team_b\teamb\program\main(α)\player.cpp(250): warning C4244: '=' : 'float' から 'int' への変換です。データが失われる可能性があります。
+     1>c:\users\清原一真\documents\github\game_team_b\teamb\program\main(α)\player.cpp(256): warning C4244: '=' : 'float' から 'int' への変換です。データが失われる可能性があります。
+     1>c:\users\清原一真\documents\github\game_team_b\teamb\program\main(α)\player.cpp(327): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
+     1>c:\users\清原一真\documents\github\game_team_b\teamb\program\main(α)\player.cpp(332): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
+     1>c:\users\清原一真\documents\github\game_team_b\teamb\program\main(α)\player.cpp(340): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
+     1>c:\users\清原一真\documents\github\game_team_b\teamb\program\main(α)\player.cpp(348): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
+         myLib.cpp
+         item_manager.cpp
+         item.cpp
+     1>c:\users\清原一真\documents\github\game_team_b\teamb\program\main(α)\item.cpp(12): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
+     1>c:\users\清原一真\documents\github\game_team_b\teamb\program\main(α)\item.cpp(68): warning C4244: '引数' : 'int' から 'float' への変換です。データが失われる可能性があります。
+     1>c:\users\清原一真\documents\github\game_team_b\teamb\program\main(α)\item.cpp(99): warning C4244: '引数' : 'int' から 'float' への変換です。データが失われる可能性があります。
+     1>c:\users\清原一真\documents\github\game_team_b\teamb\program\main(α)\item.cpp(99): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
+         gametitle_screen.cpp
+         game_screen.cpp
+         game.cpp
+         field_manager.cpp
+         field.cpp
+     1>c:\users\清原一真\documents\github\game_team_b\teamb\program\main(α)\field.cpp(20): warning C4244: '引数' : 'const int' から 'float' への変換です。データが失われる可能性があります。
+     1>c:\users\清原一真\documents\github\game_team_b\teamb\program\main(α)\field.cpp(42): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
+         enemy_move.cpp
+     1>c:\users\清原一真\documents\github\game_team_b\teamb\program\main(α)\enemy_move.cpp(36): warning C4244: '引数' : 'int' から 'float' への変換です。データが失われる可能性があります。
+         enemy_manager.cpp
+         enemy.cpp
+     1>c:\users\清原一真\documents\github\game_team_b\teamb\program\main(α)\enemy.cpp(19): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
+     1>c:\users\清原一真\documents\github\game_team_b\teamb\program\main(α)\enemy.cpp(123): warning C4244: '引数' : 'int' から 'float' への変換です。データが失われる可能性があります。
+     1>c:\users\清原一真\documents\github\game_team_b\teamb\program\main(α)\enemy.cpp(123): warning C4244: '引数' : 'const float' から 'int' への変換です。データが失われる可能性があります。
+     1>c:\users\清原一真\documents\github\game_team_b\teamb\program\main(α)\enemy.cpp(155): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
+         effect_move.cpp
+     1>c:\users\清原一真\documents\github\game_team_b\teamb\program\main(α)\effect_move.cpp(13): warning C4305: '+=' : 'double' から 'float' へ切り詰めます。
+     1>c:\users\清原一真\documents\github\game_team_b\teamb\program\main(α)\effect_move.cpp(29): warning C4244: '=' : 'float' から 'int' への変換です。データが失われる可能性があります。
+     1>c:\users\清原一真\documents\github\game_team_b\teamb\program\main(α)\effect_move.cpp(33): warning C4244: '=' : 'float' から 'int' への変換です。データが失われる可能性があります。
+     1>c:\users\清原一真\documents\github\game_team_b\teamb\program\main(α)\effect_move.cpp(53): warning C4244: '=' : 'const float' から 'int' への変換です。データが失われる可能性があります。
+         コードを生成中...
+         コンパイル中...
+         effect_manager.cpp
+         effect.cpp
+     1>c:\users\清原一真\documents\github\game_team_b\teamb\program\main(α)\effect.cpp(14): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
+     1>c:\users\清原一真\documents\github\game_team_b\teamb\program\main(α)\effect.cpp(57): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
+         change_manager.cpp
+         change.cpp
+     1>c:\users\清原一真\documents\github\game_team_b\teamb\program\main(α)\change.cpp(6): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
+     1>c:\users\清原一真\documents\github\game_team_b\teamb\program\main(α)\change.cpp(49): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
+     1>c:\users\清原一真\documents\github\game_team_b\teamb\program\main(α)\change.cpp(50): warning C4244: '引数' : 'float' から 'int' への変換です。データが失われる可能性があります。
+         boss_manager.cpp
+         boss.cpp
+         コードを生成中...
+       Link:
+         F:\VS\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\清原一真\Documents\GitHub\game_team_B\TEAMB\program\main(α)\Debug\Win32ProjectQ.exe" /INCREMENTAL /NOLOGO /LIBPATH:"F:\授業\C言語1\DxLib_VC\プロジェクトに追加すべきファイル_VC用" /LIBPATH:"F:\授業用\C言語\C言語\DxLib_VC\プロジェクトに追加すべきファイル_VC用" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\清原一真\Documents\GitHub\game_team_B\TEAMB\program\main(α)\Debug\Win32ProjectQ.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\清原一真\Documents\GitHub\game_team_B\TEAMB\program\main(α)\Debug\Win32ProjectQ.lib" /MACHINE:X86 Debug\base_data.obj
+         Debug\boss.obj
+         Debug\boss_manager.obj
+         Debug\change.obj
+         Debug\change_manager.obj
+         Debug\effect.obj
+         Debug\effect_manager.obj
+         Debug\effect_move.obj
+         Debug\enemy.obj
+         Debug\enemy_manager.obj
+         Debug\enemy_move.obj
+         Debug\field.obj
+         Debug\field_manager.obj
+         Debug\game.obj
+         Debug\game_screen.obj
+         Debug\gametitle_screen.obj
+         Debug\item.obj
+         Debug\item_manager.obj
+         Debug\myLib.obj
+         Debug\player.obj
+         Debug\player_attack.obj
+         Debug\player_manager.obj
+         Debug\task.obj
+         Debug\task_manager.obj
+         Debug\ui.obj
+         Debug\ui_manager.obj
+         Debug\win_main.obj
+         Win32ProjectQ.vcxproj -> C:\Users\清原一真\Documents\GitHub\game_team_B\TEAMB\program\main(α)\Debug\Win32ProjectQ.exe
+     1>プロジェクト "C:\Users\清原一真\Documents\GitHub\game_team_B\TEAMB\program\main(α)\Win32ProjectQ.vcxproj" (Build ターゲット) のビルドが完了しました。
+
+ビルドに成功しました。
+
+経過時間 00:00:22.91
