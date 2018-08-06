@@ -357,7 +357,5 @@ void CPlayer::Draw(){
 }
 
 void CPlayer::Kill(){
-	delete &m_player->m_avoid_effect;
-	delete &m_player->m_charge_effect;
 	delete m_player;
 }
