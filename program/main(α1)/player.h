@@ -73,12 +73,13 @@ public:
 
 	float m_chage_count;	//チャージ量
 	int m_attack_type;		//攻撃の種類
-	float m_stan;			
-	float m_knock_back;
-	float m_bomb;
-#if defined(_DEBUG) | defined(DEBUG)
+	float m_stan;			//スタンの強化値
+	float m_knock_back;		//ノックバックの強化値
+	float m_bomb;			//ボムの強化値
+	float m_temporary_rad;	//一時的な角度保存	
+//#if defined(_DEBUG) | defined(DEBUG)
 	bool m_control_type;	//操作タイプ
-#endif
+//#endif
 };
 
 class CPlayer : public CTask{

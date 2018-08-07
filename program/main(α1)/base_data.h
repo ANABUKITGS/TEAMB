@@ -32,7 +32,7 @@ public:
 	int m_hp;				//体力
 	float m_friction;		//摩擦
 	float m_collision;		//当たり判定の大きさ
-	bool m_control;			//操作可能
+	bool m_control;			//操作可能かどうか　true:可能　false:不可
 	int m_type;				//種類
 	int m_timer;			//何らかの時間
 	int m_damage;			//ダメージ量

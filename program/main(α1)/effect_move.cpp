@@ -47,6 +47,7 @@ void CEffectMovePattern3::Move(CEffectData *cd){
 		if (!_temp->m_invincible){
 			if (IsHitCircle(ENEMY_ATTACK_COLLISION, _temp->m_collision,
 				CVector2D(cd->m_pos.getX(), cd->m_pos.getY()), _temp->m_pos)){
+				_temp->m_temporary_rad = _temp->m_rad;
 				_temp->m_rad = cd->m_rad;
 				_temp->m_velocity = ENEMY_ATTACK_KNOCK_BACK * _temp->m_mass;
 				_temp->m_control = false;

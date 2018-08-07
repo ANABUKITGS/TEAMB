@@ -122,7 +122,7 @@ void CPlayer::Move(int key){
 	float _hx = m_player->m_pos.getX();
 	float _hy = m_player->m_pos.getY();
 
-#if defined(_DEBUG) | defined(DEBUG)
+//#if defined(_DEBUG) | defined(DEBUG)
 	if (IsKeyTrigger(key, PAD_INPUT_10, KEY_PAD_INPUT_10)){
 		if (m_player->m_control_type == true){
 			m_player->ControlType = &keyboard;
@@ -133,13 +133,13 @@ void CPlayer::Move(int key){
 			m_player->m_control_type = true;
 		}
 	}
-#endif
+//#endif
 
 	////動いているかどうか////
 	bool _flag = false;
 
 	{
-		if (m_player->m_control == false){
+		if (!m_player->m_control){
 			_hx += cos(m_player->m_rad) * m_player->m_velocity;
 			_hy += sin(m_player->m_rad) * m_player->m_velocity;
 			if (m_player->m_velocity > 0){
@@ -148,6 +148,8 @@ void CPlayer::Move(int key){
 			else{
 				m_player->m_control = true;
 				m_player->m_velocity = PLAYER_SPEED;
+				m_player->m_rad = m_player->m_temporary_rad;
+
 			}
 		}
 		else{
@@ -238,10 +240,35 @@ void CPlayer::Change(int key){
 }
 
 void CPlayer::Attack(int key){
-	int _type = LongPress(key, PAD_INPUT_2);
-	int static _temp;
-	if (_type == RELEASE){
+	int _type = 2;//= LongPress(key, PAD_INPUT_2);
+	static int _attack_flag;
+	static int _temp;
+
+	if (m_player->m_control){
+		_type = LongPress(key, PAD_INPUT_2);
+	}
+
+	//ノックバックしているときに
+	/*if (!m_player->m_control){		//操作できない
+		if (_type == PRESSING){		//ボタンは押されているで以下の処理
+			if (_attack_flag == 0){
+				_type = SEPARATE;
+				_attack_flag = 1;
+			}
+		}
+	}
+	else{
+		_attack_flag = 0;
+	}
+	if (_attack_flag == 1){
+		_attack_flag = 2;
 		m_player->Action();
+	}*/
+
+
+
+	if (_type == RELEASE){
+			m_player->Action();
 	}
 	else if (_type == PRESSING){
 		m_player->m_chage_count += 0.019;

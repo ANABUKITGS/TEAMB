@@ -83,7 +83,6 @@ KeyState LongPress(int _key, int _key_type){
 	if (_flag1){
 		_flag1 = false;
 		_flag2 = false;
-
 		return RELEASE;
 	}
 	else return SEPARATE;
