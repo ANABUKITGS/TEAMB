@@ -240,32 +240,12 @@ void CPlayer::Change(int key){
 }
 
 void CPlayer::Attack(int key){
-	int _type = 2;//= LongPress(key, PAD_INPUT_2);
-	static int _attack_flag;
+	int _type = 2;
 	static int _temp;
 
 	if (m_player->m_control){
 		_type = LongPress(key, PAD_INPUT_2);
 	}
-
-	//ノックバックしているときに
-	/*if (!m_player->m_control){		//操作できない
-		if (_type == PRESSING){		//ボタンは押されているで以下の処理
-			if (_attack_flag == 0){
-				_type = SEPARATE;
-				_attack_flag = 1;
-			}
-		}
-	}
-	else{
-		_attack_flag = 0;
-	}
-	if (_attack_flag == 1){
-		_attack_flag = 2;
-		m_player->Action();
-	}*/
-
-
 
 	if (_type == RELEASE){
 			m_player->Action();
