@@ -1,6 +1,12 @@
 #include "ui_manager.h"
 #include "player_manager.h"
 
+CRightRotation RRotation;
+CLeftRotation LRotation;
+
+CRightIcon RIcon;
+CLeftIcon LIcon;
+
 CUiData::CUiData(){
 
 }
@@ -19,11 +25,10 @@ CUi::CUi(){
 
 	//攻撃アイコン
 	for (int i = 0; i < 3; i++){
-		//m_list_ui.push_back(new CUiData(CVector2D(ATTACK_ICON_X + 90*i,ATTACK_ICON_Y),true,0,UI_EXRATE,i,UI_VELOCITY,UI_MASS,UI_HP,0,0,ATTACK_ICON));
 		if (i == 1)
-			m_icon_ui[i] = CUiData(CVector2D(ATTACK_ICON_X + ATTACK_SPACE_ICON_X * i, ATTACK_ICON_Y), true, 0, UI_SELECT_EXRATE, i, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, ATTACK_ICON,1);
+			m_icon_ui[i] = CUiData(CVector2D(ATTACK_ICON_X + ATTACK_SPACE_ICON_X * i, ATTACK_ICON_Y), true, 0, UI_SELECT_EXRATE, i, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, ATTACK_ICON,i);
 		else
-			m_icon_ui[i] = CUiData(CVector2D(ATTACK_ICON_X + ATTACK_SPACE_ICON_X * i, ATTACK_ICON_Y), true, 0, UI_NO_SELECT_EXRATE, i, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, ATTACK_ICON,0);
+			m_icon_ui[i] = CUiData(CVector2D(ATTACK_ICON_X + ATTACK_SPACE_ICON_X * i, ATTACK_ICON_Y), true, 0, UI_NO_SELECT_EXRATE, i, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, ATTACK_ICON,i);
 	}
 
 	LoadDivGraph("media\\img\\icon_stan.png", 2, 2, 1, 128, 128, m_icon_img[1], 0);
@@ -35,6 +40,8 @@ CUi::CUi(){
 	m_draw_priority = 2;
 
 	m_change_flag = true;
+
+	BIconDraw = &RIcon;
 
 	CUiManager::GetInstance()->Init(this);
 }
@@ -60,16 +67,19 @@ void CUi::Update(){
 
 void CUi::ChengeIcon(int _direction){
 	if (m_change_flag){
+		int _a = 0;		//右か左か	0=右、2=左
+		_a = 1 + _direction;
+		if (_a > 1){
+			BRotation = &RRotation;
+			BIconDraw = &RIcon;
+			Rotation();
+		}
+		else if (_a < 1){
+			BRotation = &LRotation;
+			BIconDraw = &LIcon;
+			Rotation();
+		}
 
-		/*if (_direction != 0)
-			m_icon_ui[1 + _direction].m_priority = 2;
-		
-		/*for (int i = 0; i+1 < 3; i++){
-				int a = 0;
-				a = m_icon_ui[i].m_priority;
-				m_icon_ui[i].m_priority = m_icon_ui[i + 1].m_priority;
-				m_icon_ui[i + 1].m_priority = a;
-		}*/
 		for (int i = 0; i < 3; i++){
 			//移動先の決定
 			m_icon_ui[i].m_move_count = 0;
@@ -89,18 +99,7 @@ void CUi::ChengeIcon(int _direction){
 				m_icon_ui[i].m_amine_rate = 0;
 				m_icon_ui[i].m_move_exrate = UI_NO_SELECT_EXRATE;
 			}
-			//printfDx(" %d / prio %d\n", i, m_icon_ui[i].m_priority);
 		}
-		/*CUiData _temp;
-		for (int i = 0; i < 3; i++){
-			for (int j = 1; j < 3; j++){
-				if (m_icon_ui[i].m_priority < m_icon_ui[j].m_priority){
-					_temp = m_icon_ui[j];
-					m_icon_ui[j] = m_icon_ui[i];
-					m_icon_ui[i] = _temp;
-				}
-			}
-		}*/
 	}
 }
 
@@ -110,10 +109,7 @@ void CUi::Draw(){
 			TRUE, FALSE);
 	}
 	
-	for (int i = 0; i < 3; i++){
-		DrawRotaGraph(m_icon_ui[i].m_pos.getX(), m_icon_ui[i].m_pos.getY(), m_icon_ui[i].m_exrate, m_icon_ui[i].m_rad, m_icon_img[m_icon_ui[i].m_animtype][m_icon_ui[i].m_amine_rate],
-			TRUE, FALSE);
-	}
+	IconDraw();
 }
 
 void CUi::KillAll(){

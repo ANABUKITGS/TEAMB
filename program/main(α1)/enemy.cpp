@@ -120,11 +120,11 @@ void CEnemy::Update(){
 #if defined(_DEBUG) | defined(DEBUG)
 	if (m_enemys.size() < MAX_ENEMY)
 	if (m_count % 50 == 0){
-		CBaseData *_temp = new CBaseData(CVector2D(rand() % 1200 + 30, rand() % 660 + 30), true, radian((rand() % 360)), ENEMY_EXRATE, 0, ENEMY_SPEED, ENEMY_MASS, ENEMY_HP, ENEMY_FRICTION, ENEMY_COLLISION, ENEMY);
-		m_enemys.push_back(new CEnemyData(*_temp));
+		//CBaseData *_temp = new CBaseData(CVector2D(rand() % 1200 + 30, rand() % 660 + 30), true, radian((rand() % 360)), ENEMY_EXRATE, 0, ENEMY_SPEED, ENEMY_MASS, ENEMY_HP, ENEMY_FRICTION, ENEMY_COLLISION, ENEMY);
+		//m_enemys.push_back(new CEnemyData(*_temp));
 		m_count = 1;
 	}
-	m_count++;
+	//m_count++;
 
 #endif
 }
