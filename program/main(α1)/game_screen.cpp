@@ -81,7 +81,7 @@ void CGameScreen::Draw()
 
 	DrawString(930, 90, "Game Screen Hit E key to Title Screen", GetColor
 		(255, 255, 255));
-	DrawString(1000, 110, "Change Control Hit Spase key(keyboard or pad)", GetColor
+	DrawString(870, 110, "Change Control Hit Spase key(keyboard or pad)", GetColor
 		(255, 255, 255));
 
 #if defined(_DEBUG) | defined(DEBUG)
