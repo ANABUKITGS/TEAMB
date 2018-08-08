@@ -7,16 +7,19 @@ CLeftRotation LRotation;
 CRightIcon RIcon;
 CLeftIcon LIcon;
 
+CTimer Timer;
+
 CUiData::CUiData(){
 
 }
 
-CUiData::CUiData(CVector2D _pos, bool _living, float _rad, float _exrate, int _animtype, float _velocity, float _mass, int _hp, float _friction, float _collision, int _type, int _prio)
+CUiData::CUiData(CVector2D _pos, bool _living, float _rad, float _exrate, int _animtype, float _velocity, float _mass, int _hp, float _friction, float _collision, int _type, int _prio,CBaseUpdate* _BUpdate)
 :CBaseData(_pos,_living,_rad,_exrate,_animtype,_velocity,_mass,_hp,_friction,_collision,_type)
 , m_move_pos(_pos)
 , m_move_exrate(0)
 , m_move_count(0)
 , m_priority(_prio)
+, BUpdate(_BUpdate)
 {
 	
 }
@@ -26,14 +29,31 @@ CUi::CUi(){
 	//攻撃アイコン
 	for (int i = 0; i < 3; i++){
 		if (i == 1)
-			m_icon_ui[i] = CUiData(CVector2D(ATTACK_ICON_X + ATTACK_SPACE_ICON_X * i, ATTACK_ICON_Y), true, 0, UI_SELECT_EXRATE, i, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, ATTACK_ICON,i);
+			m_icon_ui[i] = CUiData(CVector2D(ATTACK_ICON_X + ATTACK_SPACE_ICON_X * i, ATTACK_ICON_Y), true, 0, UI_SELECT_EXRATE, i, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, ATTACK_ICON, i, NULL);
 		else
-			m_icon_ui[i] = CUiData(CVector2D(ATTACK_ICON_X + ATTACK_SPACE_ICON_X * i, ATTACK_ICON_Y), true, 0, UI_NO_SELECT_EXRATE, i, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, ATTACK_ICON,i);
+			m_icon_ui[i] = CUiData(CVector2D(ATTACK_ICON_X + ATTACK_SPACE_ICON_X * i, ATTACK_ICON_Y), true, 0, UI_NO_SELECT_EXRATE, i, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, ATTACK_ICON, i, NULL);
+	}
+	//UI関連（現在時間のみ）
+	for (int i = 0; i < 3; i++){
+		if (i == TIMER){
+			m_list_ui.push_back(new CUiData(CVector2D(TIMER_ICON_X,TIMER_BACK_ICON_Y), true, 0, UI_SELECT_EXRATE, i, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, TIMER, 0, NULL));
+		}
+		else if (i == TIMER_BACK){
+			m_list_ui.push_back(new CUiData(CVector2D(TIMER_ICON_X, TIMER_ICON_Y), true, 0, UI_SELECT_EXRATE, i, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, TIMER_BACK, 0, &Timer));
+		}
+		else if (i == SECOND_HAND){
+			m_list_ui.push_back(new CUiData(CVector2D(TIMER_ICON_X, TIMER_ICON_Y), true, 0, UI_SELECT_EXRATE, i, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, SECOND_HAND, 0, &Timer));
+		}
 	}
 
 	LoadDivGraph("media\\img\\icon_stan.png", 2, 2, 1, 128, 128, m_icon_img[1], 0);
 	LoadDivGraph("media\\img\\icon_knock_back.png", 2, 2, 1, 128, 128, m_icon_img[0], 0);
 	LoadDivGraph("media\\img\\icon_bomb.png", 2, 2, 1, 128, 128, m_icon_img[2], 0);
+
+	m_ui_img[0] = LoadGraph("media\\img\\timer.png");
+	m_ui_img[1] = LoadGraph("media\\img\\timer_black.png");
+	m_ui_img[2] = LoadGraph("media\\img\\second_hand_l.png");
+	m_ui_img[3] = LoadGraph("media\\img\\second_hand_s.png");
 
 	m_priority = eDWP_UI;
 	m_update_priority = 2;
@@ -62,6 +82,10 @@ void CUi::Update(){
 				m_icon_ui[i].m_exrate -= _mv_e / 10;
 			}
 		}
+	}
+
+	for (auto it = m_list_ui.begin(); it != m_list_ui.end(); it++){
+		(*it)->Update();
 	}
 }
 
@@ -105,10 +129,19 @@ void CUi::ChengeIcon(int _direction){
 
 void CUi::Draw(){
 	for (auto it = m_list_ui.begin(); it != m_list_ui.end(); it++){
-		DrawRotaGraph((*it)->m_pos.getX(), (*it)->m_pos.getY(), (*it)->m_exrate, (*it)->m_rad, m_icon_img[(*it)->m_animtype][(*it)->m_amine_rate],
+		if ((*it)->m_animtype == TIMER)
+			DrawRotaGraph((*it)->m_pos.getX(), (*it)->m_pos.getY(), (*it)->m_exrate, (*it)->m_rad, m_ui_img[(*it)->m_animtype],
 			TRUE, FALSE);
+		/*if ((*it)->m_animtype == TIMER_BACK){
+			SetDrawBlendMode(DX_BLENDMODE_ALPHA, 130);
+			DrawCircleGauge((*it)->m_pos.getX(), (*it)->m_pos.getY(), (*it)->m_hp, m_ui_img[(*it)->m_animtype], 0);
+			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+		}*/
+		if ((*it)->m_animtype == SECOND_HAND){
+			DrawRotaGraph2((*it)->m_pos.getX(), (*it)->m_pos.getY(), 4, 36, (*it)->m_exrate, radian((*it)->m_rad), m_ui_img[(*it)->m_animtype],TRUE,FALSE);
+		}
 	}
-	
+
 	IconDraw();
 }
 

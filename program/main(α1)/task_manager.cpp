@@ -57,7 +57,7 @@ void CTaskManager::UpdateAll(){
 	for (auto it = m_TaskList.begin(); it != m_TaskList.end(); it++){
 		(*it)->Update();
 #if defined(_DEBUG) | defined(DEBUG)
-		printfDx("Task_priority[%d]\n", (*it)->m_priority);
+		//printfDx("Task_priority[%d]\n", (*it)->m_priority);
 #endif
 		//CTask* pTask = *it;		//‚±‚±d—v
 		//pTask->Update();

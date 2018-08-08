@@ -46,3 +46,10 @@ void CLeftIcon::IconDraw(CUiData *cd){
 			CUiManager::GetInstance()->GetUiAdress()->GetImg(cd[i].m_animtype, cd[i].m_amine_rate)/*m_icon_img[cd[i].m_animtype][cd[i].m_amine_rate]*/, TRUE, FALSE);
 	}
 }
+
+void CTimer::Update(CUiData *cd){
+	if (cd->m_timer < TIME_LIMIT)
+		cd->m_timer++;
+	cd->m_hp = cd->m_timer / 360;
+	cd->m_rad = cd->m_hp;
+}
