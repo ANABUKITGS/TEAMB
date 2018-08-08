@@ -39,7 +39,7 @@ const float PLAYER_BOMB_EXRATE = 1.0f;
 const float PLAYER_BOMB_KNOCK_BACK = 8.0f;
 
 const float ENEMY_ATTACK_KNOCK_BACK = 17.0f;		//ìGÇÃçUåÇån
-const float ENEMY_ATTACK_DAMAGE = 6.0f;
+const float ENEMY_ATTACK_DAMAGE = 4.0f;
 const int ENEMY_ATTACK_COOL_TIME = 70;
 const float ENEMY_ATTACK_EXRATE = 0.6f;
 const float ENEMY_RANGE = 10.0f;
@@ -47,7 +47,7 @@ const int ENEMY_CHANGE = 600;
 const int ENEMY_MOVE = 360;
 const int ENEMY_WAIT = 600;
 
-const int ITEM_CREATE_NUM = 10;						//ÉAÉCÉeÉÄån
+const int ITEM_CREATE_NUM = 9;						//ÉAÉCÉeÉÄån
 const float ITEM_STAN_UP = 0.1f;
 const float ITEM_KNOCK_BACK_UP = 0.1f;
 const float ITEM_BOMB_UP = 0.1f;

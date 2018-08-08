@@ -27,17 +27,18 @@ enum UI_TYPE{
 class CUiData : public CBaseData{
 public:
 	CUiData();
-	CUiData(CVector2D _pos, bool _living, float _rad, float _exrate, int _animtype, float _velocity, float _mass, int _hp, float _friction, float _collision, int _type);
+	CUiData(CVector2D _pos, bool _living, float _rad, float _exrate, int _animtype, float _velocity, float _mass, int _hp, float _friction, float _collision, int _type, int _prio);
 	~CUiData(){};
 	CVector2D m_move_pos;		//移動先
 	float m_move_exrate;		//大きさの変更値
 	float m_move_count;
+	int m_priority;			//描画順序
 };
 
 class CUi : public CTask{
 private:
 	list<CUiData*> m_list_ui;
-	CUiData* m_icon_ui[4];
+	CUiData m_icon_ui[4];
 	CUiData* m_add_icon;
 	int m_icon_img[3][2];
 	bool m_change_flag;		//切り替えを行ったか？
