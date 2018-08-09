@@ -14,12 +14,14 @@ const int BOMB_NUM = 14;
 const int ENEMY_ATTACK_NUM = 8;
 const int ENEMY_CREATE_NUM = 20;
 const int ENEMY_DELETE_NUM = 13;
+const int PLAYER_HIT_NUM = 8;
 
-const int EFFECT_IMG = 7;
+const int EFFECT_IMG = 8;
 
 //m_typeÇ≈égópÇµÇƒÇ¢ÇÈÅ@
 enum EFFECT_TYPE{
-	KNOCK_BACK, STAN, CHARGE_BOMB, BOMB, ENEMY_ATTACK, ENEMY_CREATE ,ENEMY_DELETE
+	KNOCK_BACK, STAN, CHARGE_BOMB, BOMB, ENEMY_ATTACK, ENEMY_CREATE ,ENEMY_DELETE,
+	PLAYER_HIT
 };
 
 class CEffectData;
@@ -33,7 +35,7 @@ class CEffectData : public CBaseData{
 public:
 	CEffectData();
 	CEffectData(CVector2D _pos, bool _living, float _rad, float _exrate, int _animtype, float _velocity, float _mass, int _hp, float _friction, float _collision, float _type, int _rate, CBaseEffectMove *_BEMove);
-	CEffectData(CBaseData _temp);
+	CEffectData(CBaseData _temp, int _rate, CBaseEffectMove *_BEMove);
 	~CEffectData(){};
 	
 	CBaseEffectMove *BEMove;
@@ -71,6 +73,11 @@ public:
 };
 //ìGÇÃçUåÇ
 class CEffectMovePattern3 :public CBaseEffectMove{
+public:
+	void Move(CEffectData *cd);
+};
+//è¢ä´
+class CEffectMovePattern4 :public CBaseEffectMove{
 public:
 	void Move(CEffectData *cd);
 };

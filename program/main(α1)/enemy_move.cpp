@@ -25,9 +25,6 @@ void CMovePattern1::Move(CEnemyData *cd, CVector2D &_pos){
 				_pos += CVector2D(cd->m_velocity * cos(cd->m_rad), cd->m_velocity * sin(cd->m_rad));
 			}
 			else{
-				if (cd->m_counter < ENEMY_MOVE){
-					//cd->m_rand = rand() % 360;
-				}
 				if (cd->m_counter < ENEMY_WAIT && cd->m_counter > ENEMY_MOVE){
 					_pos += CVector2D(cd->m_velocity * cos(cd->m_rad), cd->m_velocity * sin(cd->m_rad));
 				}

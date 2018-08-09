@@ -112,9 +112,10 @@ void CCharaData::Counter(){
 	for (auto it = m_chara_data.begin(); it != m_chara_data.end(); it++){
 		printfDx("base Type %d ", (*it)->m_type);
 		printfDx("HP %d ", (*it)->m_hp);
+		//printfDx("pos %f / %f ", (*it)->m_pos.getX(), (*it)->m_pos.getY());
 		//printfDx("mass %f ", (*it)->m_mass);
-		//printfDx("Velo %f ", (*it)->m_velocity);
-		printfDx("cont %d ", (*it)->m_control);
+		printfDx("Velo %f ", (*it)->m_velocity);
+		//printfDx("cont %d ", (*it)->m_control);
 		printfDx("rad %f\n", degree((*it)->m_rad));
 	}
 }
@@ -148,6 +149,16 @@ void CCharaData::Update(){
 }
 
 void CCharaData::CBank(CBaseData* cd1, CBaseData* cd2){
+	
+	if (cd1->m_control == false){
+		cd1->m_timer += BANK_STAN;
+		cd2->m_timer += BANK_STAN;
+	}
+	if (cd2->m_control == false){
+		cd1->m_timer += BANK_STAN;
+		cd2->m_timer += BANK_STAN;
+	}
+	
 	////ëÄçÏïsâ¬î\////
 	cd1->m_control = false;
 	cd2->m_control = false;
@@ -167,8 +178,8 @@ void CCharaData::CBank(CBaseData* cd1, CBaseData* cd2){
 
 	_dist /= 2.0f;
 
-	cd1->m_pos += CVector2D(_vx * _dist, _vy*_dist);
-	cd2->m_pos -= CVector2D(_vx * _dist, _vy*_dist);
+	cd1->m_pos += CVector2D(_vx * _dist*1.2f, _vy*_dist*1.2f);
+	cd2->m_pos -= CVector2D(_vx * _dist*1.2f, _vy*_dist*1.2f);
 	///////////////////////
 	//îΩî≠åWêî
 	float _e = 1.0f;

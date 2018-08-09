@@ -8,7 +8,7 @@ using namespace std;
 
 const float PLAYER_EXRATE = 1.0f;
 const float PLAYER_SPEED = 5.0f;
-const float PLAYER_FRICTION = 5.0f;
+const float PLAYER_FRICTION = 0.5f;
 const int PLAYER_HP = 64;
 const float PLAYER_MASS = 0.5f;
 

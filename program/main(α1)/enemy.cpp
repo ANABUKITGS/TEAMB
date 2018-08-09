@@ -1,8 +1,10 @@
 #include "enemy.h"
 #include "enemy_manager.h"
+#include "effect_manager.h"
 
 CMovePattern1 MP1;
 CAttackPattern1 AP1;
+CEffectMovePattern4 EMP4;
 
 CEnemyData::CEnemyData(){
 
@@ -47,6 +49,8 @@ CEnemy::CEnemy(){
 void CEnemy::Delete(){
 	for (auto it = m_enemys.begin(); it != m_enemys.end();){
 		if ((*it)->m_living == false){
+			CBaseData *_temp = new CBaseData((*it)->m_pos, true, 0, 1, ENEMY_DELETE_NUM, 0, 0, 0, 0, 0, ENEMY_DELETE);
+			CEffectManager::GetInstance()->GetEffectAdress()->GetEffectData()->push_back(new CEffectData(*_temp,1,NULL));
 			m_dead_count++;
 			it = m_enemys.erase(it);
 			continue;
@@ -80,8 +84,11 @@ void CEnemy::Update(){
 			if ((*it)->m_timer == 0){
 				(*it)->Mover(_pos);
 			}
-			else if ((*it)->m_timer > 0)
+			else if ((*it)->m_timer > 0){
 				(*it)->m_timer--;
+				if ((*it)->m_velocity < 0)
+					(*it)->m_velocity = 0;
+			}
 		}
 
 		//ˆÓ¯‚ª–³‚¯‚ê‚ÎˆÈ‰º‚Ìˆ—(‚«”ò‚Î‚µ‚É’Ê‚é)
@@ -120,11 +127,14 @@ void CEnemy::Update(){
 #if defined(_DEBUG) | defined(DEBUG)
 	if (m_enemys.size() < MAX_ENEMY)
 	if (m_count % 50 == 0){
-		//CBaseData *_temp = new CBaseData(CVector2D(rand() % 1200 + 30, rand() % 660 + 30), true, radian((rand() % 360)), ENEMY_EXRATE, 0, ENEMY_SPEED, ENEMY_MASS, ENEMY_HP, ENEMY_FRICTION, ENEMY_COLLISION, ENEMY);
+		CVector2D _pos = CVector2D(rand() % 1200 + 30, rand() % 660 + 30);
+		CBaseData *_temp_e = new CBaseData(_pos + CVector2D(0,-30), true, 0, 1, ENEMY_CREATE_NUM, 0, 0, 0, 0, 0, ENEMY_CREATE);
+		//CBaseData *_temp = new CBaseData(_pos, true, radian((rand() % 360)), ENEMY_EXRATE, 0, ENEMY_SPEED, ENEMY_MASS, ENEMY_HP, ENEMY_FRICTION, ENEMY_COLLISION, ENEMY);
 		//m_enemys.push_back(new CEnemyData(*_temp));
+		CEffectManager::GetInstance()->GetEffectAdress()->GetEffectData()->push_back(new CEffectData(*_temp_e, 2, &EMP4));
 		m_count = 1;
 	}
-	//m_count++;
+	m_count++;
 
 #endif
 }
@@ -133,19 +143,27 @@ void CEnemy::Reflect(CEnemyData &cd,CVector2D &_pos){
 	if (_pos.getY() > 720){
 		cd.m_rad = cd.m_rad*(-1);
 		_pos.setY(720 * 2 - _pos.getY());
+		if (cd.m_control == false)
+			cd.m_timer += BANK_STAN;
 	}
 	else if (_pos.getY() < 0){
 		cd.m_rad = cd.m_rad*(-1);
 		_pos.setY(-_pos.getY());
+		if (cd.m_control == false)
+			cd.m_timer += BANK_STAN;
 	}
 
 	if (_pos.getX() > 1280){
 		cd.m_rad = PI - cd.m_rad;
 		_pos.setX(1280 * 2 - _pos.getX());
+		if (cd.m_control == false)
+			cd.m_timer += BANK_STAN;
 	}
 	else if (_pos.getX() < 0){
 		cd.m_rad = PI - cd.m_rad;
 		_pos.setX(-_pos.getX());
+		if (cd.m_control == false)
+			cd.m_timer += BANK_STAN;
 	}
 }
 

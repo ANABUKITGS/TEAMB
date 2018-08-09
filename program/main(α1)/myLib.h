@@ -57,6 +57,8 @@ const int TIME_LIMIT = 18000;	//5•ª				//UIŒn
 const int TIME_SPLIT = 50;		//5•ª
 const float TIME_CIRCLE_SPLIT = 3.6f;
 
+const float BANK_STAN = 300.0f;
+
 enum UpdatePriority{
 	UDP_FRAME1, UDP_FRAME2, UDP_CARD, UDP_EFFECT, UDP_FIELD, UDP_UI, UDP_NULL
 };

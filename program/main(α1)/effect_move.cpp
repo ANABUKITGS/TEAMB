@@ -1,5 +1,6 @@
 #include "effect.h"
 #include "player_manager.h"
+#include "enemy_manager.h"
 
 CEffectMovePattern2 EMP2;
 
@@ -55,5 +56,13 @@ void CEffectMovePattern3::Move(CEffectData *cd){
 				_temp->m_hp -= _temp->m_damage;
 			}
 		}
+	}
+}
+
+//¢Š«
+void CEffectMovePattern4::Move(CEffectData *cd){
+	if (cd->m_amine_rate % cd->m_animtype == ENEMY_CREATE_NUM - 1){
+		CBaseData *_temp = new CBaseData(CVector2D(cd->m_pos.getX(), cd->m_pos.getY() + 30), true, radian((rand() % 360)), ENEMY_EXRATE, 0, ENEMY_SPEED, ENEMY_MASS, ENEMY_HP, ENEMY_FRICTION, ENEMY_COLLISION, ENEMY);
+		CEnemyManager::GetInstance()->GetEnemyAdress()->GetEnemyData()->push_back(new CEnemyData(*_temp));
 	}
 }

@@ -14,12 +14,11 @@ CEffectData::CEffectData(CVector2D _pos, bool _living, float _rad, float _exrate
 {
 }
 
-CEffectData::CEffectData(CBaseData _temp)
+CEffectData::CEffectData(CBaseData _temp, int _rate, CBaseEffectMove *_BEMove)
 : CBaseData(_temp.m_pos, _temp.m_living, _temp.m_rad, _temp.m_exrate, _temp.m_animtype, _temp.m_velocity, _temp.m_mass, _temp.m_hp, _temp.m_friction, _temp.m_collision, _temp.m_type)
-, m_rate(0)
-, BEMove(NULL)
+, m_rate(_rate)
+, BEMove(_BEMove)
 {
-	//CEffectManager::GetInstance()->GetEffectAdress()->GetEffectData()->push_back(this);
 }
 
 CEffect::CEffect(){
@@ -27,10 +26,10 @@ CEffect::CEffect(){
 	LoadDivGraph("media\\img\\stan_b1.png", STAN_NUM, 5, 2, 192, 192, m_effect_img[STAN], 0);
 	LoadDivGraph("media\\img\\bomb_cha0.png", BOMB_CHARGE_NUM, 5, 3, 128, 128, m_effect_img[CHARGE_BOMB], 0);
 	LoadDivGraph("media\\img\\exp.png", BOMB_NUM, 2, 7, 256, 256, m_effect_img[BOMB], 0);		//ïœçX
-	//LoadDivGraph("media\\img\\explosion.png", 11, 4, 3, 256, 256, m_effect_img[BOMB], 0);
 	LoadDivGraph("media\\img\\e_attack.png", ENEMY_ATTACK_NUM, 2, 4, 384, 384, m_effect_img[ENEMY_ATTACK], 0);
 	LoadDivGraph("media\\img\\enemy_create.png", ENEMY_CREATE_NUM, 2, 10, 384, 384, m_effect_img[ENEMY_CREATE], 0);
-	LoadDivGraph("media\\img\\enemy_delete.png", ENEMY_DELETE_NUM, 3, 5, 192, 192, m_effect_img[ENEMY_DELETE], 0);
+	LoadDivGraph("media\\img\\enemy_delete.png", ENEMY_DELETE_NUM, 5, 3, 192, 192, m_effect_img[ENEMY_DELETE], 0);
+	LoadDivGraph("media\\img\\player_hit.png", PLAYER_HIT_NUM, 2, 4, 384, 384, m_effect_img[PLAYER_HIT], 0);
 
 	m_priority = eDWP_EFFECT;
 	m_update_priority = 2;
