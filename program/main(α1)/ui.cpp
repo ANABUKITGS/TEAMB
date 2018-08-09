@@ -7,7 +7,8 @@ CLeftRotation LRotation;
 CRightIcon RIcon;
 CLeftIcon LIcon;
 
-CTimer Timer;
+CTimer			Timer;
+CSecondHand		SecondHand;
 
 CUiData::CUiData(){
 
@@ -24,7 +25,10 @@ CUiData::CUiData(CVector2D _pos, bool _living, float _rad, float _exrate, int _a
 	
 }
 
-CUi::CUi(){
+CUi::CUi()
+: m_change_flag(true)
+, m_endflag(false)
+{
 
 	//çUåÇÉAÉCÉRÉì
 	for (int i = 0; i < 3; i++){
@@ -42,7 +46,7 @@ CUi::CUi(){
 			m_list_ui.push_back(new CUiData(CVector2D(TIMER_ICON_X, TIMER_ICON_Y), true, 0, UI_SELECT_EXRATE, i, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, TIMER_BACK, 0, &Timer));
 		}
 		else if (i == SECOND_HAND){
-			m_list_ui.push_back(new CUiData(CVector2D(TIMER_ICON_X, TIMER_ICON_Y), true, 0, UI_SELECT_EXRATE, i, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, SECOND_HAND, 0, &Timer));
+			m_list_ui.push_back(new CUiData(CVector2D(TIMER_ICON_X+1, TIMER_ICON_Y+1), true, 0, UI_SELECT_EXRATE, i, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, SECOND_HAND, 0, &SecondHand));
 		}
 	}
 
@@ -58,8 +62,6 @@ CUi::CUi(){
 	m_priority = eDWP_UI;
 	m_update_priority = 2;
 	m_draw_priority = 2;
-
-	m_change_flag = true;
 
 	BIconDraw = &RIcon;
 
@@ -132,16 +134,15 @@ void CUi::Draw(){
 		if ((*it)->m_animtype == TIMER)
 			DrawRotaGraph((*it)->m_pos.getX(), (*it)->m_pos.getY(), (*it)->m_exrate, (*it)->m_rad, m_ui_img[(*it)->m_animtype],
 			TRUE, FALSE);
-		/*if ((*it)->m_animtype == TIMER_BACK){
+		if ((*it)->m_animtype == TIMER_BACK){
 			SetDrawBlendMode(DX_BLENDMODE_ALPHA, 130);
-			DrawCircleGauge((*it)->m_pos.getX(), (*it)->m_pos.getY(), (*it)->m_hp, m_ui_img[(*it)->m_animtype], 0);
+			DrawCircleGauge((*it)->m_pos.getX(), (*it)->m_pos.getY(), (*it)->m_rad, m_ui_img[(*it)->m_animtype], 0);
 			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
-		}*/
+		}
 		if ((*it)->m_animtype == SECOND_HAND){
-			DrawRotaGraph2((*it)->m_pos.getX(), (*it)->m_pos.getY(), 4, 36, (*it)->m_exrate, radian((*it)->m_rad), m_ui_img[(*it)->m_animtype],TRUE,FALSE);
+			DrawRotaGraph2((*it)->m_pos.getX(), (*it)->m_pos.getY(), 5, 35, (*it)->m_exrate, radian((*it)->m_rad), m_ui_img[(*it)->m_animtype], TRUE, FALSE);
 		}
 	}
-
 	IconDraw();
 }
 

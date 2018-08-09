@@ -72,8 +72,9 @@ private:
 	CUiData m_icon_ui[4];
 	int m_icon_img[3][2];			//攻撃アイコン
 	int m_ui_img[4];				//
+
 	bool m_change_flag;				//切り替えを行ったか？
-	int m_timer;
+	bool m_endflag;					//タイムリミットに達したか？
 
 	CBaseRotation* BRotation;
 	void Rotation(){ if (BRotation != NULL)BRotation->rotation(m_icon_ui); };
@@ -89,6 +90,8 @@ public:
 
 	void ChengeIcon(int _direction);
 
+	bool GetTimeFlag(){ return m_endflag; };
+	void SetTimeFlag(bool _flag){ m_endflag = _flag; };
 	int GetImg(int num1, int num2){ return m_icon_img[num1][num2]; };
 	void const SetChangeFlag(bool _flag){ m_change_flag = _flag; };
 };
@@ -110,7 +113,12 @@ class CLeftIcon : public CBaseIconDraw{
 	void IconDraw(CUiData *cd);
 };
 
+//Update
 class CTimer : public CBaseUpdate{
+	void Update(CUiData *cd);
+};
+
+class CSecondHand : public CBaseUpdate{
 	void Update(CUiData *cd);
 };
 

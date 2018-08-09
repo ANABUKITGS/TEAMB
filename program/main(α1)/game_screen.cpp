@@ -53,18 +53,21 @@ void CGameScreen::Init(){
 //実行処理
 void CGameScreen::Update()
 {
-	if (CPlayerManager::GetInstance()->GetPlayerAdress()->GetData()->m_hp < 1)
-	{
+	bool _ef = false;	//終了フラグ
+	if (CPlayerManager::GetInstance()->GetPlayerAdress()->GetData()->m_hp < 1)_ef = true;
+	if (CUiManager::GetInstance()->GetUiAdress()->GetTimeFlag())_ef = true;
+	if (_ef){
 		CChangeManager::GetInstance()->GetChangeAdress()->Update();
 		if (CChangeManager::GetInstance()->GetChangeAdress()->GetOut())m_state = TITLE_SCREEN;
 	}
-	if (CheckHitKey(KEY_INPUT_P) == 1)m_state = TITLE_SCREEN;
+	
 	CTaskManager::GetInstance()->UpdateAll();
 
 	CCharaData::GetInstance()->Update();
 	CCharaData::GetInstance()->Delete();
 
 #if defined(_DEBUG) | defined(DEBUG)
+	if (CheckHitKey(KEY_INPUT_P) == 1)m_state = TITLE_SCREEN;
 	CCharaData::GetInstance()->Counter();
 #endif
 }

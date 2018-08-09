@@ -50,6 +50,13 @@ void CLeftIcon::IconDraw(CUiData *cd){
 void CTimer::Update(CUiData *cd){
 	if (cd->m_timer < TIME_LIMIT)
 		cd->m_timer++;
-	cd->m_hp = cd->m_timer / 360;
-	cd->m_rad = cd->m_hp;
+	cd->m_rad = cd->m_timer / TIME_SPLIT / TIME_CIRCLE_SPLIT;
+}
+
+void CSecondHand::Update(CUiData *cd){
+	if (cd->m_timer < TIME_LIMIT)
+		cd->m_timer++;
+	else
+		CUiManager::GetInstance()->GetUiAdress()->SetTimeFlag(true);
+	cd->m_rad = cd->m_timer / TIME_SPLIT;
 }

@@ -12,10 +12,14 @@ const int KNOCK_BACK_NUM = 16;
 const int BOMB_CHARGE_NUM = 15;
 const int BOMB_NUM = 14;
 const int ENEMY_ATTACK_NUM = 8;
+const int ENEMY_CREATE_NUM = 20;
+const int ENEMY_DELETE_NUM = 13;
+
+const int EFFECT_IMG = 7;
 
 //m_typeÇ≈égópÇµÇƒÇ¢ÇÈÅ@
 enum EFFECT_TYPE{
-	KNOCK_BACK, STAN, CHARGE_BOMB, BOMB,ENEMY_ATTACK
+	KNOCK_BACK, STAN, CHARGE_BOMB, BOMB, ENEMY_ATTACK, ENEMY_CREATE ,ENEMY_DELETE
 };
 
 class CEffectData;
@@ -41,7 +45,7 @@ public:
 class CEffect : public CTask{
 private:
 	list<CEffectData*> m_effects;
-	int m_effect_img[5][16];
+	int m_effect_img[EFFECT_IMG][20];
 	int m_count;
 public:
 	CEffect();
