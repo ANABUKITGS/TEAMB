@@ -125,7 +125,7 @@ void CEnemy::Update(){
 	//íœ
 	Delete();
 
-#if defined(_DEBUG) | defined(DEBUG)
+//#if defined(_DEBUG) | defined(DEBUG)
 	if (m_enemys.size() < MAX_ENEMY)
 	if (m_count % 50 == 0){
 		CVector2D _pos = CVector2D(rand() % 1200 + 30, rand() % 660 + 30);
@@ -137,7 +137,7 @@ void CEnemy::Update(){
 	}
 	m_count++;
 
-#endif
+//#endif
 }
 
 void CEnemy::Reflect(CEnemyData &cd,CVector2D &_pos){
