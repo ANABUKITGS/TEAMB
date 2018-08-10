@@ -142,7 +142,7 @@ void CPlayer::Move(int key){
 		if (!m_player->m_control){
 			_hx += cos(m_player->m_rad) * m_player->m_velocity;
 			_hy += sin(m_player->m_rad) * m_player->m_velocity;
-			if (m_player->m_velocity > -1){
+			if (m_player->m_velocity > 0){
 				m_player->m_velocity -= m_player->m_friction;
 			}
 			else{

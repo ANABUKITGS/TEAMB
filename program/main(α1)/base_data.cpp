@@ -24,6 +24,7 @@ CBaseData::CBaseData(CVector2D _pos, bool _living, float _alpha, float _rad, flo
 , m_timer(0)
 , m_damage(0)
 , m_invincible(false)
+, m_knock_stan(false)
 {
 	CCharaData::GetInstance()->AddTaskInner(this);
 }
@@ -46,6 +47,7 @@ CBaseData::CBaseData(CVector2D _pos, bool _living, float _alpha, float _rad, flo
 , m_timer(0)
 , m_damage(0)
 , m_invincible(false)
+, m_knock_stan(false)
 {
 }
 
@@ -67,6 +69,7 @@ CBaseData::CBaseData(CVector2D _pos, bool _living, float _rad, float _exrate, in
 , m_timer(0)
 , m_damage(0)
 , m_invincible(false)
+, m_knock_stan(false)
 {
 }
 
@@ -131,10 +134,17 @@ void CCharaData::Delete(){
 }
 
 void CCharaData::Update(){
-
-	for (auto it1 = m_chara_data.begin(); it1 != m_chara_data.end(); it1++){
+	int _suu = 0;
+	bool _f = false;
+	for (auto it1 = m_chara_data.begin(); it1 != m_chara_data.end(); it1++,_suu++){
 		if ((*it1)->m_hp < 1){ (*it1)->m_living = false; continue; }		//HP‚ª0‚È‚ç¶‚«‚Ä‚¢‚È‚¢
 		for (auto it2 = m_chara_data.begin(); it2 != m_chara_data.end(); it2++){
+			if (_f == false){
+				for (int s = 0; s < _suu; s++){
+					it2++;
+					_f = true;
+				}
+			}
 			if ((*it1)->m_pos != (*it2)->m_pos){
 				if (IsHitCircle((*it1)->m_collision, (*it2)->m_collision, (*it1)->m_pos, (*it2)->m_pos)){
 					if (!(*it1)->m_invincible && !(*it2)->m_invincible){
@@ -145,20 +155,24 @@ void CCharaData::Update(){
 				}
 			}
 		}
+		_f = false;
 	}
 }
 
 void CCharaData::CBank(CBaseData* cd1, CBaseData* cd2){
-	
-	if (cd1->m_control == false){
+
+	if (cd1->m_knock_stan == true){
 		cd1->m_timer += BANK_STAN;
 		cd2->m_timer += BANK_STAN;
-	}
-	if (cd2->m_control == false){
+		cd2->m_knock_stan = true;
+
+		}
+	if (cd2->m_knock_stan == true){
 		cd1->m_timer += BANK_STAN;
 		cd2->m_timer += BANK_STAN;
+		cd1->m_knock_stan = true;
 	}
-	
+
 	////‘€ì•s‰Â”\////
 	cd1->m_control = false;
 	cd2->m_control = false;
@@ -178,16 +192,22 @@ void CCharaData::CBank(CBaseData* cd1, CBaseData* cd2){
 
 	_dist /= 2.0f;
 
-	cd1->m_pos += CVector2D(_vx * _dist*1.2f, _vy*_dist*1.2f);
-	cd2->m_pos -= CVector2D(_vx * _dist*1.2f, _vy*_dist*1.2f);
+	cd1->m_pos += CVector2D(_vx * _dist * 1.2f, _vy*_dist * 1.2f);
+	cd2->m_pos -= CVector2D(_vx * _dist * 1.2f, _vy*_dist * 1.2f);
 	///////////////////////
 	//”½”­ŒW”
 	float _e = 1.0f;
+	bool _a = false;
+	if (cd2->m_velocity > cd1->m_velocity){
+		float temp = cd2->m_velocity;
+		cd2->m_velocity = cd1->m_velocity;
+		cd1->m_velocity = temp;
+		_a = true;
+	}
 
 	float _rad1 = PosRad(cd1->m_pos, cd2->m_pos);//Õ“ËŒã‚Ì‘Šè
 	float _rad2 = cd1->m_rad - _rad1;	//Šp“x‚Ì·
 	float _rad3 = cd1->m_rad + _rad2;	//Õ“ËŒã©•ª‚ÌŠp“x
-	//float _rad4 = PosRad(cd2->m_pos, cd1->m_pos);//‚ß‚è‚İ–h~—p©‹@
 
 	if (_rad2 < 0)_rad2 = _rad2 + 2 * PI;
 	if (_rad3 < 0)_rad3 = _rad3 + 2 * PI;
@@ -197,15 +217,11 @@ void CCharaData::CBank(CBaseData* cd1, CBaseData* cd2){
 
 	//cd2->m_velocity = cd1->m_velocity;//_s1;
 
-	if (cd2->m_velocity >cd1->m_velocity){
-		float temp = cd2->m_velocity;
-		cd2->m_velocity = cd1->m_velocity;
-		cd1->m_velocity = temp;
-	}
-
 	//cd2->m_velocity = abs(cos(_rad2) * cd1->m_velocity);
+
 	cd2->m_velocity = abs(cos(_rad2) * ((-cd2->m_velocity - cd1->m_velocity)*(1 + _e) / (cd2->m_mass / cd1->m_mass + 1) + cd2->m_velocity));
 	cd1->m_velocity = abs(cd1->m_velocity - cd2->m_velocity);
+
 	//cd1->m_velocity = abs(sin(_rad2) * ((-cd1->m_velocity - cd2->m_velocity)*(1 + _e) / (cd1->m_mass / cd2->m_mass + 1) + cd1->m_velocity));
 
 	cd2->m_rad = _rad1;

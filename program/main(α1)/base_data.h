@@ -37,6 +37,7 @@ public:
 	int m_timer;			//何らかの時間
 	int m_damage;			//ダメージ量
 	bool m_invincible;		//無敵かどうか
+	bool m_knock_stan;		//ノックバック時のスタン	true:スタンあり　false:スタンなし
 	CBaseData();
 	//CharaDataに保存
 	CBaseData(CVector2D _pos, bool _living, float _alpha, float _rad, float _exrate, int _animtype, float _velocity, float _mass, int _hp, float _friction, float _collision, int _type);

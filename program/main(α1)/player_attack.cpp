@@ -28,6 +28,7 @@ void CKnockBack::Type(CPlayerData *cd){
 				(*it)->m_rad = cd->m_rad;
 				(*it)->m_velocity = PLAYER_ATTACK_KNOCK_BACK * (int)cd->m_chage_count * (*it)->m_mass * cd->m_knock_back;
 				(*it)->m_control = false;
+				(*it)->m_knock_stan = true;
 			}
 		}
 	}

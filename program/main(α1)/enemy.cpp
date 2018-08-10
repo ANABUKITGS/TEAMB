@@ -50,7 +50,7 @@ void CEnemy::Delete(){
 	for (auto it = m_enemys.begin(); it != m_enemys.end();){
 		if ((*it)->m_living == false){
 			CBaseData *_temp = new CBaseData((*it)->m_pos, true, 0, 1, ENEMY_DELETE_NUM, 0, 0, 0, 0, 0, ENEMY_DELETE);
-			CEffectManager::GetInstance()->GetEffectAdress()->GetEffectData()->push_back(new CEffectData(*_temp,1,NULL));
+			CEffectManager::GetInstance()->GetEffectAdress()->GetEffectData()->push_back(new CEffectData(*_temp,2,NULL));
 			m_dead_count++;
 			it = m_enemys.erase(it);
 			continue;
@@ -80,7 +80,7 @@ void CEnemy::Update(){
 		{
 			(*it)->m_counter++;
 
-			//タイマーが０なら移動処理（スタン）
+			//タイマー（スタン）が０なら移動処理
 			if ((*it)->m_timer == 0){
 				(*it)->Mover(_pos);
 			}
@@ -102,6 +102,7 @@ void CEnemy::Update(){
 						(*it)->m_velocity = 0;
 						(*it)->m_control = true;
 					}
+					(*it)->m_knock_stan = false;
 				}
 				else
 					(*it)->m_velocity -= (*it)->m_friction;
