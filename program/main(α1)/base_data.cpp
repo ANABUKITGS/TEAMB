@@ -145,12 +145,12 @@ void CCharaData::Update(){
 	for (auto it1 = m_chara_data.begin(); it1 != m_chara_data.end(); it1++,_suu++){
 		if ((*it1)->m_hp < 1){ (*it1)->m_kill_flag = true; continue; }		//HP‚ª0‚È‚ç¶‚«‚Ä‚¢‚È‚¢
 		for (auto it2 = m_chara_data.begin(); it2 != m_chara_data.end(); it2++){
-			if (_f == false){
+			/*if (_f == false){
 				for (int s = 0; s < _suu; s++){
 					it2++;
 					_f = true;
 				}
-			}
+			}*/
 			if ((*it1)->m_pos != (*it2)->m_pos){
 				if (IsHitCircle((*it1)->m_collision, (*it2)->m_collision, (*it1)->m_pos, (*it2)->m_pos)){
 					if (!(*it1)->m_invincible && !(*it2)->m_invincible){

@@ -50,6 +50,8 @@ CUi::CUi()
 		}
 	}
 
+	m_estimation = CUiData(CVector2D(0, 0), false, 0, UI_SELECT_EXRATE, 1, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, 0, 0, NULL);
+
 	LoadDivGraph("media\\img\\icon_stan.png", 2, 2, 1, 128, 128, m_icon_img[1], 0);
 	LoadDivGraph("media\\img\\icon_knock_back.png", 2, 2, 1, 128, 128, m_icon_img[0], 0);
 	LoadDivGraph("media\\img\\icon_bomb.png", 2, 2, 1, 128, 128, m_icon_img[2], 0);
@@ -58,6 +60,10 @@ CUi::CUi()
 	m_ui_img[1] = LoadGraph("media\\img\\timer_black.png");
 	m_ui_img[2] = LoadGraph("media\\img\\second_hand_l.png");
 	m_ui_img[3] = LoadGraph("media\\img\\second_hand_s.png");
+
+	m_estimation_img[0] = LoadGraph("media\\img\\hurricane_range.png");
+	m_estimation_img[1] = LoadGraph("media\\img\\stan_range.png");
+	m_estimation_img[2] = LoadGraph("media\\img\\bomb_range.png");
 
 	m_priority = eDWP_UI;
 	m_update_priority = 2;
@@ -143,6 +149,11 @@ void CUi::Draw(){
 			DrawRotaGraph2((*it)->m_pos.getX(), (*it)->m_pos.getY(), 5, 35, (*it)->m_exrate, radian((*it)->m_rad), m_ui_img[(*it)->m_animtype], TRUE, FALSE);
 		}
 	}
+
+	if (m_estimation.m_living)
+		DrawRotaGraph(m_estimation.m_pos.getX(), m_estimation.m_pos.getY(), m_estimation.m_exrate, m_estimation.m_rad, m_estimation_img[m_estimation.m_animtype],
+		TRUE, FALSE);
+
 	IconDraw();
 }
 

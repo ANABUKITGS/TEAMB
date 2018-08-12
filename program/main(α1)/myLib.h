@@ -10,7 +10,7 @@
 //#include <d3dx9math.h>
 
 //プリプロセッサ
-//#define STRUCT_ZERO_CLEAR(X)		memset(&X, 0,sizeof(X))
+#define STRUCT_ZERO_CLEAR(X)		memset(&X, 0,sizeof(X))
 #define FPS							(60)
 #define FRAMETIME					(0.0166666)		//(1.0f/FPS)
 #define DEG2RAD						(0.0174528)		//(0.0174f)
@@ -21,7 +21,7 @@ const int KEY_DATA = 9;				//KeyNumの個数分
 
 const float PLAYER_KNOCK_BACK_COLLISION = 80.0f;	//当たり判定の大きさ
 const float PLAYER_STAN_COLLISION = 137.0f;
-const float PLAYER_BOMB_COLLISION = 152.0f;
+const float PLAYER_BOMB_COLLISION = 108.0f;
 const float ENEMY_ATTACK_COLLISION = 35.0f;
 const float PLAYER_HURRICANE_COLLISION = 288.0f;
 
@@ -36,8 +36,8 @@ const float PLAYER_BOMB_RANGE = 200.0f;
 const float PLAYER_ATTACK_KNOCK_BACK = 4.0f;		//自機の攻撃系
 const float PLAYER_ATTACK_STAN = 160.0f;
 const float PLAYER_STAN_EXRATE = 1.5f;
-const float PLAYER_ATTACK_BOMB = 24.0f;
-const float PLAYER_BOMB_EXRATE = 1.0f;
+const float PLAYER_ATTACK_BOMB = 20.0f;
+const float PLAYER_BOMB_EXRATE = 0.7f;
 const float PLAYER_BOMB_KNOCK_BACK = 9.0f;
 const float PLAYER_HURRICANE_KNOCK_BACK = 1.2f;
 

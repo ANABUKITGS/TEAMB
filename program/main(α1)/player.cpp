@@ -252,15 +252,20 @@ void CPlayer::Attack(int key){
 
 	if (_type == RELEASE){
 			m_player->Action();
+			CUiManager::GetInstance()->GetUiAdress()->SetEstimationLivflag(false);
 	}
 	else if (_type == PRESSING){
 		m_player->m_chage_count += 0.019;
+		//チャージ中のエフェクト
 		if ((int)m_player->m_chage_count != _temp){
 			m_player->m_charge_effect.m_living = true;
 			_temp = m_player->m_chage_count;
 		}
 		if (m_player->m_chage_count > 4.0f)
 			m_player->m_chage_count = 4.0f;
+		if (m_player->m_attack_type == 0)
+			CUiManager::GetInstance()->GetUiAdress()->SetEstimationData(&m_player->m_pos, 1.0f * (1 + (int)m_player->m_chage_count * 0.1f) * m_player->m_stan,1);
+		CUiManager::GetInstance()->GetUiAdress()->SetEstimationLivflag(true);
 	}
 	else if (_type == SEPARATE){
 		_temp = m_player->m_chage_count;

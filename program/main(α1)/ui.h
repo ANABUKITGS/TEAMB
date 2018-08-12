@@ -70,8 +70,10 @@ class CUi : public CTask{
 private:
 	list<CUiData*> m_list_ui;
 	CUiData m_icon_ui[4];
+	CUiData m_estimation;
 	int m_icon_img[3][2];			//攻撃アイコン
 	int m_ui_img[4];				//
+	int m_estimation_img[3];		//攻撃時の予測地点
 
 	bool m_change_flag;				//切り替えを行ったか？
 	bool m_endflag;					//タイムリミットに達したか？
@@ -90,10 +92,12 @@ public:
 
 	void ChengeIcon(int _direction);
 
-	bool GetTimeFlag(){ return m_endflag; };
-	void SetTimeFlag(bool _flag){ m_endflag = _flag; };
-	int GetImg(int num1, int num2){ return m_icon_img[num1][num2]; };
-	void const SetChangeFlag(bool _flag){ m_change_flag = _flag; };
+	inline void SetEstimationData(CVector2D *_pos, float _rate, int _type){ m_estimation.m_pos = *_pos; m_estimation.m_exrate = _rate; m_estimation.m_animtype = _type; };
+	inline void SetEstimationLivflag(bool _flag){ m_estimation.m_living = _flag; };
+	inline bool GetTimeFlag(){ return m_endflag; };
+	inline void SetTimeFlag(bool _flag){ m_endflag = _flag; };
+	inline int GetImg(int num1, int num2){ return m_icon_img[num1][num2]; };
+	inline void const SetChangeFlag(bool _flag){ m_change_flag = _flag; };
 };
 
 
