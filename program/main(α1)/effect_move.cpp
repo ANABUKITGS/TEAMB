@@ -1,8 +1,10 @@
 #include "effect.h"
 #include "player_manager.h"
 #include "enemy_manager.h"
+#include "effect_manager.h"
 
 CEffectMovePattern2 EMP2;
+CEffectMovePattern6 EMP6;
 
 //Žûk
 void CEffectMovePattern1::Move(CEffectData *cd){
@@ -35,9 +37,13 @@ void CEffectMovePattern2::Move(CEffectData *cd){
 						(*it1)->m_hp -= (*it1)->m_damage;
 					}
 					(*it1)->m_control = false;
+					//(*it1)->m_kill_flag = true;
 				}
 			}
 		}
+	}
+	if (cd->m_amine_rate % cd->m_animtype == cd->m_animtype - 1){
+		CEffectManager::GetInstance()->GetEffectAdress()->GetEffectData()->push_back(new CEffectData(cd->m_pos, true, 0, 1, 0, 0, 0, 0, cd->m_collision, 0, 99, 1, &EMP6));
 	}
 }
 
@@ -64,5 +70,44 @@ void CEffectMovePattern4::Move(CEffectData *cd){
 	if (cd->m_amine_rate % cd->m_animtype == ENEMY_CREATE_NUM - 1){
 		CBaseData *_temp = new CBaseData(CVector2D(cd->m_pos.getX(), cd->m_pos.getY() + 30), true, radian((rand() % 360)), ENEMY_EXRATE, 0, ENEMY_SPEED, ENEMY_MASS, ENEMY_HP, ENEMY_FRICTION, ENEMY_COLLISION, ENEMY);
 		CEnemyManager::GetInstance()->GetEnemyAdress()->GetEnemyData()->push_back(new CEnemyData(*_temp));
+	}
+}
+
+//Žûki“G‚ðW‚ß‚éj
+void CEffectMovePattern5::Move(CEffectData *cd){
+	for (auto it1 = CCharaData::GetInstance()->GetCharaData()->begin();
+		it1 != CCharaData::GetInstance()->GetCharaData()->end(); it1++){
+		if (!(*it1)->m_control){
+			if (!(*it1)->m_invincible){
+				if (IsHitCircle(cd->m_collision, (*it1)->m_collision, CVector2D(cd->m_pos.getX(),
+					cd->m_pos.getY()), (*it1)->m_pos)){
+					(*it1)->m_rad = PosRad( (*it1)->m_pos,cd->m_pos);
+					(*it1)->m_velocity = PLAYER_HURRICANE_KNOCK_BACK;
+					(*it1)->m_bank_flag = false;
+				}
+			}
+		}
+	}
+}
+
+//”š”­‚Ì‡”Ôˆ—
+void CEffectMovePattern6::Move(CEffectData *cd){
+	cd->m_collision += 5;
+	if (cd->m_collision <= cd->m_friction){
+		for (auto it1 = CCharaData::GetInstance()->GetCharaData()->begin();
+			it1 != CCharaData::GetInstance()->GetCharaData()->end(); it1++){
+			if ((*it1)->m_kill_flag){
+				if (IsHitCircle(cd->m_collision, (*it1)->m_collision, CVector2D(cd->m_pos.getX(),
+					cd->m_pos.getY()), (*it1)->m_pos)){
+					(*it1)->m_living = false;
+				}
+			}
+			if (cd->m_collision == cd->m_friction - 2){
+				(*it1)->m_living = false;
+			}
+		}
+	}
+	else{
+		cd->m_living = false;
 	}
 }

@@ -38,6 +38,8 @@ public:
 	int m_damage;			//ダメージ量
 	bool m_invincible;		//無敵かどうか
 	bool m_knock_stan;		//ノックバック時のスタン	true:スタンあり　false:スタンなし
+	bool m_bank_flag;		//反射処理を行うかどうか　　true:する		 false:しない
+	bool m_kill_flag;		//体力がなくなったかどうか　　true:ない		 false:ある
 	CBaseData();
 	//CharaDataに保存
 	CBaseData(CVector2D _pos, bool _living, float _alpha, float _rad, float _exrate, int _animtype, float _velocity, float _mass, int _hp, float _friction, float _collision, int _type);

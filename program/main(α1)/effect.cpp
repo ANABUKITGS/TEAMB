@@ -22,7 +22,7 @@ CEffectData::CEffectData(CBaseData _temp, int _rate, CBaseEffectMove *_BEMove)
 }
 
 CEffect::CEffect(){
-	LoadDivGraph("media\\img\\knock_back.png", KNOCK_BACK_NUM, 2, 8, 240, 240, m_effect_img[KNOCK_BACK], 0);
+	LoadDivGraph("media\\img\\hurricane.png", KNOCK_BACK_NUM, 2, 8, 384, 384, m_effect_img[KNOCK_BACK], 0);
 	LoadDivGraph("media\\img\\stan_b1.png", STAN_NUM, 5, 2, 192, 192, m_effect_img[STAN], 0);
 	LoadDivGraph("media\\img\\bomb_cha0.png", BOMB_CHARGE_NUM, 5, 3, 128, 128, m_effect_img[CHARGE_BOMB], 0);
 	LoadDivGraph("media\\img\\exp.png", BOMB_NUM, 2, 7, 256, 256, m_effect_img[BOMB], 0);		//•ÏX
@@ -44,10 +44,11 @@ void CEffect::Update(){
 		(*it)->m_amine_rate++;
 
 		(*it)->Mover();
+		if ((*it)->m_type != 99){
 
-	if ((*it)->m_amine_rate / (*it)->m_rate % (*it)->m_animtype == (*it)->m_animtype - 1)
-		(*it)->m_living = false;
-
+			if ((*it)->m_amine_rate / (*it)->m_rate % (*it)->m_animtype == (*it)->m_animtype - 1)
+				(*it)->m_living = false;
+		}
 	}
 
 	Delete();
@@ -55,7 +56,9 @@ void CEffect::Update(){
 
 void CEffect::Draw(){
 	for (auto it = m_effects.begin(); it != m_effects.end(); it++){
-		DrawRotaGraph((*it)->m_pos.getX(), (*it)->m_pos.getY(), (*it)->m_exrate, (*it)->m_rad, m_effect_img[(*it)->m_type][(*it)->m_amine_rate / (*it)->m_rate % (*it)->m_animtype], TRUE, FALSE);
+		if ((*it)->m_type != 99){
+			DrawRotaGraph((*it)->m_pos.getX(), (*it)->m_pos.getY(), (*it)->m_exrate, (*it)->m_rad, m_effect_img[(*it)->m_type][(*it)->m_amine_rate / (*it)->m_rate % (*it)->m_animtype], TRUE, FALSE);
+		}
 	}
 }
 

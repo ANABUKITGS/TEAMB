@@ -8,7 +8,7 @@
 using namespace std;
 
 const int STAN_NUM = 10;
-const int KNOCK_BACK_NUM = 16;
+const int KNOCK_BACK_NUM = 16;		//16
 const int BOMB_CHARGE_NUM = 15;
 const int BOMB_NUM = 14;
 const int ENEMY_ATTACK_NUM = 8;
@@ -81,5 +81,17 @@ class CEffectMovePattern4 :public CBaseEffectMove{
 public:
 	void Move(CEffectData *cd);
 };
+//ûki“G‚ğW‚ß‚éj
+class CEffectMovePattern5 :public CBaseEffectMove{
+public:
+	void Move(CEffectData *cd);
+};
+//”š”­‡”Ôˆ—
+class CEffectMovePattern6 :public CBaseEffectMove{
+public:
+	void Move(CEffectData *cd);
+};
+
+
 
 #endif EFFECT_H

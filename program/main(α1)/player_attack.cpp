@@ -3,6 +3,7 @@
 #include "enemy_manager.h"
 
 CEffectMovePattern1 EMP1;
+CEffectMovePattern5 EMP5;
 
 void CStan::Type(CPlayerData *cd){
 	CEffectData *temp = new CEffectData(CVector2D(cd->m_pos.getX(), cd->m_pos.getY()), true, 0, PLAYER_STAN_EXRATE * (1 + (int)cd->m_chage_count * 0.1f) * cd->m_stan, STAN_NUM, 0, 10, 99, 0, PLAYER_STAN_COLLISION * (1 + (int)cd->m_chage_count * 0.1f) * cd->m_stan, STAN, 1, NULL);
@@ -32,6 +33,11 @@ void CKnockBack::Type(CPlayerData *cd){
 			}
 		}
 	}
+	CEffectManager::GetInstance()->GetEffectAdress()->GetEffectData()->push_back(temp);
+}
+
+void CHurricane::Type(CPlayerData *cd){
+	CEffectData *temp = new CEffectData(CVector2D(cd->m_pos.getX() + PLAYER_HURRICANE_RANGE * cos(cd->m_rad), cd->m_pos.getY() + PLAYER_HURRICANE_RANGE * sin(cd->m_rad)), true, cd->m_rad + radian(90), 1.5f * cd->m_knock_back, KNOCK_BACK_NUM, 0, 10, 99, 0, PLAYER_HURRICANE_COLLISION * cd->m_knock_back, KNOCK_BACK, 3, &EMP5);
 	CEffectManager::GetInstance()->GetEffectAdress()->GetEffectData()->push_back(temp);
 }
 

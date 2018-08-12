@@ -18,6 +18,7 @@ CEnemyData::CEnemyData(CVector2D _pos, bool _living, float _alpha, float _rad, f
 , m_locate(false)
 , m_attack_flag(false)
 , m_attack_cool_time(0)
+, m_item_flag(false)
 {
 }
 
@@ -29,6 +30,7 @@ CEnemyData::CEnemyData(CBaseData _temp)
 , m_locate(false)
 , m_attack_flag(false)
 , m_attack_cool_time(0)
+, m_item_flag(false)
 {
 }
 
@@ -48,10 +50,15 @@ CEnemy::CEnemy(){
 
 void CEnemy::Delete(){
 	for (auto it = m_enemys.begin(); it != m_enemys.end();){
+		if ((*it)->m_kill_flag){
+			if (!(*it)->m_item_flag){
+				m_dead_count++;
+				(*it)->m_item_flag = true;
+			}
+		}
 		if ((*it)->m_living == false){
 			CBaseData *_temp = new CBaseData((*it)->m_pos, true, 0, 1, ENEMY_DELETE_NUM, 0, 0, 0, 0, 0, ENEMY_DELETE);
 			CEffectManager::GetInstance()->GetEffectAdress()->GetEffectData()->push_back(new CEffectData(*_temp,2,NULL));
-			m_dead_count++;
 			it = m_enemys.erase(it);
 			continue;
 		}
@@ -76,23 +83,24 @@ void CEnemy::Update(){
 
 		_pos = (*it)->m_pos;
 
-		//移動処理
-		{
-			(*it)->m_counter++;
+		if (!(*it)->m_kill_flag){
+			//移動処理
+			{
+				(*it)->m_counter++;
 
-			//タイマー（スタン）が０なら移動処理
-			if ((*it)->m_timer == 0){
-				(*it)->Mover(_pos);
+				//タイマー（スタン）が０なら移動処理
+				if ((*it)->m_timer == 0){
+					(*it)->Mover(_pos);
+				}
+				else if ((*it)->m_timer > 0){
+					(*it)->m_timer--;
+					if ((*it)->m_velocity < 0)
+						(*it)->m_velocity = 0;
+				}
 			}
-			else if ((*it)->m_timer > 0){
-				(*it)->m_timer--;
-				if ((*it)->m_velocity < 0)
-					(*it)->m_velocity = 0;
-			}
-		}
 
-		//意識が無ければ以下の処理(吹き飛ばし時に通る)
-		{
+			//意識が無ければ以下の処理(吹き飛ばし時に通る)
+			{
 			//意識なし
 			if (!(*it)->m_control){
 				_pos += CVector2D((*it)->m_velocity * cos((*it)->m_rad), (*it)->m_velocity * sin((*it)->m_rad));
@@ -103,6 +111,7 @@ void CEnemy::Update(){
 						(*it)->m_control = true;
 					}
 					(*it)->m_knock_stan = false;
+					(*it)->m_bank_flag = true;
 				}
 				else
 					(*it)->m_velocity -= (*it)->m_friction;
@@ -116,9 +125,10 @@ void CEnemy::Update(){
 			}
 		}
 
-		//反射処理
-		Reflect(*(*it), _pos);
+			//反射処理
+			Reflect(*(*it), _pos);
 
+		}
 		(*it)->m_pos = _pos;
 
 	}

@@ -115,6 +115,7 @@ public:
 class CStan			: public CBasePAType{ void Type(CPlayerData *cd); };
 class CKnockBack	: public CBasePAType{ void Type(CPlayerData *cd); };
 class CBomb			: public CBasePAType{ void Type(CPlayerData *cd); };
+class CHurricane	: public CBasePAType{ void Type(CPlayerData *cd); };
 
 class CPad		: public CBaseControlType{ void Type(CPlayerData *cd, int key, float &_fx, float &_fy); };
 class CKeyBoard : public CBaseControlType{ void Type(CPlayerData *cd, int key, float &_fx, float &_fy); };

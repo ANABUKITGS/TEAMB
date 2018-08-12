@@ -32,7 +32,7 @@ class CItem : public CTask{
 private:
 	list<CItemData*> m_items;
 	int m_item_img[4];
-	int m_count;
+	bool m_create_flag;
 public:
 	CItem();
 	~CItem(){};
@@ -47,6 +47,8 @@ public:
 	//”½ŽË
 	void Reflect(CItemData* cd);
 
+	void SetItemCreateFlag(bool _flag){ m_create_flag = _flag; };
+	//void GetItemCreateFlag(bool _flag){ m_create_flag = _flag; };
 	list<CItemData*> *GetItemData(){ return &m_items; };
 };
 

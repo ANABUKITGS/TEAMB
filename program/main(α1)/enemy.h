@@ -54,6 +54,7 @@ public:
 	bool m_locate;	//見つけているかどうか
 	bool m_attack_flag;		//攻撃するかどうか
 	int m_attack_cool_time;		//攻撃クールタイム
+	bool m_item_flag;
 };
 
 class CEnemy : public CTask{

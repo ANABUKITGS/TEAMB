@@ -7,6 +7,7 @@
 CStan		stan;
 CKnockBack	knock_back;
 CBomb		bomb;
+CHurricane	hurricane;
 
 CPad		pad;
 CKeyBoard	keyboard;
@@ -17,9 +18,9 @@ CBombUp			item_bomb;
 CHeelUp			item_heel;
 
 CPAtable player_attack_table[] = {
-	{0,&stan},
-	{1,&knock_back},
-	{2,&bomb}
+	{ 0, &stan },
+	{ 1, &hurricane },
+	{ 2, &bomb }
 };
 
 CRadTable rad_table[] = {
@@ -200,6 +201,9 @@ void CPlayer::Move(int key){
 	}
 
 	m_player->m_pos = CVector2D(_hx, _hy);
+
+	if(m_player->m_kill_flag)
+		m_player->m_living = false;
 
 #if defined(_DEBUG) | defined(DEBUG)
 

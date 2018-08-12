@@ -19,7 +19,9 @@ CItemData::CItemData(CBaseData _temp)
 	//CItemManager::GetInstance()->GetItemAdress()->GetItemData()->push_back(this);
 }
 
-CItem::CItem(){
+CItem::CItem()
+:m_create_flag(false)
+{
 	m_item_img[STAN_ITEM] = LoadGraph("media\\img\\pow_up_stan.png");
 	m_item_img[KNOCK_BACK_ITEM] = LoadGraph("media\\img\\pow_up_kb.png");
 	m_item_img[BOMB_ITEM] = LoadGraph("media\\img\\pow_up_bomb.png");
