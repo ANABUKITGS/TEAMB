@@ -9,8 +9,9 @@
 const int BUFSIZE = 256;
 const int MAP_HEIGHT = 11;
 const int MAP_WIDTH = 20;
-const int MAP_SPACE = 10;
+const int MAP_SPACE = 9;
 const int MAP_CHIP_SIZE = 64;
+const int MAP_HALFCHIP_SIZE = 32;
 
 enum MapNum{
 	GROUND, WALL,CORNER_WALL

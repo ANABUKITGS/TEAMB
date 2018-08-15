@@ -67,7 +67,7 @@ void CItem::Update(){
 void CItem::Create(){
 	int _item_num = CEnemyManager::GetInstance()->GetEnemyAdress()->GetDeadCount() / ITEM_CREATE_NUM;
 	for (int i = 0; i < _item_num; i++){
-		CBaseData* _temp = new CBaseData(CVector2D(rand() % 1200 + 30, rand() % 660 + 30), true, radian((rand() % 360)), ITEM_EXRATE, rand() % 4, ITEM_SPEED, ITEM_MASS, ITEM_HP, ITEM_FRICTION, ITEM_COLLISION, ITEM);
+		CBaseData* _temp = new CBaseData(CVector2D(rand() % MAP_RANGE_X + 64, rand() % MAP_RANGE_Y + 73), true, radian((rand() % 360)), ITEM_EXRATE, rand() % 4, ITEM_SPEED, ITEM_MASS, ITEM_HP, ITEM_FRICTION, ITEM_COLLISION, ITEM);
 		m_items.push_back(new CItemData(*_temp));
 	}
 }

@@ -63,7 +63,6 @@ CPlayer::CPlayer()
 	m_player->m_chage_count = 1.0f;
 	m_player->m_control_type = false;
 	m_player->ControlType = &pad;
-	//LoadDivGraph("media\\img\\hero.png", 24, 6, 4, 75, 150, m_player_img, 0);
 	LoadDivGraph("media\\img\\hero_a2a.png", 24, 6, 4, 71, 70, m_player_img, 0);
 	LoadDivGraph("media\\img\\charge.png", 10, 2, 5, 384, 384, m_player_charge_img, 0);
 	LoadDivGraph("media\\img\\avoid_aria.png", 16, 2, 8, 384, 384, m_player_avoid_img, 0);
@@ -193,10 +192,10 @@ void CPlayer::Move(int key){
 	}
 
 	//ƒ}ƒbƒv“–‚½‚è”»’è
-	if (_hy < 45 || _hy > 675){
+	if (_hy < 83 || _hy >  615){
 		_hy = m_player->m_pos.getY();
 	}
-	if (_hx < 20 || _hx > 1260){
+	if (_hx < 64 || _hx > 1216){
 		_hx = m_player->m_pos.getX();
 	}
 

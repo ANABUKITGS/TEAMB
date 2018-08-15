@@ -28,7 +28,7 @@ const float PLAYER_HURRICANE_COLLISION = 288.0f;
 
 const float PLAYER_COLLISION = 20.0f;
 const float ENEMY_COLLISION = 15.0f;
-const float ENEMY_LONG_COLLISION = 32.0f;
+const float ENEMY_LONG_COLLISION = 21.0f;
 const float ENEMY_LOCATE_COLLISION = 170.0f;
 const float ENEMY_LONG_LOCATE_COLLISION = 350.0f;
 const float ENEMY_LONG_NEAR_COLLISION = 150.0f;
@@ -67,6 +67,9 @@ const int TIME_SPLIT = 50;		//5•ª
 const float TIME_CIRCLE_SPLIT = 3.6f;
 
 const float BANK_STAN = 600.0f;
+
+const int MAP_RANGE_X = 1152;
+const int MAP_RANGE_Y = 574;
 
 enum UpdatePriority{
 	UDP_FRAME1, UDP_FRAME2, UDP_CARD, UDP_EFFECT, UDP_FIELD, UDP_UI, UDP_NULL

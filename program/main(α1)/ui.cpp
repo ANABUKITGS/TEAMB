@@ -42,10 +42,10 @@ CUi::CUi()
 			m_list_ui.push_back(new CUiData(CVector2D(TIMER_ICON_X,TIMER_BACK_ICON_Y), true, 0, UI_SELECT_EXRATE, i, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, TIMER, 0, NULL));
 		}
 		else if (i == TIMER_BACK){
-			m_list_ui.push_back(new CUiData(CVector2D(TIMER_ICON_X, TIMER_ICON_Y), true, 0, UI_SELECT_EXRATE, i, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, TIMER_BACK, 0, &Timer));
+			m_list_ui.push_back(new CUiData(CVector2D(TIMER_ICON_X-1, TIMER_ICON_Y), true, 0, UI_SELECT_EXRATE, i, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, TIMER_BACK, 0, &Timer));
 		}
 		else if (i == SECOND_HAND){
-			m_list_ui.push_back(new CUiData(CVector2D(TIMER_ICON_X+1, TIMER_ICON_Y+1), true, 0, UI_SELECT_EXRATE, i, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, SECOND_HAND, 0, &SecondHand));
+			m_list_ui.push_back(new CUiData(CVector2D(TIMER_ICON_X, TIMER_ICON_Y+3), true, 0, UI_SELECT_EXRATE, i, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, SECOND_HAND, 0, &SecondHand));
 		}
 	}
 
@@ -55,9 +55,9 @@ CUi::CUi()
 	LoadDivGraph("media\\img\\icon_knock_back.png", 2, 2, 1, 128, 128, m_icon_img[0], 0);
 	LoadDivGraph("media\\img\\icon_bomb.png", 2, 2, 1, 128, 128, m_icon_img[2], 0);
 
-	m_ui_img[TIMER] = LoadGraph("media\\img\\timer.png");
+	m_ui_img[TIMER] = LoadGraph("media\\img\\time.png");
 	m_ui_img[TIMER_BACK] = LoadGraph("media\\img\\timer_black.png");
-	m_ui_img[SECOND_HAND] = LoadGraph("media\\img\\second_hand_l.png");
+	m_ui_img[SECOND_HAND] = LoadGraph("media\\img\\time_hands2.png");
 	m_ui_img[3] = LoadGraph("media\\img\\second_hand_s.png");
 	//m_ui_img[SYMBOL] = LoadGraph("media\\img\\symbol.png");
 
@@ -146,7 +146,7 @@ void CUi::Draw(){
 			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 		}
 		else if ((*it)->m_animtype == SECOND_HAND){
-			DrawRotaGraph2((*it)->m_pos.getX(), (*it)->m_pos.getY(), 5, 35, (*it)->m_exrate, radian((*it)->m_rad), m_ui_img[(*it)->m_animtype], TRUE, FALSE);
+			DrawRotaGraph2((*it)->m_pos.getX(), (*it)->m_pos.getY(), 8, 56, (*it)->m_exrate, radian((*it)->m_rad), m_ui_img[(*it)->m_animtype], TRUE, FALSE);
 		}
 		else
 			DrawRotaGraph((*it)->m_pos.getX()+15, (*it)->m_pos.getY()-20, (*it)->m_exrate, (*it)->m_rad, m_ui_img[(*it)->m_animtype],TRUE, FALSE);

@@ -147,13 +147,15 @@ void CAttackPattern2::Attack(CEnemyData *cd){
 
 void CAttackPattern3::Attack(CEnemyData *cd){
 	CPlayerData *_temp = CPlayerManager::GetInstance()->GetPlayerAdress()->GetData();
-	if (IsHitCircle(ENEMY_BULLET_COLLISION, _temp->m_collision,cd->m_pos, _temp->m_pos)){
-		_temp->m_control = false;
-		_temp->m_rad = PosRad(cd->m_pos, _temp->m_pos);
-		_temp->m_velocity = ENEMY_BULLET_KNOCK_BACK / _temp->m_mass;
+	if (!_temp->m_invincible){
+		if (IsHitCircle(ENEMY_BULLET_COLLISION, _temp->m_collision, cd->m_pos, _temp->m_pos)){
+			_temp->m_control = false;
+			_temp->m_rad = PosRad(cd->m_pos, _temp->m_pos);
+			_temp->m_velocity = ENEMY_BULLET_KNOCK_BACK / _temp->m_mass;
 
-		_temp->m_hp -= ENEMY_BULLET_ATTACK_DAMAGE;
-		cd->m_living = false;
+			_temp->m_hp -= ENEMY_BULLET_ATTACK_DAMAGE;
+			cd->m_living = false;
+		}
 	}
 }
 

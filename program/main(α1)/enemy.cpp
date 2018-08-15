@@ -191,7 +191,7 @@ void CEnemy::Update(){
 //#if defined(_DEBUG) | defined(DEBUG)
 	if (m_enemys.size() < MAX_ENEMY)
 	if (m_count % 50 == 0){
-		CVector2D _pos = CVector2D(rand() % 1200 + 30, rand() % 660 + 30);
+		CVector2D _pos = CVector2D(rand() % MAP_RANGE_X + 64, rand() % MAP_RANGE_Y + 73);
 		CBaseData *_temp_e = new CBaseData(_pos + CVector2D(0,-30), true, 0, 1, ENEMY_CREATE_NUM, 0, 0, 0, 0, 0, ENEMY_CREATE);
 		CEffectManager::GetInstance()->GetEffectAdress()->GetEffectData()->push_back(new CEffectData(*_temp_e, 2, &EMP4));
 		m_count = 1;
@@ -202,28 +202,28 @@ void CEnemy::Update(){
 }
 
 void CEnemy::Reflect(CEnemyData &cd,CVector2D &_pos){
-	if (_pos.getY() > 720){
+	if (_pos.getY() > 647){
 		cd.m_rad = cd.m_rad*(-1);
-		_pos.setY(720 * 2 - _pos.getY());
+		_pos.setY(647 * 2 - _pos.getY());
 		if (cd.m_control == false)
 			cd.m_timer += BANK_STAN;
 	}
-	else if (_pos.getY() < 0){
+	else if (_pos.getY() < 73){
 		cd.m_rad = cd.m_rad*(-1);
-		_pos.setY(-_pos.getY());
+		_pos.setY(73 * 2 - _pos.getY());
 		if (cd.m_control == false)
 			cd.m_timer += BANK_STAN;
 	}
 
-	if (_pos.getX() > 1280){
+	if (_pos.getX() > 1216){
 		cd.m_rad = PI - cd.m_rad;
-		_pos.setX(1280 * 2 - _pos.getX());
+		_pos.setX(1216 * 2 - _pos.getX());
 		if (cd.m_control == false)
 			cd.m_timer += BANK_STAN;
 	}
-	else if (_pos.getX() < 0){
+	else if (_pos.getX() < 64){
 		cd.m_rad = PI - cd.m_rad;
-		_pos.setX(-_pos.getX());
+		_pos.setX(64 * 2 - _pos.getX());
 		if (cd.m_control == false)
 			cd.m_timer += BANK_STAN;
 	}
