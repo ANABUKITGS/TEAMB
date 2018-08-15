@@ -45,7 +45,6 @@ void CEffect::Update(){
 
 		(*it)->Mover();
 		if ((*it)->m_type != 99){
-
 			if ((*it)->m_amine_rate / (*it)->m_rate % (*it)->m_animtype == (*it)->m_animtype - 1)
 				(*it)->m_living = false;
 		}

@@ -10,7 +10,7 @@ const float PLAYER_EXRATE = 1.0f;
 const float PLAYER_SPEED = 5.0f;
 const float PLAYER_FRICTION = 0.4f;
 const int PLAYER_HP = 64;
-const float PLAYER_MASS = 0.5f;
+const float PLAYER_MASS = 1.0f;
 
 enum PlayerDirection{
 	PLAYER_DOWN, PLAYER_DL = 3, PLAYER_LEFT = 6, PLAYER_DR = 9, 

@@ -154,7 +154,7 @@ void CCharaData::Update(){
 			if ((*it1)->m_pos != (*it2)->m_pos){
 				if (IsHitCircle((*it1)->m_collision, (*it2)->m_collision, (*it1)->m_pos, (*it2)->m_pos)){
 					if (!(*it1)->m_invincible && !(*it2)->m_invincible){
-						if ((*it1)->m_type != ITEM && (*it2)->m_type != ITEM){
+						if ((*it1)->m_type != ITEM && (*it2)->m_type != ITEM && (*it1)->m_type != ENEMY_BULLET && (*it2)->m_type != ENEMY_BULLET){
 							CBank(*it1, *it2);
 						}
 					}
@@ -240,6 +240,7 @@ void CCharaData::CBank(CBaseData* cd1, CBaseData* cd2){
 void CCharaData::Draw(){
 	for (auto it = m_chara_data.begin(); it != m_chara_data.end(); it++){
 		if ((*it)->m_type == ENEMY){
+			if ((*it)->m_hp < 64)
 			DrawRectGraph((*it)->m_pos.getX() - 32, (*it)->m_pos.getY() - 25, 0, 0, (*it)->m_hp, 4, m_ehp_img[0], FALSE, FALSE);
 			if ((*it)->m_damage > 0)
 				DrawRectGraph((*it)->m_pos.getX() - 32 + (*it)->m_hp, (*it)->m_pos.getY() - 25, 0, 0, (*it)->m_damage, 4, m_ehp_img[1], FALSE, FALSE);

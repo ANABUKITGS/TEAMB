@@ -22,7 +22,6 @@ CUiData::CUiData(CVector2D _pos, bool _living, float _rad, float _exrate, int _a
 , m_priority(_prio)
 , BUpdate(_BUpdate)
 {
-	
 }
 
 CUi::CUi()
@@ -56,10 +55,11 @@ CUi::CUi()
 	LoadDivGraph("media\\img\\icon_knock_back.png", 2, 2, 1, 128, 128, m_icon_img[0], 0);
 	LoadDivGraph("media\\img\\icon_bomb.png", 2, 2, 1, 128, 128, m_icon_img[2], 0);
 
-	m_ui_img[0] = LoadGraph("media\\img\\timer.png");
-	m_ui_img[1] = LoadGraph("media\\img\\timer_black.png");
-	m_ui_img[2] = LoadGraph("media\\img\\second_hand_l.png");
+	m_ui_img[TIMER] = LoadGraph("media\\img\\timer.png");
+	m_ui_img[TIMER_BACK] = LoadGraph("media\\img\\timer_black.png");
+	m_ui_img[SECOND_HAND] = LoadGraph("media\\img\\second_hand_l.png");
 	m_ui_img[3] = LoadGraph("media\\img\\second_hand_s.png");
+	//m_ui_img[SYMBOL] = LoadGraph("media\\img\\symbol.png");
 
 	m_estimation_img[0] = LoadGraph("media\\img\\hurricane_range.png");
 	m_estimation_img[1] = LoadGraph("media\\img\\stan_range.png");
@@ -140,14 +140,16 @@ void CUi::Draw(){
 		if ((*it)->m_animtype == TIMER)
 			DrawRotaGraph((*it)->m_pos.getX(), (*it)->m_pos.getY(), (*it)->m_exrate, (*it)->m_rad, m_ui_img[(*it)->m_animtype],
 			TRUE, FALSE);
-		if ((*it)->m_animtype == TIMER_BACK){
+		else if ((*it)->m_animtype == TIMER_BACK){
 			SetDrawBlendMode(DX_BLENDMODE_ALPHA, 130);
 			DrawCircleGauge((*it)->m_pos.getX(), (*it)->m_pos.getY(), (*it)->m_rad, m_ui_img[(*it)->m_animtype], 0);
 			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 		}
-		if ((*it)->m_animtype == SECOND_HAND){
+		else if ((*it)->m_animtype == SECOND_HAND){
 			DrawRotaGraph2((*it)->m_pos.getX(), (*it)->m_pos.getY(), 5, 35, (*it)->m_exrate, radian((*it)->m_rad), m_ui_img[(*it)->m_animtype], TRUE, FALSE);
 		}
+		else
+			DrawRotaGraph((*it)->m_pos.getX()+15, (*it)->m_pos.getY()-20, (*it)->m_exrate, (*it)->m_rad, m_ui_img[(*it)->m_animtype],TRUE, FALSE);
 	}
 
 	if (m_estimation.m_living)

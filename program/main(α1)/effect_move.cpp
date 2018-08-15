@@ -6,6 +6,17 @@
 CEffectMovePattern2 EMP2;
 CEffectMovePattern6 EMP6;
 
+//enemyの行動パターン
+CMovePattern1 MP1;
+CMovePattern2 MP2;
+CAttackPattern1 AP1;
+CAttackPattern2 AP2;
+
+CECreateTable e_c_table[] = {
+	{ NORMAL, 1.0f, ENEMY_COLLISION, &MP1, &AP1 },
+	{ LONG_RANGE, 1.5f, ENEMY_LONG_COLLISION, &MP2, &AP2 },
+};
+
 //収縮
 void CEffectMovePattern1::Move(CEffectData *cd){
 	if (cd->m_amine_rate / cd->m_rate % cd->m_animtype == cd->m_animtype - 1){
@@ -27,7 +38,9 @@ void CEffectMovePattern2::Move(CEffectData *cd){
 				if (IsHitCircle(cd->m_collision, (*it1)->m_collision, CVector2D(cd->m_pos.getX(),
 					cd->m_pos.getY()), (*it1)->m_pos)){
 					(*it1)->m_rad = PosRad(cd->m_pos, (*it1)->m_pos);
-					(*it1)->m_velocity = PLAYER_BOMB_KNOCK_BACK;
+					(*it1)->m_velocity = PLAYER_BOMB_KNOCK_BACK / (*it1)->m_mass;
+					if ((*it1)->m_hp < 0)
+						(*it1)->m_hp = 0;
 					if ((*it1)->m_type == PLAYER){
 						(*it1)->m_damage = (int)PLAYER_ATTACK_BOMB * cd->m_mass / 3;
 						(*it1)->m_hp -= (*it1)->m_damage;
@@ -56,7 +69,7 @@ void CEffectMovePattern3::Move(CEffectData *cd){
 				CVector2D(cd->m_pos.getX(), cd->m_pos.getY()), _temp->m_pos)){
 				_temp->m_temporary_rad = _temp->m_rad;
 				_temp->m_rad = cd->m_rad;
-				_temp->m_velocity = ENEMY_ATTACK_KNOCK_BACK * _temp->m_mass;
+				_temp->m_velocity = ENEMY_ATTACK_KNOCK_BACK / _temp->m_mass;
 				_temp->m_control = false;
 				_temp->m_damage = ENEMY_ATTACK_DAMAGE;
 				_temp->m_hp -= _temp->m_damage;
@@ -68,8 +81,14 @@ void CEffectMovePattern3::Move(CEffectData *cd){
 //召喚
 void CEffectMovePattern4::Move(CEffectData *cd){
 	if (cd->m_amine_rate % cd->m_animtype == ENEMY_CREATE_NUM - 1){
-		CBaseData *_temp = new CBaseData(CVector2D(cd->m_pos.getX(), cd->m_pos.getY() + 30), true, radian((rand() % 360)), ENEMY_EXRATE, 0, ENEMY_SPEED, ENEMY_MASS, ENEMY_HP, ENEMY_FRICTION, ENEMY_COLLISION, ENEMY);
-		CEnemyManager::GetInstance()->GetEnemyAdress()->GetEnemyData()->push_back(new CEnemyData(*_temp));
+		float _rand = rand() % ENEMY_TYPE;
+		for (auto ect : e_c_table){
+			if (ect.m_type == _rand){
+				CBaseData *_temp = new CBaseData(CVector2D(cd->m_pos.getX(), cd->m_pos.getY() + 30), true, radian((rand() % 360)), ENEMY_EXRATE, ect.m_type, ENEMY_SPEED, ect.m_mass, ENEMY_HP, ENEMY_FRICTION, ect.m_collision, ENEMY);
+				CEnemyManager::GetInstance()->GetEnemyAdress()->GetEnemyData()->push_back(new CEnemyData(*_temp, ect.m_BEMove, ect.m_BEAttack));
+				break;
+			}
+		}
 	}
 }
 
@@ -82,7 +101,7 @@ void CEffectMovePattern5::Move(CEffectData *cd){
 				if (IsHitCircle(cd->m_collision, (*it1)->m_collision, CVector2D(cd->m_pos.getX(),
 					cd->m_pos.getY()), (*it1)->m_pos)){
 					(*it1)->m_rad = PosRad( (*it1)->m_pos,cd->m_pos);
-					(*it1)->m_velocity = PLAYER_HURRICANE_KNOCK_BACK;
+					(*it1)->m_velocity = cd->m_velocity;
 					(*it1)->m_bank_flag = false;
 				}
 			}

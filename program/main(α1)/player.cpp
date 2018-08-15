@@ -263,8 +263,21 @@ void CPlayer::Attack(int key){
 		}
 		if (m_player->m_chage_count > 4.0f)
 			m_player->m_chage_count = 4.0f;
-		if (m_player->m_attack_type == 0)
+
+		switch (m_player->m_attack_type)
+		{
+		case 0:
 			CUiManager::GetInstance()->GetUiAdress()->SetEstimationData(&m_player->m_pos, 1.0f * (1 + (int)m_player->m_chage_count * 0.1f) * m_player->m_stan,1);
+			break;
+		case 1:
+			CUiManager::GetInstance()->GetUiAdress()->SetEstimationData(&CVector2D(m_player->m_pos.getX() + PLAYER_HURRICANE_RANGE * cos(m_player->m_rad), m_player->m_pos.getY() + PLAYER_HURRICANE_RANGE * sin(m_player->m_rad)), 1.0f * (1 + (int)m_player->m_chage_count * 0.1f) * m_player->m_knock_back, 0);
+			break;
+		case 2:
+			CUiManager::GetInstance()->GetUiAdress()->SetEstimationData(&CVector2D(m_player->m_pos.getX() + PLAYER_BOMB_RANGE * cos(m_player->m_rad), m_player->m_pos.getY() + PLAYER_BOMB_RANGE * sin(m_player->m_rad)), PLAYER_BOMB_EXRATE * (1 + (int)m_player->m_chage_count * 0.1f) * m_player->m_bomb, 2);
+			break;
+		default:
+			break;
+		}
 		CUiManager::GetInstance()->GetUiAdress()->SetEstimationLivflag(true);
 	}
 	else if (_type == SEPARATE){

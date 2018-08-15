@@ -98,6 +98,7 @@ public:
 	inline void SetTimeFlag(bool _flag){ m_endflag = _flag; };
 	inline int GetImg(int num1, int num2){ return m_icon_img[num1][num2]; };
 	inline void const SetChangeFlag(bool _flag){ m_change_flag = _flag; };
+	inline list<CUiData*> *GetUiData(){ return &m_list_ui; };
 };
 
 

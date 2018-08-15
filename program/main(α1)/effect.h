@@ -93,5 +93,4 @@ public:
 };
 
 
-
 #endif EFFECT_H
