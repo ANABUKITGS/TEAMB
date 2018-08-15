@@ -103,6 +103,10 @@ void CMovePattern3::Move(CEnemyData *cd, CVector2D &_pos){
 	}
 }
 
+void CMovePattern4::Move(CEnemyData *cd, CVector2D &_pos){
+
+}
+
 void CAttackPattern1::Attack(CEnemyData *cd){
 	CPlayerData *_temp1 = CPlayerManager::GetInstance()->GetPlayerAdress()->GetData();
 	if (!cd->m_attack_flag){
@@ -151,4 +155,8 @@ void CAttackPattern3::Attack(CEnemyData *cd){
 		_temp->m_hp -= ENEMY_BULLET_ATTACK_DAMAGE;
 		cd->m_living = false;
 	}
+}
+
+void CAttackPattern4::Attack(CEnemyData *cd){
+
 }

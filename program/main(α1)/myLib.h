@@ -31,7 +31,7 @@ const float ENEMY_COLLISION = 15.0f;
 const float ENEMY_LONG_COLLISION = 32.0f;
 const float ENEMY_LOCATE_COLLISION = 170.0f;
 const float ENEMY_LONG_LOCATE_COLLISION = 350.0f;
-const float ENEMY_LONG_NEAR_COLLISION = 110.0f;
+const float ENEMY_LONG_NEAR_COLLISION = 150.0f;
 
 const float PLAYER_RANGE = 100.0f;					//Ž©‹@‚ÌŽË’ö
 const float PLAYER_HURRICANE_RANGE = 250.0f;
