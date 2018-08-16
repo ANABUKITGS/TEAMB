@@ -8,12 +8,22 @@
 using namespace std;
 
 const float ENEMY_EXRATE = 0.7f;
-const float ENEMY_SPEED = 1.3f;
+
+const float ENEMY_NORMAL_SPEED = 1.3f;
+const float ENEMY_LONG_SPEED = 1.5f;
+const float ENEMY_BULLET_SPEED = 1.5f;
+const float ENEMY_BIG_SPEED = 0.7f;
+
 const float ENEMY_MASS = 1.0f;
 const float ENEMY_FRICTION = 0.1f;
-const float ENEMY_HP = 64;
+
+const int ENEMY_NORMAL_HP = 64;
+const int ENEMY_LONG_HP = 64;
+const int ENEMY_BULLET_HP = 30;
+const int ENEMY_BIG_HP = 128;
+
 const int MAX_ENEMY = 20;
-const int ENEMY_TYPE = 2;
+const int ENEMY_TYPE = 3;
 
 
 enum EnemyDirection{
@@ -21,7 +31,7 @@ enum EnemyDirection{
 };
 
 enum EnemyType{
-	NORMAL,LONG_RANGE,BULLET,MAGIC_SQUARE,BIG,
+	NORMAL,LONG_RANGE,BULLET,MAGIC_SQUARE,BIG//,IMPACT
 };
 
 class CEMoveTable{
@@ -45,8 +55,11 @@ public:
 
 class CECreateTable{
 public:
+	int m_num;
 	int m_type;
+	float m_speed;
 	float m_mass;
+	int m_hp;
 	float m_collision;
 	CBaseEemeyMove *m_BEMove;
 	CBaseEemeyAttack *m_BEAttack;

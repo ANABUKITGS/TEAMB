@@ -16,12 +16,12 @@ const int ENEMY_CREATE_NUM = 20;
 const int ENEMY_DELETE_NUM = 13;
 const int PLAYER_HIT_NUM = 8;
 
-const int EFFECT_IMG = 8;
+const int EFFECT_IMG = 9;
 
 //m_type‚Åg—p‚µ‚Ä‚¢‚é@
 enum EFFECT_TYPE{
 	KNOCK_BACK, STAN, CHARGE_BOMB, BOMB, ENEMY_ATTACK, ENEMY_CREATE ,ENEMY_DELETE,
-	PLAYER_HIT
+	PLAYER_HIT,IMPACT
 };
 
 class CEffectData;
@@ -88,6 +88,11 @@ public:
 };
 //”š”­‡”Ôˆ—
 class CEffectMovePattern6 :public CBaseEffectMove{
+public:
+	void Move(CEffectData *cd);
+};
+//ÕŒ‚”gˆ—
+class CEffectMovePattern7 :public CBaseEffectMove{
 public:
 	void Move(CEffectData *cd);
 };

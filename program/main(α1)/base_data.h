@@ -27,6 +27,7 @@ public:
 	float m_exrate;			//大きさ
 	int m_animtype;			//アニメーションの種類
 	float m_velocity;		//速度
+	float m_speed;			//移動速度
 	float m_mass;			//質量
 	int m_amine_rate;		//アニメーション
 	int m_hp;				//体力

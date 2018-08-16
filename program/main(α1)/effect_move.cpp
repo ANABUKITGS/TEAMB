@@ -9,12 +9,15 @@ CEffectMovePattern6 EMP6;
 //enemy‚Ìs“®ƒpƒ^[ƒ“
 CMovePattern1 MP1;
 CMovePattern2 MP2;
+CMovePattern4 MP4;
 CAttackPattern1 AP1;
 CAttackPattern2 AP2;
+CAttackPattern4 AP4;
 
 CECreateTable e_c_table[] = {
-	{ NORMAL, 1.0f, ENEMY_COLLISION, &MP1, &AP1 },
-	{ LONG_RANGE, 1.5f, ENEMY_LONG_COLLISION, &MP2, &AP2 },
+	{ 0, NORMAL, ENEMY_NORMAL_SPEED, 1.0f, ENEMY_NORMAL_HP, ENEMY_COLLISION, &MP1, &AP1 },
+	{ 1, LONG_RANGE, ENEMY_LONG_SPEED, 1.5f, ENEMY_LONG_HP, ENEMY_LONG_COLLISION, &MP2, &AP2 },
+	{ 2, BIG, ENEMY_BIG_SPEED, 4.5f, ENEMY_BIG_HP, ENEMY_BIG_COLLISION, &MP4, &AP4 },
 };
 
 //Žûk
@@ -83,8 +86,8 @@ void CEffectMovePattern4::Move(CEffectData *cd){
 	if (cd->m_amine_rate % cd->m_animtype == ENEMY_CREATE_NUM - 1){
 		float _rand = rand() % ENEMY_TYPE;
 		for (auto ect : e_c_table){
-			if (ect.m_type == _rand){
-				CBaseData *_temp = new CBaseData(CVector2D(cd->m_pos.getX(), cd->m_pos.getY() + 30), true, radian((rand() % 360)), ENEMY_EXRATE, ect.m_type, ENEMY_SPEED, ect.m_mass, ENEMY_HP, ENEMY_FRICTION, ect.m_collision, ENEMY);
+			if (ect.m_num == _rand){
+				CBaseData *_temp = new CBaseData(CVector2D(cd->m_pos.getX(), cd->m_pos.getY() + 30), true, radian((rand() % 360)), ENEMY_EXRATE, ect.m_type, ect.m_speed, ect.m_mass, ect.m_hp, ENEMY_FRICTION, ect.m_collision, ENEMY);
 				CEnemyManager::GetInstance()->GetEnemyAdress()->GetEnemyData()->push_back(new CEnemyData(*_temp, ect.m_BEMove, ect.m_BEAttack));
 				break;
 			}
@@ -129,4 +132,30 @@ void CEffectMovePattern6::Move(CEffectData *cd){
 	else{
 		cd->m_living = false;
 	}
+}
+
+//ÕŒ‚”gˆ—
+void CEffectMovePattern7::Move(CEffectData *cd){
+	/*cd->m_collision += 10;
+	if (cd->m_collision <= cd->m_friction){
+		for (auto it = CCharaData::GetInstance()->GetCharaData()->begin();
+			it != CCharaData::GetInstance()->GetCharaData()->end(); it++){
+			if (IsHitCircle(cd->m_collision, (*it)->m_collision, CVector2D(cd->m_pos.getX(),
+				cd->m_pos.getY()), (*it)->m_pos)){
+				(*it)->m_control = false;
+				(*it)->m_timer = ENEMY_BIG_ATTACK_STAN;
+				(*it)->m_velocity = ENEMY_ATTACK_KNOCK_BACK;
+				(*it)->m_rad = PosRad(cd->m_pos, (*it)->m_pos);
+				if ((*it)->m_type == PLAYER)
+					(*it)->m_hp -= ENEMY_BIG_ATTACK_DAMAGE;
+			}
+		}
+	}
+	else
+		cd->m_living = false;
+	*/
+	if (cd->m_exrate < 1.5f)
+		cd->m_exrate += 0.2;
+	else
+		cd->m_living = false;
 }

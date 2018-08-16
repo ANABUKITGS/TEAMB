@@ -117,6 +117,8 @@ void CPlayer::Update(){
 
 void CPlayer::Move(int key){
 
+	m_player->m_hp = 64;
+
 	float _fx = 0, _fy = 0;
 
 	float _hx = m_player->m_pos.getX();

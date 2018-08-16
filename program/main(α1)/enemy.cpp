@@ -52,8 +52,7 @@ CEnemy::CEnemy(){
 	m_enemy_img[BULLET] = LoadGraph("media\\img\\enemy_long_range_attack.png");
 	m_enemy_img[MAGIC_SQUARE] = LoadGraph("media\\img\\magic_square.png");
 	m_enemy_img[BIG] = LoadGraph("media\\img\\enemy_big.png");
-
-	
+	//m_enemy_img[IMPACT] = LoadGraph("media\\img\\impact2.png");
 
 	m_priority = eDWP_ENEMY;
 	m_update_priority = 2;
@@ -157,7 +156,6 @@ void CEnemy::Update(){
 			}
 			//ˆÓ¯‚ ‚è
 			else{
-				(*it)->m_velocity = ENEMY_SPEED;
 
 				//UŒ‚ˆ—
 				(*it)->Attacker();

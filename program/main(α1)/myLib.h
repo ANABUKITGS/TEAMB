@@ -23,15 +23,20 @@ const float PLAYER_KNOCK_BACK_COLLISION = 80.0f;	//当たり判定の大きさ
 const float PLAYER_STAN_COLLISION = 137.0f;
 const float PLAYER_BOMB_COLLISION = 108.0f;
 const float ENEMY_ATTACK_COLLISION = 35.0f;
+const float ENEMY_BIG_ATTACK_COLLISION = 90.0f;
+const float ENEMY_IMPACK_COLLISION = 150.0f;
 const float ENEMY_BULLET_COLLISION = 15.0f;
 const float PLAYER_HURRICANE_COLLISION = 288.0f;
 
 const float PLAYER_COLLISION = 20.0f;
 const float ENEMY_COLLISION = 15.0f;
 const float ENEMY_LONG_COLLISION = 21.0f;
+const float ENEMY_BIG_COLLISION = 40.0f;
+
 const float ENEMY_LOCATE_COLLISION = 170.0f;
 const float ENEMY_LONG_LOCATE_COLLISION = 350.0f;
 const float ENEMY_LONG_NEAR_COLLISION = 150.0f;
+const float ENEMY_BIG_LOCATE_COLLISION = 450.0f;
 
 const float PLAYER_RANGE = 100.0f;					//自機の射程
 const float PLAYER_HURRICANE_RANGE = 250.0f;
@@ -55,6 +60,11 @@ const float ENEMY_RANGE = 10.0f;
 const int ENEMY_CHANGE = 600;
 const int ENEMY_MOVE = 360;
 const int ENEMY_WAIT = 600;
+
+const int ENEMY_BIG_ATTACK_COOL_TIME = 140;
+const int ENEMY_BIG_ATTACK_STAN = 300;
+const float ENEMY_BIG_ATTACK_KNOCK_BACK = 14.0f;
+const float ENEMY_BIG_ATTACK_DAMAGE = 20.0f;
 
 const int ITEM_CREATE_NUM = 6;						//アイテム系
 const float ITEM_STAN_UP = 0.1f;

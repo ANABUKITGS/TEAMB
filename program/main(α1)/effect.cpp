@@ -30,6 +30,8 @@ CEffect::CEffect(){
 	LoadDivGraph("media\\img\\enemy_create.png", ENEMY_CREATE_NUM, 2, 10, 384, 384, m_effect_img[ENEMY_CREATE], 0);
 	LoadDivGraph("media\\img\\enemy_delete.png", ENEMY_DELETE_NUM, 5, 3, 192, 192, m_effect_img[ENEMY_DELETE], 0);
 	LoadDivGraph("media\\img\\player_hit.png", PLAYER_HIT_NUM, 2, 4, 384, 384, m_effect_img[PLAYER_HIT], 0);
+	//LoadDivGraph("media\\img\\impact2.png", 1, 1, 1, 256, 256, m_effect_img[IMPACT], 0);
+	m_effect_img[IMPACT][0] = LoadGraph("media\\img\\impact2.png");
 
 	m_priority = eDWP_EFFECT;
 	m_update_priority = 2;
@@ -41,10 +43,11 @@ CEffect::CEffect(){
 
 void CEffect::Update(){
 	for (auto it = m_effects.begin(); it != m_effects.end(); it++){
-		(*it)->m_amine_rate++;
+
+			(*it)->m_amine_rate++;
 
 		(*it)->Mover();
-		if ((*it)->m_type != 99){
+		if ((*it)->m_type != 99 && (*it)->m_type != IMPACT){
 			if ((*it)->m_amine_rate / (*it)->m_rate % (*it)->m_animtype == (*it)->m_animtype - 1)
 				(*it)->m_living = false;
 		}
@@ -55,7 +58,10 @@ void CEffect::Update(){
 
 void CEffect::Draw(){
 	for (auto it = m_effects.begin(); it != m_effects.end(); it++){
-		if ((*it)->m_type != 99){
+		if ((*it)->m_type == IMPACT){
+			DrawRotaGraph((*it)->m_pos.getX(), (*it)->m_pos.getY(), (*it)->m_exrate, (*it)->m_rad, m_effect_img[(*it)->m_type][0], TRUE, FALSE);
+		}
+		else if ((*it)->m_type != 99){
 			DrawRotaGraph((*it)->m_pos.getX(), (*it)->m_pos.getY(), (*it)->m_exrate, (*it)->m_rad, m_effect_img[(*it)->m_type][(*it)->m_amine_rate / (*it)->m_rate % (*it)->m_animtype], TRUE, FALSE);
 		}
 	}
