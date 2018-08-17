@@ -5,6 +5,17 @@
 
 CEffectMovePattern4 EMP4;
 
+CEnemyRadTable e_rad_table[] = {
+	{ 0, 22.5f, 337.5f, ENEMY_RIGHT },
+	{ 45, 67.5f, 22.5f, ENEMY_DR },
+	{ 90, 112.5f, 67.5f, ENEMY_DOWN },
+	{ 135, 157.5f, 112.5f, ENEMY_DL },
+	{ 180, 202.5f, 157.5f, ENEMY_LEFT },
+	{ 225, 247.5f, 202.5f, ENEMY_UL },
+	{ 270, 292.5f, 247.5f, ENEMY_UP },
+	{ 315, 337.5f, 292.5f, ENEMY_UR }
+};
+
 CEnemyData::CEnemyData(){
 
 }
@@ -19,6 +30,9 @@ CEnemyData::CEnemyData(CVector2D _pos, bool _living, float _alpha, float _rad, f
 , m_attack_cool_time(0)
 , m_item_flag(false)
 , m_escape_flag(false)
+//, m_motion_type(0)
+//, m_direction_type(0)
+//, m_anim_division(15)
 {
 }
 
@@ -32,6 +46,9 @@ CEnemyData::CEnemyData(CBaseData _temp, CBaseEemeyMove *_BEMove, CBaseEemeyAttac
 , m_attack_cool_time(0)
 , m_item_flag(false)
 , m_escape_flag(false)
+//, m_motion_type(0)
+//, m_direction_type(0)
+//, m_anim_division(15)
 {
 }
 
@@ -47,11 +64,12 @@ CEneEffect::CEneEffect(CVector2D *_pos, bool *_living, float _alpha, float _rad,
 }
 
 CEnemy::CEnemy(){
-	m_enemy_img[NORMAL] = LoadGraph("media\\img\\enemy.png");
-	m_enemy_img[LONG_RANGE] = LoadGraph("media\\img\\enemy_long_range.png");
-	m_enemy_img[BULLET] = LoadGraph("media\\img\\enemy_long_range_attack.png");
-	m_enemy_img[MAGIC_SQUARE] = LoadGraph("media\\img\\magic_square.png");
-	m_enemy_img[BIG] = LoadGraph("media\\img\\enemy_big.png");
+	LoadDivGraph("media\\img\\enemy_master_ver2.png",88,4,22,66,66,m_enemy_img[NORMAL]);
+	m_enemy_img[LONG_RANGE][0] = LoadGraph("media\\img\\enemy_long_range.png");
+	m_enemy_img[BULLET][0] = LoadGraph("media\\img\\enemy_long_range_attack.png");
+	m_enemy_img[MAGIC_SQUARE][0] = LoadGraph("media\\img\\magic_square.png");
+	m_enemy_img[BIG][0] = LoadGraph("media\\img\\enemy_big.png");
+	m_enemy_img[SMALL][0] = LoadGraph("media\\img\\enemy_small.png");
 	//m_enemy_img[IMPACT] = LoadGraph("media\\img\\impact2.png");
 
 	m_priority = eDWP_ENEMY;
@@ -162,12 +180,41 @@ void CEnemy::Update(){
 			}
 		}
 
-			//反射処理
-			Reflect(*(*it), _pos);
+		//反射処理
+		Reflect(*(*it), _pos);
+
+			//角度によっての向き
+			{
+				for (auto& rt : e_rad_table){
+					//右のアニメーションは分解して最大値と最小値を別々でとること
+					if (degree((*it)->m_rad) > 337.5f){
+						(*it)->m_direction_type = rt.m_type;
+						break;
+					}
+					if (degree((*it)->m_rad) < 22.5f){
+						(*it)->m_direction_type = rt.m_type;
+						break;
+					}
+					if (degree((*it)->m_rad) > rt.m_min_rad && degree((*it)->m_rad) < rt.m_max_rad){
+						(*it)->m_direction_type = rt.m_type;
+						break;
+					}
+				}
+
+				(*it)->m_amine_rate++;
+
+				if ((*it)->m_motion_type == 5){
+					if ((*it)->m_amine_rate > 25){
+						(*it)->m_motion_type = 0;
+						(*it)->m_anim_division = 15;
+					}
+				}
+			}
 
 		}
 		else  //体力がなければ以下の処理
 			(*it)->m_locate = false;
+
 
 		(*it)->m_pos = _pos;
 
@@ -200,28 +247,28 @@ void CEnemy::Update(){
 }
 
 void CEnemy::Reflect(CEnemyData &cd,CVector2D &_pos){
-	if (_pos.getY() > 647){
+	if (_pos.getY() > MAP_REFLECT_DOWN){
 		cd.m_rad = cd.m_rad*(-1);
-		_pos.setY(647 * 2 - _pos.getY());
+		_pos.setY(MAP_REFLECT_DOWN * 2 - _pos.getY());
 		if (cd.m_control == false)
 			cd.m_timer += BANK_STAN;
 	}
-	else if (_pos.getY() < 73){
+	else if (_pos.getY() < MAP_REFLECT_UP){
 		cd.m_rad = cd.m_rad*(-1);
-		_pos.setY(73 * 2 - _pos.getY());
+		_pos.setY(MAP_REFLECT_UP * 2 - _pos.getY());
 		if (cd.m_control == false)
 			cd.m_timer += BANK_STAN;
 	}
 
-	if (_pos.getX() > 1216){
+	if (_pos.getX() > MAP_REFLECT_RIGHT){
 		cd.m_rad = PI - cd.m_rad;
-		_pos.setX(1216 * 2 - _pos.getX());
+		_pos.setX(MAP_REFLECT_RIGHT * 2 - _pos.getX());
 		if (cd.m_control == false)
 			cd.m_timer += BANK_STAN;
 	}
-	else if (_pos.getX() < 64){
+	else if (_pos.getX() < MAP_REFLECT_LEFT){
 		cd.m_rad = PI - cd.m_rad;
-		_pos.setX(64 * 2 - _pos.getX());
+		_pos.setX(MAP_REFLECT_LEFT * 2 - _pos.getX());
 		if (cd.m_control == false)
 			cd.m_timer += BANK_STAN;
 	}
@@ -230,13 +277,17 @@ void CEnemy::Reflect(CEnemyData &cd,CVector2D &_pos){
 void CEnemy::Draw(){
 	for (auto it = m_ene_eff.begin(); it != m_ene_eff.end(); it++){
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, (*it)->m_alpha);
-		DrawRotaGraph((*it)->m_pos->getX(), (*it)->m_pos->getY(), (*it)->m_exrate, (*it)->m_rad, m_enemy_img[MAGIC_SQUARE],
+		DrawRotaGraph((*it)->m_pos->getX(), (*it)->m_pos->getY(), (*it)->m_exrate, (*it)->m_rad, m_enemy_img[MAGIC_SQUARE][0],
 			TRUE, FALSE);
 	}
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 	for (auto it = m_enemys.begin(); it != m_enemys.end(); it++){
-		DrawRotaGraph((*it)->m_pos.getX(), (*it)->m_pos.getY(), (*it)->m_exrate, (*it)->m_rad - degree(90), m_enemy_img[(*it)->m_animtype],
+		if ((*it)->m_animtype == NORMAL)
+			DrawRotaGraph((*it)->m_pos.getX(), (*it)->m_pos.getY(), (*it)->m_exrate, /*(*it)->m_rad - degree(90)*/0, m_enemy_img[(*it)->m_animtype][(*it)->m_motion_type + (*it)->m_direction_type + (*it)->m_amine_rate / 15 % 2],
+			TRUE, FALSE);
+		else
+			DrawRotaGraph((*it)->m_pos.getX(), (*it)->m_pos.getY(), (*it)->m_exrate, (*it)->m_rad - degree(90), m_enemy_img[(*it)->m_animtype][0],
 			TRUE, FALSE);
 	}
 }

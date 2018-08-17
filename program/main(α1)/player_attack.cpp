@@ -13,6 +13,7 @@ void CStan::Type(CPlayerData *cd){
 			if (IsHitCircle(temp->m_collision, ENEMY_COLLISION, CVector2D(cd->m_pos.getX(), cd->m_pos.getY()), (*it)->m_pos)){
 				(*it)->m_control = false;
 				(*it)->m_timer = PLAYER_ATTACK_STAN * ((int)cd->m_chage_count * cd->m_stan);
+				(*it)->m_motion_type = 40;
 			}
 		}
 	}

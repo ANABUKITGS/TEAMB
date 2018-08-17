@@ -23,7 +23,7 @@ CEffectData::CEffectData(CBaseData _temp, int _rate, CBaseEffectMove *_BEMove)
 
 CEffect::CEffect(){
 	LoadDivGraph("media\\img\\hurricane.png", KNOCK_BACK_NUM, 2, 8, 384, 384, m_effect_img[KNOCK_BACK], 0);
-	LoadDivGraph("media\\img\\stan_b1.png", STAN_NUM, 5, 2, 192, 192, m_effect_img[STAN], 0);
+	LoadDivGraph("media\\img\\stn.png", STAN_NUM, 2, 12, 128, 128, m_effect_img[STAN], 0);
 	LoadDivGraph("media\\img\\bomb_cha0.png", BOMB_CHARGE_NUM, 5, 3, 128, 128, m_effect_img[CHARGE_BOMB], 0);
 	LoadDivGraph("media\\img\\exp.png", BOMB_NUM, 2, 7, 256, 256, m_effect_img[BOMB], 0);		//ïœçX
 	LoadDivGraph("media\\img\\e_attack.png", ENEMY_ATTACK_NUM, 2, 4, 384, 384, m_effect_img[ENEMY_ATTACK], 0);

@@ -73,25 +73,25 @@ void CItem::Create(){
 }
 
 void CItem::Reflect(CItemData* cd){
-	if (cd->m_pos.getY() > 720){
+	if (cd->m_pos.getY() > MAP_REFLECT_DOWN){
 		cd->m_rad = cd->m_rad*(-1);
-		cd->m_pos.setY(720 * 2 - cd->m_pos.getY());
+		cd->m_pos.setY(MAP_REFLECT_DOWN * 2 - cd->m_pos.getY());
 		cd->m_animtype++;
 	}
-	else if (cd->m_pos.getY() < 0){
+	else if (cd->m_pos.getY() < MAP_REFLECT_UP){
 		cd->m_rad = cd->m_rad*(-1);
-		cd->m_pos.setY(-cd->m_pos.getY());
+		cd->m_pos.setY(MAP_REFLECT_UP * 2 - cd->m_pos.getY());
 		cd->m_animtype++;
 	}
 
-	if (cd->m_pos.getX() > 1280){
+	if (cd->m_pos.getX() > MAP_REFLECT_RIGHT){
 		cd->m_rad = PI - cd->m_rad;
-		cd->m_pos.setX(1280 * 2 - cd->m_pos.getX());
+		cd->m_pos.setX(MAP_REFLECT_RIGHT * 2 - cd->m_pos.getX());
 		cd->m_animtype++;
 	}
-	else if (cd->m_pos.getX() < 0){
+	else if (cd->m_pos.getX() < MAP_REFLECT_LEFT){
 		cd->m_rad = PI - cd->m_rad;
-		cd->m_pos.setX(-cd->m_pos.getX());
+		cd->m_pos.setX(MAP_REFLECT_LEFT * 2 - cd->m_pos.getX());
 		cd->m_animtype++;
 	}
 }

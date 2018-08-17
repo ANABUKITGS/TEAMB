@@ -24,14 +24,19 @@ const int ENEMY_BIG_HP = 128;
 
 const int MAX_ENEMY = 20;
 const int ENEMY_TYPE = 3;
+const int ENMEY_IMG_NUM = 6;
 
-
-enum EnemyDirection{
+/*enum EnemyDirection{
 	ENEMY_DOWN, ENEMY_LEFT = 6, ENEMY_RIGHT = 12, ENEMY_UP = 18
-};
+};*/
 
 enum EnemyType{
-	NORMAL,LONG_RANGE,BULLET,MAGIC_SQUARE,BIG//,IMPACT
+	NORMAL,LONG_RANGE,BULLET,MAGIC_SQUARE,BIG,SMALL//,IMPACT
+};
+
+enum EnemyDirection{
+	ENEMY_DOWN, ENEMY_DL = 2, ENEMY_LEFT = 4, ENEMY_DR = 6,
+	ENEMY_RIGHT = 8, ENEMY_UL = 10, ENEMY_UP = 12, ENEMY_UR = 14
 };
 
 class CEMoveTable{
@@ -41,6 +46,13 @@ public:
 	float m_temp;
 };
 
+class CEnemyRadTable{
+public:
+	int m_rad;
+	int m_max_rad;			//最大角
+	int m_min_rad;			//最小角
+	int m_type;				//画像の種類
+};
 
 class CEnemyData;
 
@@ -85,6 +97,9 @@ public:
 	bool m_item_flag;			
 	bool m_escape_flag;			//距離を取るかどうか	true:距離を取る　false:取らない
 	bool m_locate_pass;			//一度通ったか
+	/*int m_motion_type;			//動きの種類
+	int m_direction_type;		//向きの種類
+	int m_anim_division;		//アニメーションのスピード関係*/
 };
 
 class CEneEffect{
@@ -103,7 +118,7 @@ class CEnemy : public CTask{
 private:
 	list<CEnemyData*> m_enemys;
 	list<CEneEffect*> m_ene_eff;
-	int m_enemy_img[24];
+	int m_enemy_img[6][88];
 	int m_count;			//出現用カウンター
 	int m_dead_count;		//死亡数
 public:
@@ -124,23 +139,27 @@ public:
 };
 
 //通常
-class CMovePattern1 : public CBaseEemeyMove{void Move(CEnemyData *cd, CVector2D &_pos);};
+class CMovePattern1 : public CBaseEemeyMove{ void Move(CEnemyData *cd, CVector2D &_pos); };
 //遠距離
-class CMovePattern2 : public CBaseEemeyMove{void Move(CEnemyData *cd, CVector2D &_pos);};
+class CMovePattern2 : public CBaseEemeyMove{ void Move(CEnemyData *cd, CVector2D &_pos); };
 //遠距離の玉
-class CMovePattern3 : public CBaseEemeyMove{void Move(CEnemyData *cd, CVector2D &_pos);};
+class CMovePattern3 : public CBaseEemeyMove{ void Move(CEnemyData *cd, CVector2D &_pos); };
 //重い敵（大きい）
-class CMovePattern4 : public CBaseEemeyMove{void Move(CEnemyData *cd, CVector2D &_pos);};
+class CMovePattern4 : public CBaseEemeyMove{ void Move(CEnemyData *cd, CVector2D &_pos); };
+//軽い敵（小さい）
+class CMovePattern5 : public CBaseEemeyMove{ void Move(CEnemyData *cd, CVector2D &_pos); };
 
 
 //通常
-class CAttackPattern1 : public CBaseEemeyAttack{void Attack(CEnemyData *cd);};
+class CAttackPattern1 : public CBaseEemeyAttack{ void Attack(CEnemyData *cd); };
 //遠距離
-class CAttackPattern2 : public CBaseEemeyAttack{void Attack(CEnemyData *cd);};
+class CAttackPattern2 : public CBaseEemeyAttack{ void Attack(CEnemyData *cd); };
 //弾
-class CAttackPattern3 : public CBaseEemeyAttack{void Attack(CEnemyData *cd);};
+class CAttackPattern3 : public CBaseEemeyAttack{ void Attack(CEnemyData *cd); };
 //重い敵（大きい）
-class CAttackPattern4 : public CBaseEemeyAttack{void Attack(CEnemyData *cd);};
+class CAttackPattern4 : public CBaseEemeyAttack{ void Attack(CEnemyData *cd); };
+//軽い敵（小さい）
+class CAttackPattern5 : public CBaseEemeyAttack{ void Attack(CEnemyData *cd); };
 
 
 #endif ENEMY_H

@@ -23,8 +23,8 @@ const float PLAYER_KNOCK_BACK_COLLISION = 80.0f;	//ìñÇΩÇËîªíËÇÃëÂÇ´Ç≥
 const float PLAYER_STAN_COLLISION = 137.0f;
 const float PLAYER_BOMB_COLLISION = 108.0f;
 const float ENEMY_ATTACK_COLLISION = 35.0f;
-const float ENEMY_BIG_ATTACK_COLLISION = 90.0f;
-const float ENEMY_IMPACK_COLLISION = 150.0f;
+const float ENEMY_BIG_ATTACK_COLLISION = 85.0f;
+const float ENEMY_IMPACK_COLLISION = 180.0f;
 const float ENEMY_BULLET_COLLISION = 15.0f;
 const float PLAYER_HURRICANE_COLLISION = 288.0f;
 
@@ -32,6 +32,7 @@ const float PLAYER_COLLISION = 20.0f;
 const float ENEMY_COLLISION = 15.0f;
 const float ENEMY_LONG_COLLISION = 21.0f;
 const float ENEMY_BIG_COLLISION = 40.0f;
+const float ENEMY_SMALL_COLLISION = 10.0f;
 
 const float ENEMY_LOCATE_COLLISION = 170.0f;
 const float ENEMY_LONG_LOCATE_COLLISION = 350.0f;
@@ -44,14 +45,15 @@ const float PLAYER_BOMB_RANGE = 200.0f;
 
 const float PLAYER_ATTACK_KNOCK_BACK = 4.0f;		//é©ã@ÇÃçUåÇån
 const float PLAYER_ATTACK_STAN = 160.0f;
-const float PLAYER_STAN_EXRATE = 1.5f;
+const float PLAYER_STAN_EXRATE = 2.3f;
 const float PLAYER_ATTACK_BOMB = 20.0f;
 const float PLAYER_BOMB_EXRATE = 0.7f;
 const float PLAYER_BOMB_KNOCK_BACK = 14.0f;
 const float PLAYER_HURRICANE_KNOCK_BACK = 1.2f;
 
 const float ENEMY_ATTACK_KNOCK_BACK = 9.0f;		//ìGÇÃçUåÇån
-const float ENEMY_ATTACK_DAMAGE = 4.0f;
+const int ENEMY_ATTACK_DAMAGE = 4;
+const int ENEMY_LONG_ATTACK_COOL_TIME = 200;
 const float ENEMY_BULLET_ATTACK_DAMAGE = 10.0f;
 const float ENEMY_BULLET_KNOCK_BACK = 5.0f;
 const int ENEMY_ATTACK_COOL_TIME = 70;
@@ -61,10 +63,15 @@ const int ENEMY_CHANGE = 600;
 const int ENEMY_MOVE = 360;
 const int ENEMY_WAIT = 600;
 
-const int ENEMY_BIG_ATTACK_COOL_TIME = 140;
-const int ENEMY_BIG_ATTACK_STAN = 300;
-const float ENEMY_BIG_ATTACK_KNOCK_BACK = 14.0f;
-const float ENEMY_BIG_ATTACK_DAMAGE = 20.0f;
+//const int ENEMY_SMALL_CHANGE = 600;
+const int ENEMY_SMALL_MOVE = 360;
+const int ENEMY_SMALL_WAIT = 400;
+const int ENEMY_SMALL_DAMAGE = 2;
+
+const int ENEMY_BIG_ATTACK_COOL_TIME = 190;
+const int ENEMY_BIG_ATTACK_STAN = 400;
+const float ENEMY_BIG_ATTACK_KNOCK_BACK = 15.0f;
+const int ENEMY_BIG_ATTACK_DAMAGE = 25;
 
 const int ITEM_CREATE_NUM = 6;						//ÉAÉCÉeÉÄån
 const float ITEM_STAN_UP = 0.1f;
@@ -80,6 +87,11 @@ const float BANK_STAN = 600.0f;
 
 const int MAP_RANGE_X = 1152;
 const int MAP_RANGE_Y = 574;
+
+const int MAP_REFLECT_RIGHT = 1216;
+const int MAP_REFLECT_DOWN = 647;
+const int MAP_REFLECT_LEFT = 64;
+const int MAP_REFLECT_UP = 73;
 
 enum UpdatePriority{
 	UDP_FRAME1, UDP_FRAME2, UDP_CARD, UDP_EFFECT, UDP_FIELD, UDP_UI, UDP_NULL

@@ -28,6 +28,9 @@ CBaseData::CBaseData(CVector2D _pos, bool _living, float _alpha, float _rad, flo
 , m_knock_stan(false)
 , m_bank_flag(true)
 , m_kill_flag(false)
+, m_motion_type(0)
+, m_direction_type(0)
+, m_anim_division(15)
 {
 	CCharaData::GetInstance()->AddTaskInner(this);
 }
@@ -54,6 +57,9 @@ CBaseData::CBaseData(CVector2D _pos, bool _living, float _alpha, float _rad, flo
 , m_knock_stan(false)
 , m_bank_flag(true)
 , m_kill_flag(false)
+, m_motion_type(0)
+, m_direction_type(0)
+, m_anim_division(15)
 {
 }
 
@@ -79,6 +85,9 @@ CBaseData::CBaseData(CVector2D _pos, bool _living, float _rad, float _exrate, in
 , m_knock_stan(false)
 , m_bank_flag(true)
 , m_kill_flag(false)
+, m_motion_type(0)
+, m_direction_type(0)
+, m_anim_division(15)
 {
 }
 
@@ -181,6 +190,11 @@ void CCharaData::CBank(CBaseData* cd1, CBaseData* cd2){
 		cd2->m_timer += BANK_STAN;
 		cd1->m_knock_stan = true;
 	}*/
+
+	if (cd1->m_control)
+		cd1->m_velocity = 2.5f; /// cd1->m_mass;
+	if (cd2->m_control)
+		cd1->m_velocity = 2.5f; /// cd2->m_mass;
 
 	////‘€ì•s‰Â”\////
 	cd1->m_control = false;

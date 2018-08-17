@@ -7,7 +7,7 @@
 
 using namespace std;
 
-const int STAN_NUM = 10;
+const int STAN_NUM = 24;
 const int KNOCK_BACK_NUM = 16;		//16
 const int BOMB_CHARGE_NUM = 15;
 const int BOMB_NUM = 14;
@@ -47,7 +47,7 @@ public:
 class CEffect : public CTask{
 private:
 	list<CEffectData*> m_effects;
-	int m_effect_img[EFFECT_IMG][20];
+	int m_effect_img[EFFECT_IMG][25];
 	int m_count;
 public:
 	CEffect();
