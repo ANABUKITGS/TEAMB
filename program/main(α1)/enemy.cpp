@@ -64,13 +64,13 @@ CEneEffect::CEneEffect(CVector2D *_pos, bool *_living, float _alpha, float _rad,
 }
 
 CEnemy::CEnemy(){
-	LoadDivGraph("media\\img\\enemy_master_ver2.png",88,4,22,66,66,m_enemy_img[NORMAL]);
-	m_enemy_img[LONG_RANGE][0] = LoadGraph("media\\img\\enemy_long_range.png");
+	LoadDivGraph("media\\img\\enemy_n_m.png",88,4,22,64,64,m_enemy_img[NORMAL]);
+	LoadDivGraph("media\\img\\enemy_l_m.png", 88, 4, 22, 48, 48, m_enemy_img[LONG_RANGE]);
+	LoadDivGraph("media\\img\\enemy_b_m.png", 88, 4, 22, 128, 128, m_enemy_img[BIG]);
+	LoadDivGraph("media\\img\\enemy_s_m.png", 88, 4, 22, 64, 64, m_enemy_img[SMALL]);
+	LoadDivGraph("media\\img\\enemy_bom_m.png", 88, 4, 22, 64, 64, m_enemy_img[E_BOMB]);
 	m_enemy_img[BULLET][0] = LoadGraph("media\\img\\enemy_long_range_attack.png");
 	m_enemy_img[MAGIC_SQUARE][0] = LoadGraph("media\\img\\magic_square.png");
-	m_enemy_img[BIG][0] = LoadGraph("media\\img\\enemy_big.png");
-	m_enemy_img[SMALL][0] = LoadGraph("media\\img\\enemy_small.png");
-	//m_enemy_img[IMPACT] = LoadGraph("media\\img\\impact2.png");
 
 	m_priority = eDWP_ENEMY;
 	m_update_priority = 2;
@@ -163,6 +163,7 @@ void CEnemy::Update(){
 					if ((*it)->m_timer == 0){
 						(*it)->m_velocity = 0;
 						(*it)->m_control = true;
+						(*it)->m_motion_type = 0;
 					}
 					(*it)->m_knock_stan = false;
 					(*it)->m_bank_flag = true;
@@ -203,8 +204,8 @@ void CEnemy::Update(){
 
 				(*it)->m_amine_rate++;
 
-				if ((*it)->m_motion_type == 5){
-					if ((*it)->m_amine_rate > 25){
+				if ((*it)->m_anim_division == 5){
+					if ((*it)->m_amine_rate > 29){
 						(*it)->m_motion_type = 0;
 						(*it)->m_anim_division = 15;
 					}
@@ -283,7 +284,7 @@ void CEnemy::Draw(){
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 	for (auto it = m_enemys.begin(); it != m_enemys.end(); it++){
-		if ((*it)->m_animtype == NORMAL)
+		if ((*it)->m_animtype != BULLET)
 			DrawRotaGraph((*it)->m_pos.getX(), (*it)->m_pos.getY(), (*it)->m_exrate, /*(*it)->m_rad - degree(90)*/0, m_enemy_img[(*it)->m_animtype][(*it)->m_motion_type + (*it)->m_direction_type + (*it)->m_amine_rate / 15 % 2],
 			TRUE, FALSE);
 		else

@@ -19,20 +19,20 @@
 const float PI = 3.1415926535f;
 const int KEY_DATA = 9;				//KeyNumÇÃå¬êîï™
 
-const float PLAYER_KNOCK_BACK_COLLISION = 80.0f;	//ìñÇΩÇËîªíËÇÃëÂÇ´Ç≥
+const float PLAYER_COLLISION = 20.0f;				//ìñÇΩÇËîªíËÇÃëÂÇ´Ç≥
+const float PLAYER_KNOCK_BACK_COLLISION = 80.0f;	
 const float PLAYER_STAN_COLLISION = 137.0f;
 const float PLAYER_BOMB_COLLISION = 108.0f;
-const float ENEMY_ATTACK_COLLISION = 35.0f;
-const float ENEMY_BIG_ATTACK_COLLISION = 85.0f;
-const float ENEMY_IMPACK_COLLISION = 180.0f;
-const float ENEMY_BULLET_COLLISION = 15.0f;
 const float PLAYER_HURRICANE_COLLISION = 288.0f;
 
-const float PLAYER_COLLISION = 20.0f;
 const float ENEMY_COLLISION = 15.0f;
 const float ENEMY_LONG_COLLISION = 21.0f;
 const float ENEMY_BIG_COLLISION = 40.0f;
-const float ENEMY_SMALL_COLLISION = 10.0f;
+const float ENEMY_SMALL_COLLISION = 13.0f;
+const float ENEMY_BULLET_COLLISION = 15.0f;
+const float ENEMY_ATTACK_COLLISION = 35.0f;
+const float ENEMY_BIG_ATTACK_COLLISION = 85.0f;
+const float ENEMY_IMPACK_COLLISION = 180.0f;
 
 const float ENEMY_LOCATE_COLLISION = 170.0f;
 const float ENEMY_LONG_LOCATE_COLLISION = 350.0f;
@@ -64,8 +64,8 @@ const int ENEMY_MOVE = 360;
 const int ENEMY_WAIT = 600;
 
 //const int ENEMY_SMALL_CHANGE = 600;
-const int ENEMY_SMALL_MOVE = 360;
-const int ENEMY_SMALL_WAIT = 400;
+const int ENEMY_SMALL_MOVE = 200;
+const int ENEMY_SMALL_WAIT = 500;
 const int ENEMY_SMALL_DAMAGE = 2;
 
 const int ENEMY_BIG_ATTACK_COOL_TIME = 190;

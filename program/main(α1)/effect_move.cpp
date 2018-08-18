@@ -10,14 +10,18 @@ CEffectMovePattern6 EMP6;
 CMovePattern1 MP1;
 CMovePattern2 MP2;
 CMovePattern4 MP4;
+CMovePattern5 MP5;
 CAttackPattern1 AP1;
 CAttackPattern2 AP2;
 CAttackPattern4 AP4;
+CAttackPattern5 AP5;
 
 CECreateTable e_c_table[] = {
-	{ 0, NORMAL, ENEMY_NORMAL_SPEED, 1.0f, ENEMY_NORMAL_HP, ENEMY_COLLISION, &MP1, &AP1 },
-	{ 1, LONG_RANGE, ENEMY_LONG_SPEED, 1.5f, ENEMY_LONG_HP, ENEMY_LONG_COLLISION, &MP2, &AP2 },
-	{ 2, BIG, ENEMY_BIG_SPEED, 4.5f, ENEMY_BIG_HP, ENEMY_BIG_COLLISION, &MP4, &AP4 },
+	{ 0, NORMAL, ENEMY_NORMAL_SPEED, ENEMY_NORMAL_MASS, ENEMY_NORMAL_HP, ENEMY_COLLISION, &MP1, &AP1 },
+	{ 1, LONG_RANGE, ENEMY_LONG_SPEED, ENEMY_LONG_MASS, ENEMY_LONG_HP, ENEMY_LONG_COLLISION, &MP2, &AP2 },
+	{ 2, BIG, ENEMY_BIG_SPEED, ENEMY_BIG_MASS, ENEMY_BIG_HP, ENEMY_BIG_COLLISION, &MP4, &AP4 },
+	{ 3, SMALL, ENEMY_SMALL_SPEED, ENEMY_SMALL_MASS, ENEMY_SMALL_HP, ENEMY_SMALL_COLLISION, &MP5, &AP5 },
+
 };
 
 //Žûk
@@ -84,10 +88,10 @@ void CEffectMovePattern3::Move(CEffectData *cd){
 //¢Š«
 void CEffectMovePattern4::Move(CEffectData *cd){
 	if (cd->m_amine_rate % cd->m_animtype == ENEMY_CREATE_NUM - 1){
-		float _rand = 0;//rand() % ENEMY_TYPE;
+		float _rand = rand() % ENEMY_TYPE;
 		for (auto ect : e_c_table){
 			if (ect.m_num == _rand){
-				CBaseData *_temp = new CBaseData(CVector2D(cd->m_pos.getX(), cd->m_pos.getY() + 30), true, radian((rand() % 360)), ENEMY_EXRATE, ect.m_type, ect.m_speed, ect.m_mass, ect.m_hp, ENEMY_FRICTION, ect.m_collision, ENEMY);
+				CBaseData *_temp = new CBaseData(CVector2D(cd->m_pos.getX(), cd->m_pos.getY() + 30), true, radian((rand() % 360)), /*ENEMY_EXRATE*/1, ect.m_type, ect.m_speed, ect.m_mass, ect.m_hp, ENEMY_FRICTION, ect.m_collision, ENEMY);
 				CEnemyManager::GetInstance()->GetEnemyAdress()->GetEnemyData()->push_back(new CEnemyData(*_temp, ect.m_BEMove, ect.m_BEAttack));
 				break;
 			}

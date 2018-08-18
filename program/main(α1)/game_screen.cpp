@@ -60,10 +60,11 @@ void CGameScreen::Update()
 		CChangeManager::GetInstance()->GetChangeAdress()->Update();
 		if (CChangeManager::GetInstance()->GetChangeAdress()->GetOut())m_state = TITLE_SCREEN;
 	}
+
+	CCharaData::GetInstance()->Update();
 	
 	CTaskManager::GetInstance()->UpdateAll();
 
-	CCharaData::GetInstance()->Update();
 	CCharaData::GetInstance()->Delete();
 
 #if defined(_DEBUG) | defined(DEBUG)

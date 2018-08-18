@@ -13,17 +13,25 @@ const float ENEMY_NORMAL_SPEED = 1.3f;
 const float ENEMY_LONG_SPEED = 1.5f;
 const float ENEMY_BULLET_SPEED = 1.5f;
 const float ENEMY_BIG_SPEED = 0.7f;
+const float ENEMY_SMALL_SPEED = 2.3f;
 
-const float ENEMY_MASS = 1.0f;
+const float ENEMY_NORMAL_MASS = 1.0f;
+const float ENEMY_LONG_MASS = 1.5f;
+const float ENEMY_BULLET_MASS = 1.0f;
+const float ENEMY_BIG_MASS = 4.5f;
+const float ENEMY_SMALL_MASS = 0.5f;
+
+
 const float ENEMY_FRICTION = 0.1f;
 
 const int ENEMY_NORMAL_HP = 64;
 const int ENEMY_LONG_HP = 64;
 const int ENEMY_BULLET_HP = 30;
 const int ENEMY_BIG_HP = 128;
+const int ENEMY_SMALL_HP = 20;
 
 const int MAX_ENEMY = 20;
-const int ENEMY_TYPE = 3;
+const int ENEMY_TYPE = 4;
 const int ENMEY_IMG_NUM = 6;
 
 /*enum EnemyDirection{
@@ -31,7 +39,7 @@ const int ENMEY_IMG_NUM = 6;
 };*/
 
 enum EnemyType{
-	NORMAL,LONG_RANGE,BULLET,MAGIC_SQUARE,BIG,SMALL//,IMPACT
+	NORMAL,LONG_RANGE,BULLET,MAGIC_SQUARE,BIG,SMALL,E_BOMB
 };
 
 enum EnemyDirection{
@@ -118,7 +126,7 @@ class CEnemy : public CTask{
 private:
 	list<CEnemyData*> m_enemys;
 	list<CEneEffect*> m_ene_eff;
-	int m_enemy_img[6][88];
+	int m_enemy_img[7][88];
 	int m_count;			//出現用カウンター
 	int m_dead_count;		//死亡数
 public:

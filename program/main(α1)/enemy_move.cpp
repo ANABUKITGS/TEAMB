@@ -204,11 +204,14 @@ void CAttackPattern2::Attack(CEnemyData *cd){
 
 		if (cd->m_attack_cool_time == ENEMY_LONG_ATTACK_COOL_TIME){
 			CPlayerData *_temp1 = CPlayerManager::GetInstance()->GetPlayerAdress()->GetData();
-			//float _rad = PosRad( _temp1->m_pos,cd->m_pos);
 			cd->m_rad = PosRad(cd->m_pos, _temp1->m_pos);
-			CBaseData *_temp2 = new CBaseData(cd->m_pos, true, cd->m_rad, ENEMY_EXRATE, BULLET, ENEMY_BULLET_SPEED, ENEMY_MASS, ENEMY_BULLET_HP, ENEMY_FRICTION, ENEMY_COLLISION, ENEMY_BULLET);
+			CBaseData *_temp2 = new CBaseData(cd->m_pos, true, cd->m_rad, ENEMY_EXRATE, BULLET, ENEMY_BULLET_SPEED, ENEMY_BULLET_MASS, ENEMY_BULLET_HP, ENEMY_FRICTION, ENEMY_COLLISION, ENEMY_BULLET);
 			CEnemyManager::GetInstance()->GetEnemyAdress()->GetEnemyData()->push_back(new CEnemyData(*_temp2, &MP3, &AP3));
 			cd->m_attack_cool_time = 0;
+
+			cd->m_amine_rate = 0;
+			cd->m_motion_type = 16;
+			cd->m_anim_division = 5;
 		}
 	}
 }
@@ -247,6 +250,9 @@ void CAttackPattern4::Attack(CEnemyData *cd){
 								(*it)->m_damage = ENEMY_BIG_ATTACK_DAMAGE;
 								(*it)->m_hp -= (*it)->m_damage;
 							}
+							cd->m_amine_rate = 0;
+							cd->m_motion_type = 16;
+							cd->m_anim_division = 5;
 						}
 					}
 				}
@@ -274,10 +280,13 @@ void CAttackPattern5::Attack(CEnemyData *cd){
 			if (!_temp->m_invincible){
 				_temp->m_rad = PosRad(cd->m_pos, _temp->m_pos);
 				_temp->m_velocity = 4.0f / _temp->m_mass;
-				_temp->m_damage = 0;
+				_temp->m_damage = 2;
 				_temp->m_hp -= _temp->m_damage;
 
 			}
+			cd->m_amine_rate = 0;
+			cd->m_motion_type = 16;
+			cd->m_anim_division = 5;
 			cd->m_attack_flag = true;
 			cd->m_attack_cool_time = 40;
 		}
