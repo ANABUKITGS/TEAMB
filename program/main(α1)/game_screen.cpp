@@ -28,6 +28,7 @@ CGameScreen::~CGameScreen(){
 	CPlayerManager::GetInstance()->GetPlayerAdress()->Kill();
 	CUiManager::GetInstance()->GetUiAdress()->KillAll();
 	CChangeManager::GetInstance()->GetChangeAdress()->Kill();
+	CBossManager::GetInstance()->GetBossAdress()->KillAll();
 }
 
 //ロード
@@ -42,7 +43,7 @@ void CGameScreen::Init(){
 	//ここでタスク生成
 	CTaskManager::GetInstance()->Add(new CPlayer);
 	CTaskManager::GetInstance()->Add(new CField);
-	//CTaskManager::GetInstance()->Add(new CBoss);
+	CTaskManager::GetInstance()->Add(new CBoss);
 	CTaskManager::GetInstance()->Add(new CEnemy);
 	CTaskManager::GetInstance()->Add(new CEffect);
 	CTaskManager::GetInstance()->Add(new CUi);

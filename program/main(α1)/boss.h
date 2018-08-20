@@ -15,45 +15,96 @@ enum BossType{
 	body = 3, rightarm, righand, leftarm, lefhand
 };
 
+enum BossAttackType
+{
+	beat, rocket, tuck, beam, push, rock_drop
+};
+
+class CBossData;
+
+class CBaseBossMove{
+public:
+	virtual void Move(CBossData *cd, CVector2D &_pos, int a){};
+};
+
 class CBossData : public CBaseData{
 public:
 	CBossData();
-	//座標		・生きてる		・角度		・大きさ	・アニメーション	・速度			・質量	・体力		・摩擦	・当たり判定の大きさ	・種類
-	CBossData(CVector2D _pos, bool _living, float _rad, float _exrate, int _animtype, float _velocity, float _mass, int _hp, float _friction, float _collision, int _type);
-
-	//座標		・生きてる		・透過値		・角度		・大きさ	・アニメーション	・速度			・質量		・体力			・摩擦	・当たり判定の大きさ	・種類
-	//CBossData(CVector2D _pos, bool _living, float _alpha, float _rad, float _exrate, int _animtype, float _velocity, float _mass, int _hp, float _friction, float _collision, float _type);
+	CBossData(CVector2D _pos, bool _living, float _alpha, float _rad, float _exrate, int _animtype, float _velocity, float _mass, int _hp, float _friction, float _collision, float _type);
 	CBossData(CBaseData _temp);
 	~CBossData(){};
+
+	/*CBaseBossMove *BBMove;
+	void Mover(CBossData *cd, CVector2D &_pos){ if (BBMove != NULL)BBMove->Move(this, _pos); };
+
+	CBaseBossMove *BBMove2;
+	void Mover2(CBossData *cd, CVector2D &_pos){ if (BBMove2 != NULL)BBMove2->Move(this, _pos); };
+	*/
+	CBaseBossMove *BBMove3;
+	void Mover3(CBossData *cd, CVector2D &_pos, int a){ if (BBMove3 != NULL)BBMove3->Move(this, _pos, a); };
+
+	CBaseBossMove *BBMove4;
+	void Mover4(CBossData *cd, CVector2D &_pos, int a){ if (BBMove4 != NULL)BBMove4->Move(this, _pos, a); };
+
+	CVector2D m_start_pos;
 	float m_yup = 0;
-	float m_x, m_y;
-	int m_tyep;
+	int m_ty;
+	bool m_attack_fla;
+	int m_attack_movea;
+	int m_attack_move2;
 };
 
 class CBoss : public CTask{
 private:
 	list<CBossData*> m_boss;
 	CBossData m_bossy;
-	float a;
-	float b;
-	int m_boss_img[5];
-	int m_boss_body_img;
+	int m_boss_img[12];
+	int m_boss_shadow_img;
+	int m_boss_body_img[3];
 	int m_boss_leftarm_img;
 	int m_boss_rightarm_img;
 	int m_count;			//出現用カウンター
-	bool u;
+	int m_attack_move;
 	bool m_attack_flag;
-	CBaseData *_temp;
+	float m_current;
+	int m_dead_count;		//死亡数
+	int m_attack_counter;
+	int rocket_punch_flag1;
+	int rocket_punch_flag2;
+	int m_v;
 public:
 	CBoss();
 	~CBoss(){};
 	void Update();
-	void Move(CBossData &cd, CVector2D &_pos);
+
+	void KillAll();
+	void Delete();
+
 	void Movestart(CBossData &cd, CVector2D &_pos, bool loop, int type);
 	void Draw();
 	list<CBossData*> *GetBossData(){ return &m_boss; };
-	//vector<CBossData> *GetBossData(){ return &m_bo; };
+
+	void Move(CBossData &cd, CVector2D &_pos);
 };
 
+class CMoveboss : public CBaseBossMove{
+public:
+	void Move(CBossData *cd, CVector2D &_pos);
+};
+
+class CMoveboss_aaaa : public CBaseBossMove{
+public:
+	void Move(CBossData *cd, CVector2D &_pos);
+};
+
+class CMoveboss_bbbb : public CBaseBossMove{
+public:
+	void Move(CBossData *cd, CVector2D &_pos, int a);
+};
+
+class CMoveboss_cccc : public CBaseBossMove{
+public:
+	void Move(CBossData *cd, CVector2D &_pos, int a);
+};
 
 #endif BOSS_H
