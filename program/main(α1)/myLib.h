@@ -30,6 +30,9 @@ const float ENEMY_LONG_COLLISION = 21.0f;
 const float ENEMY_BIG_COLLISION = 40.0f;
 const float ENEMY_SMALL_COLLISION = 13.0f;
 const float ENEMY_BULLET_COLLISION = 15.0f;
+const float ENEMY_ATTACK_BOMB_COLLISION = 21.0f;
+const float ENEMY_BOMB_COLLISION = 200.0f;
+
 const float ENEMY_ATTACK_COLLISION = 35.0f;
 const float ENEMY_BIG_ATTACK_COLLISION = 85.0f;
 const float ENEMY_IMPACK_COLLISION = 180.0f;
@@ -63,15 +66,20 @@ const int ENEMY_CHANGE = 600;
 const int ENEMY_MOVE = 360;
 const int ENEMY_WAIT = 600;
 
+const int ENEMY_BIG_ATTACK_COOL_TIME = 190;
+const int ENEMY_BIG_ATTACK_STAN = 400;
+const float ENEMY_BIG_ATTACK_KNOCK_BACK = 15.0f;
+const int ENEMY_BIG_ATTACK_DAMAGE = 25;
+
 //const int ENEMY_SMALL_CHANGE = 600;
 const int ENEMY_SMALL_MOVE = 200;
 const int ENEMY_SMALL_WAIT = 500;
 const int ENEMY_SMALL_DAMAGE = 2;
 
-const int ENEMY_BIG_ATTACK_COOL_TIME = 190;
-const int ENEMY_BIG_ATTACK_STAN = 400;
-const float ENEMY_BIG_ATTACK_KNOCK_BACK = 15.0f;
-const int ENEMY_BIG_ATTACK_DAMAGE = 25;
+const int ENEMY_BOMB_MOVE = 200;
+const int ENEMY_BOMB_WAIT = 500;
+const int ENEMY_BOMB_DAMAGE = 50;
+const float ENEMY_BOMB_EXRATE = 1.6;
 
 const int ITEM_CREATE_NUM = 6;						//ƒAƒCƒeƒ€Œn
 const float ITEM_STAN_UP = 0.1f;

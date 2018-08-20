@@ -3,6 +3,8 @@
 #include "effect_manager.h"
 #include "ui_manager.h"
 
+CEffectMovePattern1 EMP1_b;
+CEffectMovePattern2 EMP2_a;
 CEffectMovePattern4 EMP4;
 
 CEnemyRadTable e_rad_table[] = {
@@ -30,9 +32,6 @@ CEnemyData::CEnemyData(CVector2D _pos, bool _living, float _alpha, float _rad, f
 , m_attack_cool_time(0)
 , m_item_flag(false)
 , m_escape_flag(false)
-//, m_motion_type(0)
-//, m_direction_type(0)
-//, m_anim_division(15)
 {
 }
 
@@ -46,9 +45,6 @@ CEnemyData::CEnemyData(CBaseData _temp, CBaseEemeyMove *_BEMove, CBaseEemeyAttac
 , m_attack_cool_time(0)
 , m_item_flag(false)
 , m_escape_flag(false)
-//, m_motion_type(0)
-//, m_direction_type(0)
-//, m_anim_division(15)
 {
 }
 
@@ -106,8 +102,10 @@ void CEnemy::Delete(){
 			}
 		}
 		if ((*it)->m_living == false){
-			CBaseData *_temp = new CBaseData((*it)->m_pos, true, 0, 1, ENEMY_DELETE_NUM, 0, 0, 0, 0, 0, ENEMY_DELETE);
-			CEffectManager::GetInstance()->GetEffectAdress()->GetEffectData()->push_back(new CEffectData(*_temp,2,NULL));
+			if ((*it)->m_animtype != E_BOMB){
+				CBaseData *_temp = new CBaseData((*it)->m_pos, true, 0, 1, ENEMY_DELETE_NUM, 0, 0, 0, 0, 0, ENEMY_DELETE);
+				CEffectManager::GetInstance()->GetEffectAdress()->GetEffectData()->push_back(new CEffectData(*_temp, 2, NULL));
+			}
 			it = m_enemys.erase(it);
 			continue;
 		}
@@ -201,20 +199,25 @@ void CEnemy::Update(){
 						break;
 					}
 				}
-
-				(*it)->m_amine_rate++;
-
-				if ((*it)->m_anim_division == 5){
-					if ((*it)->m_amine_rate > 29){
-						(*it)->m_motion_type = 0;
-						(*it)->m_anim_division = 15;
-					}
-				}
 			}
-
 		}
 		else  //体力がなければ以下の処理
 			(*it)->m_locate = false;
+
+		//アニメーション関係
+		(*it)->m_amine_rate++;
+		if ((*it)->m_kill_flag){
+			if ((*it)->m_animtype == E_BOMB){
+				if ((*it)->m_amine_rate > 120){
+					(*it)->m_living = false;
+					CEffectData *temp = new CEffectData((*it)->m_pos, true, (*it)->m_rad, ENEMY_BOMB_EXRATE, BOMB_NUM, 0, 2, 0, 1, ENEMY_BOMB_COLLISION, BOMB, 1, &EMP2_a);
+					CEffectManager::GetInstance()->GetEffectAdress()->GetEffectData()->push_back(temp);
+				}
+				(*it)->m_anim_division = 7;
+				(*it)->m_motion_type = 16;
+			}
+		}
+
 
 
 		(*it)->m_pos = _pos;
@@ -285,7 +288,7 @@ void CEnemy::Draw(){
 
 	for (auto it = m_enemys.begin(); it != m_enemys.end(); it++){
 		if ((*it)->m_animtype != BULLET)
-			DrawRotaGraph((*it)->m_pos.getX(), (*it)->m_pos.getY(), (*it)->m_exrate, /*(*it)->m_rad - degree(90)*/0, m_enemy_img[(*it)->m_animtype][(*it)->m_motion_type + (*it)->m_direction_type + (*it)->m_amine_rate / 15 % 2],
+			DrawRotaGraph((*it)->m_pos.getX(), (*it)->m_pos.getY(), (*it)->m_exrate, /*(*it)->m_rad - degree(90)*/0, m_enemy_img[(*it)->m_animtype][(*it)->m_motion_type + (*it)->m_direction_type + (*it)->m_amine_rate / (*it)->m_anim_division % 2],
 			TRUE, FALSE);
 		else
 			DrawRotaGraph((*it)->m_pos.getX(), (*it)->m_pos.getY(), (*it)->m_exrate, (*it)->m_rad - degree(90), m_enemy_img[(*it)->m_animtype][0],

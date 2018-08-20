@@ -11,20 +11,22 @@ CMovePattern1 MP1;
 CMovePattern2 MP2;
 CMovePattern4 MP4;
 CMovePattern5 MP5;
+CMovePattern6 MP6;
 CAttackPattern1 AP1;
 CAttackPattern2 AP2;
 CAttackPattern4 AP4;
 CAttackPattern5 AP5;
+CAttackPattern6 AP6;
 
 CECreateTable e_c_table[] = {
-	{ 0, NORMAL, ENEMY_NORMAL_SPEED, ENEMY_NORMAL_MASS, ENEMY_NORMAL_HP, ENEMY_COLLISION, &MP1, &AP1 },
-	{ 1, LONG_RANGE, ENEMY_LONG_SPEED, ENEMY_LONG_MASS, ENEMY_LONG_HP, ENEMY_LONG_COLLISION, &MP2, &AP2 },
-	{ 2, BIG, ENEMY_BIG_SPEED, ENEMY_BIG_MASS, ENEMY_BIG_HP, ENEMY_BIG_COLLISION, &MP4, &AP4 },
-	{ 3, SMALL, ENEMY_SMALL_SPEED, ENEMY_SMALL_MASS, ENEMY_SMALL_HP, ENEMY_SMALL_COLLISION, &MP5, &AP5 },
-
+	{ 0, NORMAL,ENEMY_EXRATE, ENEMY_NORMAL_SPEED, ENEMY_NORMAL_MASS, ENEMY_NORMAL_HP, ENEMY_COLLISION, &MP1, &AP1 },
+	{ 1, LONG_RANGE, ENEMY_LONG_EXRATE, ENEMY_LONG_SPEED, ENEMY_LONG_MASS, ENEMY_LONG_HP, ENEMY_LONG_COLLISION, &MP2, &AP2 },
+	{ 2, BIG, ENEMY_EXRATE, ENEMY_BIG_SPEED, ENEMY_BIG_MASS, ENEMY_BIG_HP, ENEMY_BIG_COLLISION, &MP4, &AP4 },
+	{ 3, SMALL, ENEMY_EXRATE, ENEMY_SMALL_SPEED, ENEMY_SMALL_MASS, ENEMY_SMALL_HP, ENEMY_SMALL_COLLISION, &MP5, &AP5 },
+	{ 4, E_BOMB, ENEMY_EXRATE, ENEMY_BOMB_SPEED, ENEMY_BOMB_MASS, ENEMY_BOMB_HP, ENEMY_ATTACK_BOMB_COLLISION, &MP6, &AP6 },
 };
 
-//Žûk
+//”š”­‘O‚ÌŽûk
 void CEffectMovePattern1::Move(CEffectData *cd){
 	if (cd->m_amine_rate / cd->m_rate % cd->m_animtype == cd->m_animtype - 1){
 		cd->m_type = BOMB;
@@ -46,18 +48,20 @@ void CEffectMovePattern2::Move(CEffectData *cd){
 					cd->m_pos.getY()), (*it1)->m_pos)){
 					(*it1)->m_rad = PosRad(cd->m_pos, (*it1)->m_pos);
 					(*it1)->m_velocity = PLAYER_BOMB_KNOCK_BACK / (*it1)->m_mass;
-					if ((*it1)->m_hp < 0)
-						(*it1)->m_hp = 0;
-					if ((*it1)->m_type == PLAYER){
-						(*it1)->m_damage = (int)PLAYER_ATTACK_BOMB * cd->m_mass / 3;
+					if (cd->m_friction == 0){
+						if ((*it1)->m_type == PLAYER)
+							(*it1)->m_damage = (int)PLAYER_ATTACK_BOMB * cd->m_mass / 3;
+						else
+							(*it1)->m_damage = (int)PLAYER_ATTACK_BOMB * cd->m_mass;
 						(*it1)->m_hp -= (*it1)->m_damage;
 					}
-					else{
+					if (cd->m_friction == 1){//ƒ{ƒ€“G‚Ìƒ_ƒ[ƒW
 						(*it1)->m_damage = (int)PLAYER_ATTACK_BOMB * cd->m_mass;
 						(*it1)->m_hp -= (*it1)->m_damage;
 					}
+					if ((*it1)->m_hp < 0)
+						(*it1)->m_hp = 0;
 					(*it1)->m_control = false;
-					//(*it1)->m_kill_flag = true;
 				}
 			}
 		}
@@ -88,7 +92,7 @@ void CEffectMovePattern3::Move(CEffectData *cd){
 //¢Š«
 void CEffectMovePattern4::Move(CEffectData *cd){
 	if (cd->m_amine_rate % cd->m_animtype == ENEMY_CREATE_NUM - 1){
-		float _rand = rand() % ENEMY_TYPE;
+		float _rand = 4;//rand() % ENEMY_TYPE;
 		for (auto ect : e_c_table){
 			if (ect.m_num == _rand){
 				CBaseData *_temp = new CBaseData(CVector2D(cd->m_pos.getX(), cd->m_pos.getY() + 30), true, radian((rand() % 360)), /*ENEMY_EXRATE*/1, ect.m_type, ect.m_speed, ect.m_mass, ect.m_hp, ENEMY_FRICTION, ect.m_collision, ENEMY);
@@ -122,14 +126,16 @@ void CEffectMovePattern6::Move(CEffectData *cd){
 	if (cd->m_collision <= cd->m_friction){
 		for (auto it1 = CCharaData::GetInstance()->GetCharaData()->begin();
 			it1 != CCharaData::GetInstance()->GetCharaData()->end(); it1++){
-			if ((*it1)->m_kill_flag){
-				if (IsHitCircle(cd->m_collision, (*it1)->m_collision, CVector2D(cd->m_pos.getX(),
-					cd->m_pos.getY()), (*it1)->m_pos)){
+			if ((*it1)->m_animtype != E_BOMB){
+				if ((*it1)->m_kill_flag){
+					if (IsHitCircle(cd->m_collision, (*it1)->m_collision, CVector2D(cd->m_pos.getX(),
+						cd->m_pos.getY()), (*it1)->m_pos)){
+						(*it1)->m_living = false;
+					}
+				}
+				if (cd->m_collision == cd->m_friction - 2){
 					(*it1)->m_living = false;
 				}
-			}
-			if (cd->m_collision == cd->m_friction - 2){
-				(*it1)->m_living = false;
 			}
 		}
 	}

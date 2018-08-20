@@ -7,20 +7,22 @@
 
 using namespace std;
 
-const float ENEMY_EXRATE = 0.7f;
+const float ENEMY_EXRATE = 0.9f;
+const float ENEMY_LONG_EXRATE = 1.1f;
 
 const float ENEMY_NORMAL_SPEED = 1.3f;
 const float ENEMY_LONG_SPEED = 1.5f;
 const float ENEMY_BULLET_SPEED = 1.5f;
 const float ENEMY_BIG_SPEED = 0.7f;
-const float ENEMY_SMALL_SPEED = 2.3f;
+const float ENEMY_SMALL_SPEED = 2.5f;
+const float ENEMY_BOMB_SPEED = 1.0f;
 
 const float ENEMY_NORMAL_MASS = 1.0f;
 const float ENEMY_LONG_MASS = 1.5f;
 const float ENEMY_BULLET_MASS = 1.0f;
 const float ENEMY_BIG_MASS = 4.5f;
 const float ENEMY_SMALL_MASS = 0.5f;
-
+const float ENEMY_BOMB_MASS = 1.0f;
 
 const float ENEMY_FRICTION = 0.1f;
 
@@ -29,6 +31,7 @@ const int ENEMY_LONG_HP = 64;
 const int ENEMY_BULLET_HP = 30;
 const int ENEMY_BIG_HP = 128;
 const int ENEMY_SMALL_HP = 20;
+const int ENEMY_BOMB_HP = 10;
 
 const int MAX_ENEMY = 20;
 const int ENEMY_TYPE = 4;
@@ -77,6 +80,7 @@ class CECreateTable{
 public:
 	int m_num;
 	int m_type;
+	float m_exrate;
 	float m_speed;
 	float m_mass;
 	int m_hp;
@@ -156,6 +160,8 @@ class CMovePattern3 : public CBaseEemeyMove{ void Move(CEnemyData *cd, CVector2D
 class CMovePattern4 : public CBaseEemeyMove{ void Move(CEnemyData *cd, CVector2D &_pos); };
 //åyÇ¢ìGÅiè¨Ç≥Ç¢Åj
 class CMovePattern5 : public CBaseEemeyMove{ void Move(CEnemyData *cd, CVector2D &_pos); };
+//îöî≠Ç∑ÇÈìG
+class CMovePattern6 : public CBaseEemeyMove{ void Move(CEnemyData *cd, CVector2D &_pos); };
 
 
 //í èÌ
@@ -168,6 +174,8 @@ class CAttackPattern3 : public CBaseEemeyAttack{ void Attack(CEnemyData *cd); };
 class CAttackPattern4 : public CBaseEemeyAttack{ void Attack(CEnemyData *cd); };
 //åyÇ¢ìGÅiè¨Ç≥Ç¢Åj
 class CAttackPattern5 : public CBaseEemeyAttack{ void Attack(CEnemyData *cd); };
+//îöî≠Ç∑ÇÈìG
+class CAttackPattern6 : public CBaseEemeyAttack{ void Attack(CEnemyData *cd); };
 
 
 #endif ENEMY_H

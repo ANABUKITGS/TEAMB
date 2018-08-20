@@ -117,7 +117,7 @@ void CPlayer::Update(){
 
 void CPlayer::Move(int key){
 
-	m_player->m_hp = 64;
+	//m_player->m_hp = 64;
 
 	float _fx = 0, _fy = 0;
 

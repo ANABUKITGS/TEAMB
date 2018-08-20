@@ -155,7 +155,13 @@ void CCharaData::Update(){
 	int _suu = 0;
 	bool _f = false;
 	for (auto it1 = m_chara_data.begin(); it1 != m_chara_data.end(); it1++,_suu++){
-		if ((*it1)->m_hp < 1){ (*it1)->m_kill_flag = true; continue; }		//HP‚ª0‚È‚ç¶‚«‚Ä‚¢‚È‚¢
+		if (!(*it1)->m_kill_flag){
+			if ((*it1)->m_hp < 1){
+				(*it1)->m_kill_flag = true;
+				(*it1)->m_amine_rate = 0;
+				continue;
+			}		//HP‚ª0‚È‚ç¶‚«‚Ä‚¢‚È‚¢
+		}
 		for (auto it2 = m_chara_data.begin(); it2 != m_chara_data.end(); it2++){
 			/*if (_f == false){
 				for (int s = 0; s < _suu; s++){
@@ -191,10 +197,20 @@ void CCharaData::CBank(CBaseData* cd1, CBaseData* cd2){
 		cd1->m_knock_stan = true;
 	}*/
 
-	if (cd1->m_control)
-		cd1->m_velocity = 2.5f; /// cd1->m_mass;
-	if (cd2->m_control)
-		cd1->m_velocity = 2.5f; /// cd2->m_mass;
+	if (cd1->m_control){
+		if (cd1->m_type == PLAYER)
+			cd2->m_velocity = 5.5f;
+		else
+			cd1->m_velocity = 2.5f; /// cd1->m_mass;
+	}
+	if (cd2->m_control){
+		if (cd2->m_type == PLAYER)
+			cd1->m_velocity = 5.5f;
+		else
+		cd2->m_velocity = 2.5f; /// cd2->m_mass;
+	}
+
+
 
 	////‘€ì•s‰Â”\////
 	cd1->m_control = false;
