@@ -2,6 +2,7 @@
 #include "player_manager.h"
 #include "enemy_manager.h"
 #include "effect_manager.h"
+#include "difficulty_level_manager.h"
 
 CEffectMovePattern2 EMP2;
 CEffectMovePattern6 EMP6;
@@ -91,11 +92,13 @@ void CEffectMovePattern3::Move(CEffectData *cd){
 
 //¢Š«
 void CEffectMovePattern4::Move(CEffectData *cd){
+	//float _num = CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetEnemyDifficulty().m_small_num;
+
 	if (cd->m_amine_rate % cd->m_animtype == ENEMY_CREATE_NUM - 1){
-		float _rand = 4;//rand() % ENEMY_TYPE;
+		float _rand = rand() % ENEMY_TYPE;
 		for (auto ect : e_c_table){
 			if (ect.m_num == _rand){
-				CBaseData *_temp = new CBaseData(CVector2D(cd->m_pos.getX(), cd->m_pos.getY() + 30), true, radian((rand() % 360)), /*ENEMY_EXRATE*/1, ect.m_type, ect.m_speed, ect.m_mass, ect.m_hp, ENEMY_FRICTION, ect.m_collision, ENEMY);
+				CBaseData *_temp = new CBaseData(CVector2D(cd->m_pos.getX(), cd->m_pos.getY() + 30), true, radian((rand() % 360)), ect.m_exrate, ect.m_type, ect.m_speed, ect.m_mass, ect.m_hp, ENEMY_FRICTION, ect.m_collision, ENEMY);
 				CEnemyManager::GetInstance()->GetEnemyAdress()->GetEnemyData()->push_back(new CEnemyData(*_temp, ect.m_BEMove, ect.m_BEAttack));
 				break;
 			}

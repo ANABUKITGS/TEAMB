@@ -34,7 +34,7 @@ const int ENEMY_SMALL_HP = 20;
 const int ENEMY_BOMB_HP = 10;
 
 const int MAX_ENEMY = 20;
-const int ENEMY_TYPE = 4;
+const int ENEMY_TYPE = 5;
 const int ENMEY_IMG_NUM = 6;
 
 /*enum EnemyDirection{
