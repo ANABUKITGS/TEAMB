@@ -19,16 +19,16 @@
 const float PI = 3.1415926535f;
 const int KEY_DATA = 9;				//KeyNumÇÃå¬êîï™
 
-const float PLAYER_COLLISION = 20.0f;				//ìñÇΩÇËîªíËÇÃëÂÇ´Ç≥
+const float PLAYER_COLLISION = 23.0f;				//ìñÇΩÇËîªíËÇÃëÂÇ´Ç≥
 const float PLAYER_KNOCK_BACK_COLLISION = 80.0f;	
 const float PLAYER_STAN_COLLISION = 137.0f;
 const float PLAYER_BOMB_COLLISION = 108.0f;
 const float PLAYER_HURRICANE_COLLISION = 288.0f;
 
-const float ENEMY_COLLISION = 15.0f;
-const float ENEMY_LONG_COLLISION = 21.0f;
-const float ENEMY_BIG_COLLISION = 40.0f;
-const float ENEMY_SMALL_COLLISION = 13.0f;
+const float ENEMY_COLLISION = 19.0f;
+const float ENEMY_LONG_COLLISION = 19.0f;
+const float ENEMY_BIG_COLLISION = 50.0f;
+const float ENEMY_SMALL_COLLISION = 18.0f;
 const float ENEMY_BULLET_COLLISION = 15.0f;
 const float ENEMY_ATTACK_BOMB_COLLISION = 21.0f;
 const float ENEMY_BOMB_COLLISION = 200.0f;
@@ -94,10 +94,10 @@ const float TIME_CIRCLE_SPLIT = 3.6f;
 const float BANK_STAN = 600.0f;
 
 const int MAP_RANGE_X = 1152;
-const int MAP_RANGE_Y = 574;
+const int MAP_RANGE_Y = 544;
 
 const int MAP_REFLECT_RIGHT = 1216;
-const int MAP_REFLECT_DOWN = 647;
+const int MAP_REFLECT_DOWN = 627;
 const int MAP_REFLECT_LEFT = 64;
 const int MAP_REFLECT_UP = 73;
 

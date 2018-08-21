@@ -1,6 +1,8 @@
 #include "item.h"
 #include "item_manager.h"
 #include "enemy_manager.h"
+#include "difficulty_level_manager.h"
+#include "ui_manager.h"
 
 CItemData::CItemData()
 :CBaseData()
@@ -59,13 +61,11 @@ void CItem::Update(){
 		}
 	}
 
-	Create();
-
 	Delete();
 }
 
 void CItem::Create(){
-	int _item_num = CEnemyManager::GetInstance()->GetEnemyAdress()->GetDeadCount() / ITEM_CREATE_NUM;
+	int _item_num = CUiManager::GetInstance()->GetUiAdress()->GatComb() / CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetItemDropLevel();
 	for (int i = 0; i < _item_num; i++){
 		CBaseData* _temp = new CBaseData(CVector2D(rand() % MAP_RANGE_X + 64, rand() % MAP_RANGE_Y + 73), true, radian((rand() % 360)), ITEM_EXRATE, rand() % 4, ITEM_SPEED, ITEM_MASS, ITEM_HP, ITEM_FRICTION, ITEM_COLLISION, ITEM);
 		m_items.push_back(new CItemData(*_temp));

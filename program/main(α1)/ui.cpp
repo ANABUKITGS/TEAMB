@@ -1,5 +1,6 @@
 #include "ui_manager.h"
 #include "player_manager.h"
+#include "item_manager.h"
 
 CRightRotation RRotation;
 CLeftRotation LRotation;
@@ -25,7 +26,9 @@ CUiData::CUiData(CVector2D _pos, bool _living, float _rad, float _exrate, int _a
 }
 
 CUi::CUi()
-: m_change_flag(true)
+: m_comb(0)
+, m_comb_timer(0)
+, m_change_flag(true)
 , m_endflag(false)
 {
 
@@ -49,7 +52,7 @@ CUi::CUi()
 		}
 	}
 
-	m_estimation = CUiData(CVector2D(0, 0), false, 0, UI_SELECT_EXRATE, 1, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, 0, 0, NULL);
+	m_estimation = CUiData(CVector2D(0, 0), false, 0, UI_SELECT_EXRATE + 0.4f, 1, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, 0, 0, NULL);
 
 	LoadDivGraph("media\\img\\icon_stan.png", 2, 2, 1, 128, 128, m_icon_img[1], 0);
 	LoadDivGraph("media\\img\\icon_knock_back.png", 2, 2, 1, 128, 128, m_icon_img[0], 0);
@@ -94,6 +97,15 @@ void CUi::Update(){
 
 	for (auto it = m_list_ui.begin(); it != m_list_ui.end(); it++){
 		(*it)->Update();
+	}
+
+
+	if (m_comb_timer == 0){
+		CItemManager::GetInstance()->GetItemAdress()->Create();
+		m_comb = 0;
+	}
+	else{
+		m_comb_timer--;
 	}
 }
 

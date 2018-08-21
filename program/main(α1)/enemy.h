@@ -93,7 +93,7 @@ class CEnemyData : public CBaseData{
 public:
 	CEnemyData();
 	CEnemyData(CVector2D _pos, bool _living, float _alpha, float _rad, float _exrate, int _animtype, float _velocity, float _mass, int _hp, float _friction, float _collision, float _type, CBaseEemeyMove *_BEMove, CBaseEemeyAttack *_BEAttack);
-	CEnemyData(CBaseData _temp, CBaseEemeyMove *_BEMove, CBaseEemeyAttack *_BEAttack);
+	CEnemyData(CBaseData _temp, CVector2D _move_pos, bool _invincible, CBaseEemeyMove *_BEMove, CBaseEemeyAttack *_BEAttack);
 	~CEnemyData(){};
 	
 	CBaseEemeyMove *BEMove;
@@ -109,9 +109,7 @@ public:
 	bool m_item_flag;			
 	bool m_escape_flag;			//距離を取るかどうか	true:距離を取る　false:取らない
 	bool m_locate_pass;			//一度通ったか
-	/*int m_motion_type;			//動きの種類
-	int m_direction_type;		//向きの種類
-	int m_anim_division;		//アニメーションのスピード関係*/
+	CVector2D m_move_pos;		//移動先
 };
 
 class CEneEffect{
@@ -126,13 +124,24 @@ public:
 	float m_exrate;			//大きさ
 };
 
+class CEnemyNum{
+public:
+	int m_normal_num;
+	int m_long_num;
+	int m_big_num;
+	int m_small_num;
+	int m_bomb_num;
+};
+
 class CEnemy : public CTask{
 private:
 	list<CEnemyData*> m_enemys;
 	list<CEneEffect*> m_ene_eff;
+	CEnemyNum m_enemy_num;
 	int m_enemy_img[7][88];
+	int m_shadow_img;
 	int m_count;			//出現用カウンター
-	int m_dead_count;		//死亡数
+	int m_timer;
 public:
 	CEnemy();
 	~CEnemy(){};
@@ -145,9 +154,11 @@ public:
 	
 	void Move(int key);
 	void Reflect(CEnemyData &cd,CVector2D &_pos);
+	
+	void EnemyNum(CEnemyData &cd,int _num);
+
 	list<CEnemyData*> *GetEnemyData(){ return &m_enemys; };
 	list<CEneEffect*> *GetEneEffData(){ return &m_ene_eff; };
-	int GetDeadCount(){ return m_dead_count; };
 };
 
 //通常

@@ -27,6 +27,7 @@ const int UI_TIMER = 60;
 
 const float UI_NO_SELECT_EXRATE = 0.5f;
 const float UI_SELECT_EXRATE = 1.0f;
+const int ITEM_COMB_TIME = 150;
 
 enum UI_ICON_TYPE{
 	ATTACK_ICON
@@ -75,6 +76,8 @@ private:
 	int m_ui_img[4];				//
 	int m_estimation_img[3];		//攻撃時の予測地点
 
+	int m_comb;						//コンボ数
+	int m_comb_timer;				//コンボタイマー
 	bool m_change_flag;				//切り替えを行ったか？
 	bool m_endflag;					//タイムリミットに達したか？
 
@@ -99,6 +102,11 @@ public:
 	inline int GetImg(int num1, int num2){ return m_icon_img[num1][num2]; };
 	inline void const SetChangeFlag(bool _flag){ m_change_flag = _flag; };
 	inline list<CUiData*> *GetUiData(){ return &m_list_ui; };
+
+	inline void AddComb(){ m_comb++; };
+	inline void SetComb(int _num){ m_comb = _num; };
+	inline int GatComb(){ return m_comb; };
+	inline void SetCombTimer(int _time){ m_comb_timer = _time; };
 };
 
 

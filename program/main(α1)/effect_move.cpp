@@ -8,7 +8,7 @@ CEffectMovePattern2 EMP2;
 CEffectMovePattern6 EMP6;
 
 //enemyの行動パターン
-CMovePattern1 MP1;
+/*CMovePattern1 MP1;
 CMovePattern2 MP2;
 CMovePattern4 MP4;
 CMovePattern5 MP5;
@@ -18,14 +18,14 @@ CAttackPattern2 AP2;
 CAttackPattern4 AP4;
 CAttackPattern5 AP5;
 CAttackPattern6 AP6;
-
-CECreateTable e_c_table[] = {
+*/
+/*CECreateTable e_c_table[] = {
 	{ 0, NORMAL,ENEMY_EXRATE, ENEMY_NORMAL_SPEED, ENEMY_NORMAL_MASS, ENEMY_NORMAL_HP, ENEMY_COLLISION, &MP1, &AP1 },
 	{ 1, LONG_RANGE, ENEMY_LONG_EXRATE, ENEMY_LONG_SPEED, ENEMY_LONG_MASS, ENEMY_LONG_HP, ENEMY_LONG_COLLISION, &MP2, &AP2 },
 	{ 2, BIG, ENEMY_EXRATE, ENEMY_BIG_SPEED, ENEMY_BIG_MASS, ENEMY_BIG_HP, ENEMY_BIG_COLLISION, &MP4, &AP4 },
 	{ 3, SMALL, ENEMY_EXRATE, ENEMY_SMALL_SPEED, ENEMY_SMALL_MASS, ENEMY_SMALL_HP, ENEMY_SMALL_COLLISION, &MP5, &AP5 },
 	{ 4, E_BOMB, ENEMY_EXRATE, ENEMY_BOMB_SPEED, ENEMY_BOMB_MASS, ENEMY_BOMB_HP, ENEMY_ATTACK_BOMB_COLLISION, &MP6, &AP6 },
-};
+};*/
 
 //爆発前の収縮
 void CEffectMovePattern1::Move(CEffectData *cd){
@@ -93,9 +93,10 @@ void CEffectMovePattern3::Move(CEffectData *cd){
 //召喚
 void CEffectMovePattern4::Move(CEffectData *cd){
 	//float _num = CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetEnemyDifficulty().m_small_num;
+	//if ()
 
-	if (cd->m_amine_rate % cd->m_animtype == ENEMY_CREATE_NUM - 1){
-		float _rand = rand() % ENEMY_TYPE;
+	/*if (cd->m_amine_rate % cd->m_animtype == ENEMY_CREATE_NUM - 1){
+		float _rand = 4;//rand() % ENEMY_TYPE;
 		for (auto ect : e_c_table){
 			if (ect.m_num == _rand){
 				CBaseData *_temp = new CBaseData(CVector2D(cd->m_pos.getX(), cd->m_pos.getY() + 30), true, radian((rand() % 360)), ect.m_exrate, ect.m_type, ect.m_speed, ect.m_mass, ect.m_hp, ENEMY_FRICTION, ect.m_collision, ENEMY);
@@ -103,7 +104,7 @@ void CEffectMovePattern4::Move(CEffectData *cd){
 				break;
 			}
 		}
-	}
+	}*/
 }
 
 //収縮（敵を集める）

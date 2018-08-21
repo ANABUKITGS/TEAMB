@@ -13,8 +13,8 @@ const int PLAYER_HP = 64;
 const float PLAYER_MASS = 1.0f;
 
 enum PlayerDirection{
-	PLAYER_DOWN, PLAYER_DL = 3, PLAYER_LEFT = 6, PLAYER_DR = 9, 
-	PLAYER_RIGHT = 12, PLAYER_UL = 15, PLAYER_UP = 18, PLAYER_UR = 21
+	PLAYER_DOWN, PLAYER_DL = 16, PLAYER_LEFT = 4, PLAYER_DR = 20, 
+	PLAYER_RIGHT = 8, PLAYER_UL = 24, PLAYER_UP = 12, PLAYER_UR = 28
 };
 
 class CPlayerData;
@@ -52,6 +52,8 @@ public:
 class CItemTable{
 public:
 	int m_i_type;
+	int m_num;
+	int m_type;
 	CBaseItemType *ItemType;
 };
 
@@ -77,7 +79,8 @@ public:
 	float m_knock_back;		//ノックバックの強化値
 	float m_bomb;			//ボムの強化値
 	float m_temporary_rad;	//一時的な角度保存	(ノックバック時に方向がおかしくなるための回避策)
-//#if defined(_DEBUG) | defined(DEBUG)
+	bool m_attack_anim;		
+	//#if defined(_DEBUG) | defined(DEBUG)
 	bool m_control_type;	//操作タイプ
 //#endif
 };
@@ -86,7 +89,7 @@ class CPlayer : public CTask{
 private:
 	CPlayerData *m_player;
 	CPlayerData m_p_avatar[4];
-	int m_player_img[24];
+	int m_player_img[64];
 	int m_player_charge_img[10];
 	int m_player_avoid_img[16];
 public:

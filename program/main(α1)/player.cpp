@@ -35,10 +35,10 @@ CRadTable rad_table[] = {
 };
 
 CItemTable item_table[] = {
-	{ STAN_ITEM, &item_stan },
-	{ KNOCK_BACK_ITEM, &item_knock_back },
-	{ BOMB_ITEM, &item_bomb },
-	{ HEEL_ITEM, &item_heel },
+	{ STAN_ITEM, STN_UP_NUM, STN_UP, &item_stan },
+	{ KNOCK_BACK_ITEM, WIN_UP_NUM, WIN_UP, &item_knock_back },
+	{ BOMB_ITEM, EXP_UP_NUM, EXP_UP, &item_bomb },
+	{ HEEL_ITEM, PLAYER_HEEL_NUM, P_HEEL, &item_heel },
 };
 
 CPlayerData::CPlayerData()
@@ -54,6 +54,7 @@ CPlayerData::CPlayerData(CVector2D _pos, bool _living, float _alpha, float _rad,
 , m_stan(1)
 , m_knock_back(1)
 , m_bomb(1)
+, m_attack_anim(0)
 {
 }
 
@@ -63,7 +64,10 @@ CPlayer::CPlayer()
 	m_player->m_chage_count = 1.0f;
 	m_player->m_control_type = false;
 	m_player->ControlType = &pad;
-	LoadDivGraph("media\\img\\hero_a2a.png", 24, 6, 4, 71, 70, m_player_img, 0);
+	m_player->m_anim_division = 6;
+	m_player->m_motion_type = 0;
+
+	LoadDivGraph("media\\img\\hero_m.png", 64, 4, 16, 64, 64, m_player_img, 0);
 	LoadDivGraph("media\\img\\charge.png", 10, 2, 5, 384, 384, m_player_charge_img, 0);
 	LoadDivGraph("media\\img\\avoid_aria.png", 16, 2, 8, 384, 384, m_player_avoid_img, 0);
 
@@ -87,11 +91,11 @@ CPlayer::CPlayer()
 void CPlayer::Update(){
 	int key = GetJoypadInputState(DX_INPUT_KEY_PAD1);
 
+	Attack(key);
+
 	Move(key);
 
 	Change(key);
-
-	Attack(key);
 
 	Avoid(key);
 
@@ -167,18 +171,18 @@ void CPlayer::Move(int key){
 				for (auto& rt : rad_table){
 					//右のアニメーションは分解して最大値と最小値を別々でとること
 					if (degree(_rad) > 337.5f){
-						m_player->m_animtype = rt.m_type;
+						m_player->m_direction_type = rt.m_type;
 						_flag = true;
 						break;
 					}
 					if (degree(_rad) < 22.5f){
-						m_player->m_animtype = rt.m_type;
+						m_player->m_direction_type = rt.m_type;
 						_flag = true;
 						break;
 					}
 
 					if (degree(_rad) > rt.m_min_rad && degree(_rad) < rt.m_max_rad){
-						m_player->m_animtype = rt.m_type;
+						m_player->m_direction_type = rt.m_type;
 						_flag = true;
 						break;
 					}
@@ -187,10 +191,26 @@ void CPlayer::Move(int key){
 			}
 		}
 		//アニメーション処理
-		if (_flag == true)
+		if (_flag == true){
+			m_player->m_motion_type = 0;
 			m_player->m_amine_rate++;
-		else
-			m_player->m_amine_rate = 6;
+		}
+		else{
+			if (m_player->m_anim_division == 8){//攻撃アクション
+				m_player->m_amine_rate++;
+				if (m_player->m_amine_rate > 23){
+					m_player->m_motion_type = 0;
+					m_player->m_anim_division = 6;
+					m_player->m_amine_rate = 0;
+				}
+			}
+			else{
+				if (m_player->m_motion_type == 32)
+					m_player->m_amine_rate = 0;//一段階で止める
+				else
+					m_player->m_amine_rate = 6;
+			}
+		}
 	}
 
 	//マップ当たり判定
@@ -252,8 +272,10 @@ void CPlayer::Attack(int key){
 	}
 
 	if (_type == RELEASE){
-			m_player->Action();
-			CUiManager::GetInstance()->GetUiAdress()->SetEstimationLivflag(false);
+		m_player->m_anim_division = 8;
+		m_player->m_amine_rate = 0;
+		m_player->Action();
+		CUiManager::GetInstance()->GetUiAdress()->SetEstimationLivflag(false);
 	}
 	else if (_type == PRESSING){
 		m_player->m_chage_count += 0.019;
@@ -280,6 +302,8 @@ void CPlayer::Attack(int key){
 			break;
 		}
 		CUiManager::GetInstance()->GetUiAdress()->SetEstimationLivflag(true);
+		
+		m_player->m_motion_type = 32;
 	}
 	else if (_type == SEPARATE){
 		_temp = m_player->m_chage_count;
@@ -340,6 +364,8 @@ void CPlayer::ItemGet(){
 			for (auto &item_type : item_table){
 				if ((*it)->m_animtype == item_type.m_i_type){
 					m_player->ItemType = item_type.ItemType;
+					CEffectData *temp = new CEffectData(m_player->m_pos, true, 0, 1.5f, item_type.m_num, 0, 0, 0, 0, 0, item_type.m_type, 2, NULL);
+					CEffectManager::GetInstance()->GetEffectAdress()->GetEffectData()->push_back(temp);
 					break;
 				}
 			}
@@ -366,7 +392,7 @@ void CPlayer::Draw(){
 		SetDrawBlendMode(DX_BLENDMODE_ADD, 255);
 		for (int i = 0; i < 4; i++){
 			DrawRotaGraph(m_p_avatar[i].m_pos.getX(), m_p_avatar[i].m_pos.getY(), m_p_avatar[i].m_exrate,
-				0, m_player_img[m_p_avatar[i].m_animtype + m_p_avatar[i].m_amine_rate / 6 % 3], TRUE, FALSE);
+				0, m_player_img[m_p_avatar[i].m_direction_type + m_p_avatar[i].m_amine_rate / 6 % 3], TRUE, FALSE);
 		}
 		SetDrawBright(255, 255, 255);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
@@ -374,7 +400,7 @@ void CPlayer::Draw(){
 
 	//プレイヤー
 	DrawRotaGraph(m_player->m_pos.getX(), m_player->m_pos.getY(), m_player->m_exrate,
-		0, m_player_img[m_player->m_animtype + m_player->m_amine_rate / 6 % 3], TRUE, FALSE);
+		0, m_player_img[m_player->m_direction_type + m_player->m_motion_type + m_player->m_amine_rate / m_player->m_anim_division % 3], TRUE, FALSE);
 
 #if defined(_DEBUG) | defined(DEBUG)
 	int color_white = GetColor(255, 255, 255);//色取得

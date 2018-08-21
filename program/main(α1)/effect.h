@@ -15,13 +15,17 @@ const int ENEMY_ATTACK_NUM = 8;
 const int ENEMY_CREATE_NUM = 20;
 const int ENEMY_DELETE_NUM = 13;
 const int PLAYER_HIT_NUM = 8;
+const int PLAYER_HEEL_NUM = 16;
+const int EXP_UP_NUM = 17;
+const int STN_UP_NUM = 17;
+const int WIN_UP_NUM = 17;
 
-const int EFFECT_IMG = 9;
+const int EFFECT_IMG = 13;
 
 //m_typeÇ≈égópÇµÇƒÇ¢ÇÈÅ@
 enum EFFECT_TYPE{
 	KNOCK_BACK, STAN, CHARGE_BOMB, BOMB, ENEMY_ATTACK, ENEMY_CREATE ,ENEMY_DELETE,
-	PLAYER_HIT,IMPACT
+	PLAYER_HIT,IMPACT,P_HEEL,STN_UP,WIN_UP,EXP_UP
 };
 
 class CEffectData;

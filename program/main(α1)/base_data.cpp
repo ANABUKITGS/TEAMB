@@ -288,5 +288,6 @@ void CCharaData::Draw(){
 		if ((*it)->m_damage > 0){
 			(*it)->m_damage--;
 		}
+
 	}
 }

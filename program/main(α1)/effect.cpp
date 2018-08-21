@@ -22,7 +22,7 @@ CEffectData::CEffectData(CBaseData _temp, int _rate, CBaseEffectMove *_BEMove)
 }
 
 CEffect::CEffect(){
-	LoadDivGraph("media\\img\\hurricane.png", KNOCK_BACK_NUM, 2, 8, 384, 384, m_effect_img[KNOCK_BACK], 0);
+	LoadDivGraph("media\\img\\kaze.png", KNOCK_BACK_NUM, 4, 4, 128, 128, m_effect_img[KNOCK_BACK], 0);
 	LoadDivGraph("media\\img\\stn.png", STAN_NUM, 2, 12, 128, 128, m_effect_img[STAN], 0);
 	LoadDivGraph("media\\img\\bomb_cha0.png", BOMB_CHARGE_NUM, 5, 3, 128, 128, m_effect_img[CHARGE_BOMB], 0);
 	LoadDivGraph("media\\img\\exp.png", BOMB_NUM, 2, 7, 256, 256, m_effect_img[BOMB], 0);		//ïœçX
@@ -30,6 +30,11 @@ CEffect::CEffect(){
 	LoadDivGraph("media\\img\\enemy_create.png", ENEMY_CREATE_NUM, 2, 10, 384, 384, m_effect_img[ENEMY_CREATE], 0);
 	LoadDivGraph("media\\img\\enemy_delete.png", ENEMY_DELETE_NUM, 5, 3, 192, 192, m_effect_img[ENEMY_DELETE], 0);
 	LoadDivGraph("media\\img\\player_hit.png", PLAYER_HIT_NUM, 2, 4, 384, 384, m_effect_img[PLAYER_HIT], 0);
+	LoadDivGraph("media\\img\\heel_eff.png", PLAYER_HEEL_NUM, 4, 4, 64, 64, m_effect_img[P_HEEL], 0);
+	LoadDivGraph("media\\img\\stn_up.png", STN_UP_NUM, 4, 5, 64, 64, m_effect_img[STN_UP], 0);
+	LoadDivGraph("media\\img\\win_up.png", WIN_UP_NUM, 4, 5, 64, 64, m_effect_img[WIN_UP], 0);
+	LoadDivGraph("media\\img\\exp_up.png", EXP_UP_NUM, 4, 5, 64, 64, m_effect_img[EXP_UP], 0);
+
 	//LoadDivGraph("media\\img\\impact2.png", 1, 1, 1, 256, 256, m_effect_img[IMPACT], 0);
 	m_effect_img[IMPACT][0] = LoadGraph("media\\img\\impact2.png");
 
