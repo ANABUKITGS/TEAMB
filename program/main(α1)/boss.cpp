@@ -14,8 +14,8 @@ CBossData::CBossData()
 
 CBossData::CBossData(CVector2D _pos, bool _living, float _alpha, float _rad, float _exrate, int _animtype, float _velocity, float _mass, int _hp, float _friction, float _collision, float _type)
 :CBaseData(_pos, _living, _alpha, _rad, _exrate, _animtype, _velocity, _mass, _hp, _friction, _collision, _type)
-//, BBMove(&aa)
-//, BBMove2(&bb)
+, BBMove(&aa)
+, BBMove2(&bb)
 , BBMove3(&cc)
 , BBMove4(&dd)
 , m_start_pos()
@@ -30,8 +30,8 @@ CBossData::CBossData(CVector2D _pos, bool _living, float _alpha, float _rad, flo
 
 CBossData::CBossData(CBaseData _temp)
 : CBaseData(_temp.m_pos, _temp.m_living, _temp.m_alpha, _temp.m_rad, _temp.m_exrate, _temp.m_animtype, _temp.m_velocity, _temp.m_mass, _temp.m_hp, _temp.m_friction, _temp.m_collision, _temp.m_type)
-//, BBMove(&aa)
-//, BBMove2(&bb)
+, BBMove(&aa)
+, BBMove2(&bb)
 , BBMove3(&cc)
 , BBMove4(&dd)
 , m_start_pos(_temp.m_pos.getX(), _temp.m_pos.getY())
@@ -50,26 +50,31 @@ CBoss::CBoss(){
 		switch (m_bossy.m_type)
 		{
 		case 3://本体
-			m_base.m_pos = CVector2D(646, 160);
+			m_base.m_pos = CVector2D(660, 160);
+			m_base.m_hp = 150;
 			break;
 		case 4://右腕
 			m_base.m_pos = CVector2D(553, 200);
+			m_base.m_hp = 15000;
 			break;
 		case 5://右手
 			m_base.m_pos = CVector2D(547, 270);
+			m_base.m_hp = 15000;
 			break;
 		case 6://左腕
 			m_base.m_pos = CVector2D(745, 200);
+			m_base.m_hp = 15000;
 			break;
 		case 7://左手
 			m_base.m_pos = CVector2D(747, 270);
+			m_base.m_hp = 15000;
 			break;
 		}
 		m_base.m_type = m_bossy.m_type;
 		m_base.m_ty++;
 
 		//座標/生きてる/角度/大きさ/アニメーション/速度/質量/体力/摩擦/当たり判定の大きさ/種類
-		CBaseData *_temp = new CBaseData(m_base.m_pos, true, 0, 0, 0, 0, 1, 1000, 0, 0, m_base.m_type);
+		CBaseData *_temp = new CBaseData(m_base.m_pos, true, 0, 0, 0, 0, 10, m_base.m_hp, 0, 0, m_base.m_type);
 		m_boss.push_back(new CBossData(*_temp));
 	}
 	//ボス胴体
@@ -87,10 +92,10 @@ CBoss::CBoss(){
 	m_boss_img[5] = LoadGraph("media\\img\\boss_handright.png");
 	m_boss_img[6] = LoadGraph("media\\img\\boss_handleft.png");
 	m_boss_img[7] = LoadGraph("media\\img\\1body.png");
-	m_boss_img[8] = LoadGraph("media\\img\\ロケパン手2.png");
-	m_boss_img[9] = LoadGraph("media\\img\\ロケパン手1.png");
-	m_boss_img[10] = LoadGraph("media\\img\\横拳1.png");
-	m_boss_img[11] = LoadGraph("media\\img\\横拳2.png");
+	m_boss_img[8] = LoadGraph("media\\img\\rocketpunch2.png");
+	m_boss_img[9] = LoadGraph("media\\img\\rocketpunch1.png");
+	m_boss_img[10] = LoadGraph("media\\img\\sidepunch1.png");
+	m_boss_img[11] = LoadGraph("media\\img\\sidepunch2.png");
 
 	m_boss_shadow_img = LoadGraph("media\\img\\boss_shadow.png");
 
@@ -106,6 +111,8 @@ CBoss::CBoss(){
 
 	rocket_punch_flag1 = 0;
 	rocket_punch_flag2 = 0;
+
+	m_hpboss = 1;
 
 	CBossManager::GetInstance()->Init(this);
 }
@@ -144,7 +151,6 @@ void CBoss::Update(){
 				_pos_ += CVector2D(0, sin(PI*((*it)->m_yup) / 40.0f) / 2.5f);
 			}
 		}
-
 		//boss攻撃ランダム
 		if (m_count % 500 == 0){
 			m_count = 1;
@@ -183,7 +189,7 @@ void CBoss::Update(){
 			(*it)->m_ty = 10;
 			m_v++;
 			(*it)->m_yup += 4.9f;
-			if (m_v < 30){
+			if (m_v < 20){
 				_pos_ = CVector2D(_pos_.getX(), 160);
 				_pos_ += CVector2D(cos(PI*((*it)->m_yup) / 3.0f) / 0.5f, 0);
 
@@ -194,18 +200,28 @@ void CBoss::Update(){
 			(*it)->m_ty = 3;
 		}
 
-		if (m_v > 30){
+		if ((*it)->m_type == 3){
+			m_hpboss = (*it)->m_hp;
+		}
+
+		if (m_v > 20){
 			switch ((*it)->m_type){
 			case body:
 				break;
 			case rightarm:
+				(*it)->m_hp = m_hpboss;
+				(*it)->BBMove->Move((*it), _pos_, m_attack_counter);
 				break;
 			case righand:
+				(*it)->m_hp = m_hpboss;
 				(*it)->BBMove3->Move((*it), _pos_, m_attack_counter);
 				break;
 			case leftarm:
+				(*it)->m_hp = m_hpboss;
+				(*it)->BBMove2->Move((*it), _pos_, m_attack_counter);
 				break;
 			case lefhand:
+				(*it)->m_hp = m_hpboss;
 				(*it)->BBMove4->Move((*it), _pos_, m_attack_counter);
 				break;
 			default:
@@ -229,6 +245,13 @@ void CBoss::Update(){
 	Delete();
 }
 
+int CBoss::Hp(){
+	for (auto it = m_boss.begin(); it != m_boss.end(); it++){
+		if ((*it)->m_type == 3)
+			return (*it)->m_hp;
+	}
+}
+
 void CBoss::Draw(){
 	for (auto it = m_boss.begin(); it != m_boss.end(); it++){
 
@@ -238,23 +261,26 @@ void CBoss::Draw(){
 
 		if (m_attack_counter > 0 && (*it)->m_type == 3){//ボス本体と影の描画
 			DrawRotaGraph((int)(*it)->m_pos.getX(), (int)(*it)->m_pos.getY(), 1, 0, m_boss_body_img[2], TRUE, FALSE);
-			DrawRotaGraph((int)(*it)->m_pos.getX() - 3, (int)(*it)->m_pos.getY() + 140, 1, 0, m_boss_shadow_img, TRUE, FALSE);
+			DrawRotaGraph((int)(*it)->m_pos.getX() - 13, (int)(*it)->m_pos.getY() + 140, 1, 0, m_boss_shadow_img, TRUE, FALSE);
 		}
-		else if (m_attack_counter == 0 && (*it)->m_type == 3)
+		else if (m_attack_counter == 0 && (*it)->m_type == 3 && (*it)->m_hp > 100)
 		{
 			DrawRotaGraph((int)(*it)->m_pos.getX(), (int)(*it)->m_pos.getY(), 1, 0, m_boss_body_img[0], TRUE, FALSE);
-			DrawRotaGraph((int)(*it)->m_pos.getX() - 3, (int)(*it)->m_pos.getY() + 150, 1, 0, m_boss_shadow_img, TRUE, FALSE);
+			DrawRotaGraph((int)(*it)->m_pos.getX() - 13, (int)(*it)->m_pos.getY() + 150, 1, 0, m_boss_shadow_img, TRUE, FALSE);
+		}
+		else if ((*it)->m_hp < 100 && (*it)->m_type == 3)
+		{
+			DrawRotaGraph((int)(*it)->m_pos.getX(), (int)(*it)->m_pos.getY(), 1, 0, m_boss_body_img[1], TRUE, FALSE);
 		}
 
-		printfDx("m_type==%d\n", (*it)->m_type);
-		printfDx("m_attack_counter==%d\n", m_attack_counter);
-		printfDx("m_attack_movea==%d\n", (*it)->m_attack_movea);
+		//printfDx("m_type==%d\n", (*it)->m_type);
+		//printfDx("m_attack_counter==%d\n", m_attack_counter);
+		//printfDx("m_attack_movea==%d\n", (*it)->m_attack_movea);
 	}
-
 #if defined(_DEBUG) | defined(DEBUG)
-	printfDx("%d\n", m_attack_move);
-	printfDx("%d\n", m_attack_flag);
-	printfDx("rocket_punch_flag1==%d\n", rocket_punch_flag1);
-	printfDx("rocket_punch_flag2==%d\n", rocket_punch_flag2);
+	//printfDx("%d\n", m_attack_move);
+	//printfDx("%d\n", m_attack_flag);
+	//printfDx("rocket_punch_flag1==%d\n", rocket_punch_flag1);
+	//printfDx("rocket_punch_flag2==%d\n", rocket_punch_flag2);
 #endif
 }

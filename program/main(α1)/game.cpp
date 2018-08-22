@@ -2,6 +2,8 @@
 #include "screen.h"
 #include "game_screen.h"
 #include "gametitle_screen.h"
+#include "gameover_screen.h"
+#include "gameclear_screen.h"
 #include "game.h"
 
 CGame::CGame()
@@ -48,6 +50,12 @@ void CGame::Update()
 			break;
 		case GAME_SCREEN:
 			m_pScreen = new CGameScreen();
+			break;
+		case GAMEOVER_SCREEN:
+			m_pScreen = new CGameOverScreen();
+			break;
+		case GAMECLEAR_SCREEN:
+			m_pScreen = new CGameClearScreen();
 			break;
 		default:
 			assert(0);

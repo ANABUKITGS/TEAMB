@@ -1,5 +1,5 @@
-#ifndef GAMETITLE_SCREEN_H
-#define GAMETITLE_SCREEN_H
+#ifndef GAMECLEAR_SCREEN_H
+#define GAMECLEAR_SCREEN_H
 
 //ヘッダーファイル
 #include "myLib.h"
@@ -10,11 +10,11 @@
 struct GameData;
 
 //タイトルスクリーンクラス
-class CGameTitleScreen : public CScreen
+class CGameClearScreen : public CScreen
 {
 public:
-	CGameTitleScreen();
-	~CGameTitleScreen();
+	CGameClearScreen();
+	~CGameClearScreen();
 	SCREEN GetNextScreen();
 	void Load();
 	void Release();
@@ -22,8 +22,10 @@ public:
 	void Update();
 	void Draw();
 private:
-	int title_img;
+	int gameclear_img[27];
+	float m_ac;
+	int m_animcounter;
 	SCREEN m_state;
 };
 
-#endif GAMETITLE_SCREEN_H
+#endif GAMECLEAR_SCREEN_H

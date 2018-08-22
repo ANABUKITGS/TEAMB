@@ -17,7 +17,9 @@ void CGameTitleScreen::Load(){}
 void CGameTitleScreen::Release(){}
 
 //èâä˙âª
-void CGameTitleScreen::Init(){}
+void CGameTitleScreen::Init(){
+	title_img = LoadGraph("media\\img\\title.png");
+}
 
 //é¿çsèàóù
 void CGameTitleScreen::Update()
@@ -30,6 +32,7 @@ void CGameTitleScreen::Update()
 void CGameTitleScreen::Draw()
 {
 	ClearDrawScreen();
+	DrawGraph(0, 0, title_img, TRUE);
 	DrawString(10, 100, "TITLE Screen Hit A key to Next Screen", GetColor
 		(255, 255, 255));
 }
