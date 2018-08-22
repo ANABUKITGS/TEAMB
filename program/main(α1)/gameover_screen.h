@@ -1,5 +1,5 @@
-#ifndef GAMETITLE_SCREEN_H
-#define GAMETITLE_SCREEN_H
+#ifndef GAMEOVER_SCREEN_H
+#define GAMEOVER_SCREEN_H
 
 //ヘッダーファイル
 #include "myLib.h"
@@ -10,11 +10,11 @@
 struct GameData;
 
 //タイトルスクリーンクラス
-class CGameTitleScreen : public CScreen
+class CGameOverScreen : public CScreen
 {
 public:
-	CGameTitleScreen();
-	~CGameTitleScreen();
+	CGameOverScreen();
+	~CGameOverScreen();
 	SCREEN GetNextScreen();
 	void Load();
 	void Release();
@@ -22,8 +22,8 @@ public:
 	void Update();
 	void Draw();
 private:
-	int title_img;
+	int gameover_img;
 	SCREEN m_state;
 };
 
-#endif GAMETITLE_SCREEN_H
+#endif GAMEOVER_SCREEN_H

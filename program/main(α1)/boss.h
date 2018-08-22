@@ -15,8 +15,7 @@ enum BossType{
 	body = 3, rightarm, righand, leftarm, lefhand
 };
 
-enum BossAttackType
-{
+enum BossAttackType{
 	beat, rocket, tuck, beam, push, rock_drop
 };
 
@@ -34,12 +33,12 @@ public:
 	CBossData(CBaseData _temp);
 	~CBossData(){};
 
-	/*CBaseBossMove *BBMove;
-	void Mover(CBossData *cd, CVector2D &_pos){ if (BBMove != NULL)BBMove->Move(this, _pos); };
+	CBaseBossMove *BBMove;
+	void Mover(CBossData *cd, CVector2D &_pos, int a){ if (BBMove != NULL)BBMove->Move(this, _pos, a); };
 
 	CBaseBossMove *BBMove2;
-	void Mover2(CBossData *cd, CVector2D &_pos){ if (BBMove2 != NULL)BBMove2->Move(this, _pos); };
-	*/
+	void Mover2(CBossData *cd, CVector2D &_pos, int a){ if (BBMove2 != NULL)BBMove2->Move(this, _pos, a); };
+
 	CBaseBossMove *BBMove3;
 	void Mover3(CBossData *cd, CVector2D &_pos, int a){ if (BBMove3 != NULL)BBMove3->Move(this, _pos, a); };
 
@@ -72,6 +71,7 @@ private:
 	int rocket_punch_flag1;
 	int rocket_punch_flag2;
 	int m_v;
+	int m_hpboss;
 public:
 	CBoss();
 	~CBoss(){};
@@ -80,21 +80,21 @@ public:
 	void KillAll();
 	void Delete();
 
+	int Hp();
 	void Movestart(CBossData &cd, CVector2D &_pos, bool loop, int type);
 	void Draw();
-	list<CBossData*> *GetBossData(){ return &m_boss; };
+	//list<CBossData*> *GetBossData(){ return &m_boss; };
 
-	void Move(CBossData &cd, CVector2D &_pos);
 };
 
 class CMoveboss : public CBaseBossMove{
 public:
-	void Move(CBossData *cd, CVector2D &_pos);
+	void Move(CBossData *cd, CVector2D &_pos, int a);
 };
 
 class CMoveboss_aaaa : public CBaseBossMove{
 public:
-	void Move(CBossData *cd, CVector2D &_pos);
+	void Move(CBossData *cd, CVector2D &_pos, int a);
 };
 
 class CMoveboss_bbbb : public CBaseBossMove{

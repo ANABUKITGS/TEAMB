@@ -31,7 +31,7 @@ CGameScreen::~CGameScreen(){
 	CUiManager::GetInstance()->GetUiAdress()->KillAll();
 	CChangeManager::GetInstance()->GetChangeAdress()->Kill();
 	CSoundManager::ClearInstance();
-	//CBossManager::GetInstance()->GetBossAdress()->KillAll();
+	CBossManager::GetInstance()->GetBossAdress()->KillAll();
 }
 
 //ロード
@@ -48,7 +48,7 @@ void CGameScreen::Init(){
 	CTaskManager::GetInstance()->Add(new CDifficultyLevel);
 	CTaskManager::GetInstance()->Add(new CPlayer);
 	CTaskManager::GetInstance()->Add(new CField);
-	//CTaskManager::GetInstance()->Add(new CBoss);
+	CTaskManager::GetInstance()->Add(new CBoss);
 	CTaskManager::GetInstance()->Add(new CEnemy);
 	CTaskManager::GetInstance()->Add(new CEffect);
 	CTaskManager::GetInstance()->Add(new CUi);
@@ -62,11 +62,20 @@ void CGameScreen::Init(){
 void CGameScreen::Update()
 {
 	bool _ef = false;	//終了フラグ
+	bool _eff = false;	//終了フラグ
 	if (CPlayerManager::GetInstance()->GetPlayerAdress()->GetData()->m_hp < 1)_ef = true;
+
+	if (CBossManager::GetInstance()->GetBossAdress()->Hp() < 1)_eff = true;
+
 	if (CUiManager::GetInstance()->GetUiAdress()->GetTimeFlag())_ef = true;
 	if (_ef){
 		CChangeManager::GetInstance()->GetChangeAdress()->Update();
-		if (CChangeManager::GetInstance()->GetChangeAdress()->GetOut())m_state = TITLE_SCREEN;
+		if (CChangeManager::GetInstance()->GetChangeAdress()->GetOut())m_state = GAMEOVER_SCREEN;
+	}
+
+	if (_eff){
+		CChangeManager::GetInstance()->GetChangeAdress()->Update();
+		if (CChangeManager::GetInstance()->GetChangeAdress()->GetOut())m_state = GAMECLEAR_SCREEN;
 	}
 
 	CCharaData::GetInstance()->Update();
@@ -77,6 +86,8 @@ void CGameScreen::Update()
 
 #if defined(_DEBUG) | defined(DEBUG)
 	if (CheckHitKey(KEY_INPUT_P) == 1)m_state = TITLE_SCREEN;
+	if (CheckHitKey(KEY_INPUT_O) == 1)m_state = GAMECLEAR_SCREEN;
+	if (CheckHitKey(KEY_INPUT_L) == 1)m_state = GAMEOVER_SCREEN;
 	CCharaData::GetInstance()->Counter();
 #endif
 }
