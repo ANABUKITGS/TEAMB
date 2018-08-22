@@ -24,10 +24,10 @@ CItemData::CItemData(CBaseData _temp)
 CItem::CItem()
 :m_create_flag(false)
 {
-	m_item_img[STAN_ITEM] = LoadGraph("media\\img\\pow_up_stan.png");
-	m_item_img[KNOCK_BACK_ITEM] = LoadGraph("media\\img\\pow_up_kb.png");
-	m_item_img[BOMB_ITEM] = LoadGraph("media\\img\\pow_up_bomb.png");
-	m_item_img[HEEL_ITEM] = LoadGraph("media\\img\\heel.png");
+	m_item_img[STAN_ITEM] = LoadGraph("media\\img\\stn_buff_by.png");
+	m_item_img[KNOCK_BACK_ITEM] = LoadGraph("media\\img\\wind_buff_bg.png");
+	m_item_img[BOMB_ITEM] = LoadGraph("media\\img\\exp_buff_br.png");
+	m_item_img[HEEL_ITEM] = LoadGraph("media\\img\\recovery_bp.png");
 
 	m_priority = eDWP_ITEM;
 
