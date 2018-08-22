@@ -364,7 +364,7 @@ void CPlayer::ItemGet(){
 			for (auto &item_type : item_table){
 				if ((*it)->m_animtype == item_type.m_i_type){
 					m_player->ItemType = item_type.ItemType;
-					CEffectData *temp = new CEffectData(m_player->m_pos, true, 0, 1.5f, item_type.m_num, 0, 0, 0, 0, 0, item_type.m_type, 2, NULL);
+					CEffectData *temp = new CEffectData(m_player->m_pos, true, 0, 1.9f, item_type.m_num, 0, 0, 0, 0, 0, item_type.m_type, 2, NULL);
 					CEffectManager::GetInstance()->GetEffectAdress()->GetEffectData()->push_back(temp);
 					break;
 				}

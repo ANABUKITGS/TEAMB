@@ -12,6 +12,7 @@
 #include "item_manager.h"
 #include "change_manager.h"
 #include "difficulty_level_manager.h"
+#include "sounddata_manager.h"		//new
 
 //コンストラクタ
 CGameScreen::CGameScreen()
@@ -29,6 +30,7 @@ CGameScreen::~CGameScreen(){
 	CPlayerManager::GetInstance()->GetPlayerAdress()->Kill();
 	CUiManager::GetInstance()->GetUiAdress()->KillAll();
 	CChangeManager::GetInstance()->GetChangeAdress()->Kill();
+	CSoundManager::ClearInstance();
 	//CBossManager::GetInstance()->GetBossAdress()->KillAll();
 }
 
@@ -42,6 +44,7 @@ void CGameScreen::Release(){}
 //初期化
 void CGameScreen::Init(){
 	//ここでタスク生成
+	new CSoundData;		//New
 	CTaskManager::GetInstance()->Add(new CDifficultyLevel);
 	CTaskManager::GetInstance()->Add(new CPlayer);
 	CTaskManager::GetInstance()->Add(new CField);
@@ -50,6 +53,8 @@ void CGameScreen::Init(){
 	CTaskManager::GetInstance()->Add(new CEffect);
 	CTaskManager::GetInstance()->Add(new CUi);
 	CTaskManager::GetInstance()->Add(new CItem);
+	PlaySoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(GAME_BGM1), DX_PLAYTYPE_LOOP);	//New
+
 	new CChange(0,2);
 }
 
