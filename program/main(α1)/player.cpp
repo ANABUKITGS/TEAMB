@@ -3,6 +3,7 @@
 #include "effect_manager.h"
 #include "ui_manager.h"
 #include "item_manager.h"
+#include "change_manager.h"
 
 CStan		stan;
 CKnockBack	knock_back;
@@ -80,16 +81,20 @@ CPlayer::CPlayer()
 
 	m_player->m_charge_effect = CBaseData(m_player->m_pos, false, m_player->m_rad, 0.6f, 0, 0, 0, 0, 0, 0, 0);
 	m_player->m_avoid_effect = CBaseData(m_player->m_pos, false, m_player->m_rad, 0.6f, 0, 0, 0, 0, 0, 0, 0);
-
+	
+	m_timer = 0.0f;
+	m_teleport_flag = false;
 	m_priority = eDWP_PLAYER;
 	m_update_priority = 2;
 	m_draw_priority = 2;
+	m_update = true;
 
 	CPlayerManager::GetInstance()->Init(this);
 }
 
 void CPlayer::Update(){
 	int key = GetJoypadInputState(DX_INPUT_KEY_PAD1);
+
 
 	Attack(key);
 
@@ -100,6 +105,8 @@ void CPlayer::Update(){
 	Avoid(key);
 
 	ItemGet();
+
+	m_teleport_flag = Teleport(key);
 
 	//チャージエフェクト
 	if (m_player->m_charge_effect.m_living == true)
@@ -129,7 +136,7 @@ void CPlayer::Move(int key){
 	float _hy = m_player->m_pos.getY();
 
 //#if defined(_DEBUG) | defined(DEBUG)
-	if (IsKeyTrigger(key, PAD_INPUT_10, KEY_PAD_INPUT_10)){
+	if (CKeyData::GetInstance()->IsKeyTrigger(key, PAD_INPUT_10, KEY_PAD_INPUT_10)){
 		if (m_player->m_control_type == true){
 			m_player->ControlType = &keyboard;
 			m_player->m_control_type = false;
@@ -235,11 +242,11 @@ void CPlayer::Move(int key){
 void CPlayer::Change(int key){
 	bool _f = false;
 	int _direction = 0;
-	if (_f = IsKeyTrigger(key, PAD_INPUT_7, KEY_PAD_INPUT_7) == true){
+	if (_f = CKeyData::GetInstance()->IsKeyTrigger(key, PAD_INPUT_7, KEY_PAD_INPUT_7) == true){
 		_direction = -1;
 		m_player->m_attack_type--;
 	}
-	else if (_f = IsKeyTrigger(key, PAD_INPUT_8, KEY_PAD_INPUT_8) == true){
+	else if (_f = CKeyData::GetInstance()->IsKeyTrigger(key, PAD_INPUT_8, KEY_PAD_INPUT_8) == true){
 		_direction = 1;
 		m_player->m_attack_type++;
 	}
@@ -268,7 +275,7 @@ void CPlayer::Attack(int key){
 	static int _temp;
 
 	if (m_player->m_control){
-		_type = LongPress(key, PAD_INPUT_2);
+		_type = CKeyData::GetInstance()->LongPress(key, PAD_INPUT_2, KEY_Z_PAD_INPUT_2);
 	}
 
 	if (_type == RELEASE){
@@ -311,10 +318,30 @@ void CPlayer::Attack(int key){
 	}
 }
 
+bool CPlayer::Teleport(int key){
+	int _type = 2;
+	if (m_player->m_control){
+		_type = CKeyData::GetInstance()->LongPress2(key, PAD_INPUT_1, KEY_PAD_INPUT_1);
+	}
+	if (_type == PRESSING){
+		m_timer += 0.019;
+		if (m_timer > 3.0f){
+			m_timer = 0.0f;
+			//CChangeManager::GetInstance()->GetChangeAdress()->SetCData(0, 2);
+			return true;
+		}
+	}
+	else if (_type == SEPARATE){
+		m_timer = 0.0f;
+		return false;
+	}
+	return false;
+}
+
 void CPlayer::Avoid(int key){
 	if (m_player->m_control){
 		if (!m_player->m_avoid_effect.m_living){
-			if (IsKeyTrigger(key, PAD_INPUT_3, KEY_PAD_INPUT_3)){
+			if (CKeyData::GetInstance()->IsKeyTrigger(key, PAD_INPUT_3, KEY_PAD_INPUT_3)){
 				m_player->m_invincible = true;
 				m_player->m_velocity = 19.0f;
 				m_player->m_timer = 10;

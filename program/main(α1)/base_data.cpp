@@ -1,4 +1,5 @@
 #include "base_data.h"
+#include "field_manager.h"
 
 CCharaData* CCharaData::m_pInstance = nullptr;
 
@@ -129,6 +130,37 @@ void CCharaData::KillAll(){
 	}
 }
 
+void CCharaData::AssignmentDelete(){
+	for (auto it = m_chara_data.begin(); it != m_chara_data.end();){
+		if ((*it)->m_type != PLAYER){
+			it = m_chara_data.erase(it);
+			continue;
+		}
+		it++;
+	}
+}
+
+void CCharaData::AssignmentInvincible(int _type){
+	for (auto it = m_chara_data.begin(); it != m_chara_data.end(); it++){
+		if (_type == 0){
+			if ((*it)->m_animtype == 90){
+				(*it)->m_invincible = true;
+			}
+			if ((*it)->m_type == ENEMY){
+				(*it)->m_invincible = false;
+			}
+		}
+		else{
+			if ((*it)->m_animtype == 90){
+				(*it)->m_invincible = false;
+			}
+			if ((*it)->m_type == ENEMY){
+				(*it)->m_invincible = true;
+			}
+		}
+	}
+}
+
 void CCharaData::Counter(){
 	for (auto it = m_chara_data.begin(); it != m_chara_data.end(); it++){
 		printfDx("base Type %d ", (*it)->m_type);
@@ -154,6 +186,15 @@ void CCharaData::Delete(){
 void CCharaData::Update(){
 	int _suu = 0;
 	bool _f = false;
+	/*for (auto it1 = m_chara_data.begin(); it1 != m_chara_data.end(); it1++){
+		if (CFieldManager::GetInstance()->GetFrameAdress()->GetFieldType() == M_NORMAL){
+			if ((*it1)->m_type == ENEMY){
+				m_Assignment_chara_data.push_back(*it1);
+				(*it1)->m_living = false;
+			}
+		}
+	}*/
+
 	for (auto it1 = m_chara_data.begin(); it1 != m_chara_data.end(); it1++,_suu++){
 		if (!(*it1)->m_kill_flag){
 			if ((*it1)->m_hp < 1){
@@ -273,12 +314,14 @@ void CCharaData::CBank(CBaseData* cd1, CBaseData* cd2){
 void CCharaData::Draw(){
 	for (auto it = m_chara_data.begin(); it != m_chara_data.end(); it++){
 		if ((*it)->m_type == ENEMY){
-			if ((*it)->m_hp < 64)
-			DrawRectGraph((*it)->m_pos.getX() - 32, (*it)->m_pos.getY() - 25, 0, 0, (*it)->m_hp, 4, m_ehp_img[0], FALSE, FALSE);
-			if ((*it)->m_damage > 0)
-				DrawRectGraph((*it)->m_pos.getX() - 32 + (*it)->m_hp, (*it)->m_pos.getY() - 25, 0, 0, (*it)->m_damage, 4, m_ehp_img[1], FALSE, FALSE);
-			if ((*it)->m_timer > 0)
-				DrawRectGraph((*it)->m_pos.getX() - 32, (*it)->m_pos.getY() - 21, 0, 0, (*it)->m_timer/15, 2, m_stan_timer_img, FALSE, FALSE);
+			if (!(*it)->m_invincible){
+				if ((*it)->m_hp < 64)
+					DrawRectGraph((*it)->m_pos.getX() - 32, (*it)->m_pos.getY() - 25, 0, 0, (*it)->m_hp, 4, m_ehp_img[0], FALSE, FALSE);
+				if ((*it)->m_damage > 0)
+					DrawRectGraph((*it)->m_pos.getX() - 32 + (*it)->m_hp, (*it)->m_pos.getY() - 25, 0, 0, (*it)->m_damage, 4, m_ehp_img[1], FALSE, FALSE);
+				if ((*it)->m_timer > 0)
+					DrawRectGraph((*it)->m_pos.getX() - 32, (*it)->m_pos.getY() - 21, 0, 0, (*it)->m_timer / 15, 2, m_stan_timer_img, FALSE, FALSE);
+			}
 		}
 		if ((*it)->m_type == PLAYER){
 			DrawRectGraph((*it)->m_pos.getX() - 32, (*it)->m_pos.getY() - 47, 0, 0, (*it)->m_hp, 8, m_hhp_img[0], FALSE, FALSE);

@@ -6,6 +6,8 @@
 #include "gameclear_screen.h"
 #include "game.h"
 
+#include "sounddata_manager.h"
+
 CGame::CGame()
 {
 	m_pScreen = NULL;
@@ -21,6 +23,9 @@ void CGame::Init()
 	m_GameData.now_screen = TITLE_SCREEN;
 	m_pScreen = NULL;
 	srand((unsigned int)time(NULL));
+
+	CKeyData::GetInstance();
+	new CSoundData();		//New
 }
 
 void CGame::Dest()
@@ -28,6 +33,7 @@ void CGame::Dest()
 	if (m_pScreen != NULL){
 		delete m_pScreen;
 		m_pScreen = NULL;
+		CSoundManager::GetInstance()->Finish();
 	}
 }
 

@@ -102,6 +102,7 @@ CEnemy::CEnemy(){
 	m_priority = eDWP_ENEMY;
 	m_update_priority = 2;
 	m_draw_priority = 2;
+	m_update = true;
 	
 	m_count = 1;
 

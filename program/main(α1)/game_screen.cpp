@@ -30,8 +30,7 @@ CGameScreen::~CGameScreen(){
 	CPlayerManager::GetInstance()->GetPlayerAdress()->Kill();
 	CUiManager::GetInstance()->GetUiAdress()->KillAll();
 	CChangeManager::GetInstance()->GetChangeAdress()->Kill();
-	CSoundManager::ClearInstance();
-	CBossManager::GetInstance()->GetBossAdress()->KillAll();
+	//CBossManager::GetInstance()->GetBossAdress()->KillAll();
 }
 
 //ロード
@@ -44,7 +43,6 @@ void CGameScreen::Release(){}
 //初期化
 void CGameScreen::Init(){
 	//ここでタスク生成
-	new CSoundData;		//New
 	CTaskManager::GetInstance()->Add(new CDifficultyLevel);
 	CTaskManager::GetInstance()->Add(new CPlayer);
 	CTaskManager::GetInstance()->Add(new CField);
@@ -55,6 +53,9 @@ void CGameScreen::Init(){
 	CTaskManager::GetInstance()->Add(new CItem);
 	PlaySoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(GAME_BGM1), DX_PLAYTYPE_LOOP);	//New
 
+	//if(CFieldManager::GetInstance()->GetFrameAdress()->GetFieldType() != M_BOSS)
+	CTaskManager::GetInstance()->NoUpdate(CFieldManager::GetInstance()->GetFrameAdress()->GetFieldType());
+	CCharaData::GetInstance()->AssignmentInvincible(CFieldManager::GetInstance()->GetFrameAdress()->GetFieldType());
 	new CChange(0,2);
 }
 
@@ -63,18 +64,57 @@ void CGameScreen::Update()
 {
 	bool _ef = false;	//終了フラグ
 	bool _eff = false;	//終了フラグ
-	if (CPlayerManager::GetInstance()->GetPlayerAdress()->GetData()->m_hp < 1)_ef = true;
+	static bool _pass;
 
-	if (CBossManager::GetInstance()->GetBossAdress()->Hp() < 1)_eff = true;
+	if (CPlayerManager::GetInstance()->GetPlayerAdress()->GetData()->m_hp < 1){
+		_ef = true;
+		_pass = false;
+		CChangeManager::GetInstance()->GetChangeAdress()->SetChange(true);
+	}
 
-	if (CUiManager::GetInstance()->GetUiAdress()->GetTimeFlag())_ef = true;
+	if (CUiManager::GetInstance()->GetUiAdress()->GetTimeFlag()){
+		_ef = true;
+		_pass = false;
+		CChangeManager::GetInstance()->GetChangeAdress()->SetChange(true);
+	}
+
+	if (CBossManager::GetInstance()->GetBossAdress()->Hp() < 1){
+		_eff = true;
+		_pass = false;
+		CChangeManager::GetInstance()->GetChangeAdress()->SetChange(true);
+	}
+
+	//画面切り替え
+	if (CPlayerManager::GetInstance()->GetPlayerAdress()->GetTeleportFlag()){
+		CChangeManager::GetInstance()->GetChangeAdress()->SetChange(true);
+		_pass = false;
+	}
+	if (!_ef && !_eff){
+		if (CChangeManager::GetInstance()->GetChangeAdress()->GetOut()){
+			if (!_pass){
+				CItemManager::GetInstance()->GetItemAdress()->KillAll();
+				CEffectManager::GetInstance()->GetEffectAdress()->KillAll();
+				CChangeManager::GetInstance()->GetChangeAdress()->SetOut(false);
+				CChangeManager::GetInstance()->GetChangeAdress()->Kill();
+				CChangeManager::GetInstance()->GetChangeAdress()->SetCData(255, -2);
+				if (CFieldManager::GetInstance()->GetFrameAdress()->GetFieldType() != M_BOSS){
+					CFieldManager::GetInstance()->GetFrameAdress()->SetFieldType(M_BOSS);
+				}
+				else{
+					CFieldManager::GetInstance()->GetFrameAdress()->SetFieldType(M_NORMAL);
+				}
+				CTaskManager::GetInstance()->NoUpdate(CFieldManager::GetInstance()->GetFrameAdress()->GetFieldType());
+				_pass = true;
+				CCharaData::GetInstance()->AssignmentInvincible(CFieldManager::GetInstance()->GetFrameAdress()->GetFieldType());
+			}
+		}
+	}
+
 	if (_ef){
-		CChangeManager::GetInstance()->GetChangeAdress()->Update();
 		if (CChangeManager::GetInstance()->GetChangeAdress()->GetOut())m_state = GAMEOVER_SCREEN;
 	}
 
 	if (_eff){
-		CChangeManager::GetInstance()->GetChangeAdress()->Update();
 		if (CChangeManager::GetInstance()->GetChangeAdress()->GetOut())m_state = GAMECLEAR_SCREEN;
 	}
 
@@ -83,6 +123,8 @@ void CGameScreen::Update()
 	CTaskManager::GetInstance()->UpdateAll();
 
 	CCharaData::GetInstance()->Delete();
+
+	CChangeManager::GetInstance()->GetChangeAdress()->Update();
 
 #if defined(_DEBUG) | defined(DEBUG)
 	if (CheckHitKey(KEY_INPUT_P) == 1)m_state = TITLE_SCREEN;
@@ -102,11 +144,11 @@ void CGameScreen::Draw()
 
 	CChangeManager::GetInstance()->GetChangeAdress()->Draw();
 
-	DrawString(930, 90, "Game Screen Hit E key to Title Screen", GetColor
+	/*DrawString(930, 90, "Game Screen Hit E key to Title Screen", GetColor
 		(255, 255, 255));
 	DrawString(870, 110, "Change Control Hit Spase key(keyboard or pad)", GetColor
 		(255, 255, 255));
-
+		*/
 #if defined(_DEBUG) | defined(DEBUG)
 	Fps();
 #endif

@@ -30,6 +30,7 @@ CItem::CItem()
 	m_item_img[HEEL_ITEM] = LoadGraph("media\\img\\recovery_bp.png");
 
 	m_priority = eDWP_ITEM;
+	m_update = true;
 
 	CItemManager::GetInstance()->Init(this);
 

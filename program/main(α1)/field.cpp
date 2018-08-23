@@ -19,6 +19,7 @@ CField::CField(){
 			m_field_data[x][y].m_animtype = (int)(buf[x] - '0');
 			m_field_data[x][y].m_pos = CVector2D(MAP_HALFCHIP_SIZE + x * MAP_CHIP_SIZE, MAP_SPACE + MAP_HALFCHIP_SIZE + y * MAP_CHIP_SIZE);
 			m_field_data[x][y].m_exrate = 1;
+			m_field_data[x][y].m_rad = radian(0);
 
 			if (x == 19 && y > 0 && y < 10){
 				m_field_data[x][y].m_rad = radian(180);
@@ -44,11 +45,15 @@ CField::CField(){
 	}
 	FileRead_close(fh);
 
-	m_feild_img[GROUND] = LoadGraph("media\\img\\field.jpg", FALSE);
+	m_feild_img[GROUND] = LoadGraph("media\\img\\field.png", FALSE);
 	m_feild_img[WALL] = LoadGraph("media\\img\\wall_moss.jpg", FALSE);
 	m_feild_img[CORNER_WALL] = LoadGraph("media\\img\\corner_wall.jpg", FALSE);
 
+	m_field_type = M_NORMAL;
+
 	m_priority = eDWP_FIELD;
+	m_update = true;
+
 	CFieldManager::GetInstance()->Init(this);
 }
 

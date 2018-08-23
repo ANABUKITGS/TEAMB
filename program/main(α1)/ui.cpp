@@ -71,6 +71,7 @@ CUi::CUi()
 	m_priority = eDWP_UI;
 	m_update_priority = 2;
 	m_draw_priority = 2;
+	m_update = true;
 
 	BIconDraw = &RIcon;
 

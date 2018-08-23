@@ -17,7 +17,7 @@
 #define ARRAY_SIZE(a)				(sizeof(a)/sizeof(a[0]))
 
 const float PI = 3.1415926535f;
-const int KEY_DATA = 9;				//KeyNumの個数分
+const int KEY_DATA = 10;				//KeyNumの個数分
 
 const float PLAYER_COLLISION = 23.0f;				//当たり判定の大きさ
 const float PLAYER_KNOCK_BACK_COLLISION = 80.0f;	
@@ -111,17 +111,35 @@ enum DrawPriority{
 
 enum KeyNum{
 	KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT, KEY_Z_PAD_INPUT_2,
-	KEY_PAD_INPUT_7, KEY_PAD_INPUT_8, KEY_PAD_INPUT_3, KEY_PAD_INPUT_10
+	KEY_PAD_INPUT_7, KEY_PAD_INPUT_8, KEY_PAD_INPUT_3, KEY_PAD_INPUT_10,
+	KEY_PAD_INPUT_1,
 };
 
-enum KeyState{	//放出、押している、押していない
+//放出、押している、押していない
+enum KeyState{	
 	RELEASE, PRESSING, SEPARATE,
 };
 
-bool IsKeyTrigger(int _key, int _key_type, int _num);
+//bool IsKeyTrigger(int _key, int _key_type, int _num);
 
 ////ボタン長押し////
-KeyState LongPress(int _key, int _key_type);
+//KeyState LongPress(int _key, int _key_type, int _num);
+
+class CKeyData{
+private:
+	static CKeyData* mp_Instance;
+
+	int key_prev[KEY_DATA];
+public:
+	CKeyData(){ key_prev[KEY_DATA] = { 0 }; };
+	~CKeyData(){};
+	static CKeyData* GetInstance();
+	static void ClearInstance();
+
+	bool IsKeyTrigger(int _key, int _key_type, int _num);
+	int LongPress(int _key, int _key_type, int _num);
+	int LongPress2(int _key, int _key_type, int _num);
+};
 
 class CVector2D{
 private:

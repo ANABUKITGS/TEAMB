@@ -15,7 +15,7 @@
 using namespace std;
 
 enum CHARA_TYPE{
-	PLAYER, ENEMY, ENEMY_BULLET, ITEM
+	PLAYER, ENEMY, ENEMY_BULLET, ITEM,BOSS
 };
 
 class CBaseData{
@@ -76,6 +76,10 @@ public:
 	void Counter();			
 	//çÌèú
 	void Delete();
+
+	void AssignmentDelete();
+
+	void AssignmentInvincible(int _type);
 
 	void Update();
 	//ï`âÊ

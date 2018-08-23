@@ -34,6 +34,7 @@ CSoundData* CSoundManager::GetStatusAdress() const
 }
 
 void CSoundManager::Finish(){
+	delete m_sound;
 }
 
 void CSoundManager::Update(){

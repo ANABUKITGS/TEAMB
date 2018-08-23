@@ -17,6 +17,10 @@ enum MapNum{
 	GROUND, WALL,CORNER_WALL
 };
 
+enum MapType{
+	M_NORMAL,M_BOSS
+};
+
 class CFieldData : public CBaseData{
 public:
 	CFieldData();
@@ -27,11 +31,14 @@ class CField : public CTask{
 private:
 	CFieldData m_field_data[MAP_WIDTH][MAP_HEIGHT];
 	int m_feild_img[3];
+	int m_field_type;
 public:
 	CField();
 	~CField();
 	void Update();
 	void Draw();
+	void SetFieldType(int _type){ m_field_type = _type; };
+	int GetFieldType(){ return m_field_type; };
 };
 
 #endif FIELD_H

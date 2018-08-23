@@ -74,7 +74,7 @@ CBoss::CBoss(){
 		m_base.m_ty++;
 
 		//座標/生きてる/角度/大きさ/アニメーション/速度/質量/体力/摩擦/当たり判定の大きさ/種類
-		CBaseData *_temp = new CBaseData(m_base.m_pos, true, 0, 0, 0, 0, 10, m_base.m_hp, 0, 0, m_base.m_type);
+		CBaseData *_temp = new CBaseData(m_base.m_pos, true, 0, 0, 90, 0, 10, m_base.m_hp, 0, 0, m_base.m_type);
 		m_boss.push_back(new CBossData(*_temp));
 	}
 	//ボス胴体
@@ -105,6 +105,7 @@ CBoss::CBoss(){
 	m_priority = eDWP_BOSS;
 	m_update_priority = 2;
 	m_draw_priority = 2;
+	m_update = true;
 	m_attack_flag = false;
 	m_attack_counter = 0;
 	m_v = 0;
@@ -138,7 +139,7 @@ void CBoss::KillAll(){
 
 void CBoss::Update(){
 	CVector2D _pos_;
-
+	
 	int randf = rand() % 100;
 	int key = GetJoypadInputState(DX_INPUT_KEY_PAD1);
 
@@ -234,7 +235,7 @@ void CBoss::Update(){
 	}
 
 	bool _f = false;
-	if (_f = IsKeyTrigger(key, PAD_INPUT_10, 10/*sキー*/) == true){
+	if (_f = CKeyData::GetInstance()->IsKeyTrigger(key, PAD_INPUT_10, 10/*sキー*/) == true){
 		printfDx("押している\n");
 		m_attack_move = 1;
 	}

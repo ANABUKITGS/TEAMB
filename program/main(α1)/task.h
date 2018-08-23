@@ -41,6 +41,7 @@ public:
 	virtual void Draw();
 
 	int m_priority;
+	bool m_update;
 	int m_update_priority;	//必要？
 	int m_draw_priority;	//必要？
 

@@ -33,6 +33,7 @@ CChange* CChangeManager::GetChangeAdress() const
 }
 
 void CChangeManager::Finish(){
+	delete m_change;
 }
 
 void CChangeManager::Update(){

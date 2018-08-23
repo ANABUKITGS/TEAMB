@@ -18,6 +18,9 @@ public:
 	void UpdateAll();		//描画
 	void DrawAll();			//削除
 	void KillAll();			//全削除
+	void AssignmentDelete();//指定のものを削除
+
+	void NoUpdate(int _type);
 
 	//タスクマネージャーのデータの取得
 	//これを使うとマネージャーのデータを使うことが出来る

@@ -41,6 +41,7 @@ CEffect::CEffect(){
 	m_priority = eDWP_EFFECT;
 	m_update_priority = 2;
 	m_draw_priority = 2;
+	m_update = true;
 
 	CEffectManager::GetInstance()->Init(this);
 

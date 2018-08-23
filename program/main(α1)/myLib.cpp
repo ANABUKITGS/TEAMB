@@ -1,5 +1,6 @@
 #include "myLib.h"
 
+CKeyData* CKeyData::mp_Instance = nullptr;
 
 //Vector2Dへの加算
 CVector2D& CVector2D::operator+=(const CVector2D& ope){
@@ -52,9 +53,23 @@ bool CVector2D::operator!=(const CVector2D& ope){
 	return FALSE;
 }
 
+//////ボタン系//////
+
+CKeyData* CKeyData::GetInstance(){
+	if (mp_Instance == nullptr)
+	{
+		mp_Instance = new CKeyData();
+	}
+	return mp_Instance;
+}
+
+void CKeyData::ClearInstance(){
+	if (mp_Instance != nullptr) delete mp_Instance;
+}
+
+
 //ボタン入力処理
-bool IsKeyTrigger(int _key,int _key_type,int _num){
-	static int key_prev[KEY_DATA];
+bool CKeyData::IsKeyTrigger(int _key, int _key_type, int _num){
 	if (_key & _key_type){
 		if (key_prev[_num] == false){
 			key_prev[_num] = true;
@@ -68,13 +83,14 @@ bool IsKeyTrigger(int _key,int _key_type,int _num){
 }
 
 //ボタン長押し処理	放出(RELEASE)、押している(PRESSING)、押していない(SEPARATE)
-KeyState LongPress(int _key, int _key_type){
+int CKeyData::LongPress(int _key, int _key_type, int _num){
 	static bool _flag1;
 	static bool _flag2;
 
 	if (_key & _key_type){
 		_flag2 = true;
-		return PRESSING;
+		key_prev[_num] = PRESSING;
+		return key_prev[_num];
 	}
 	else{
 		if (_flag2 == true)_flag1 = true;
@@ -83,10 +99,42 @@ KeyState LongPress(int _key, int _key_type){
 	if (_flag1){
 		_flag1 = false;
 		_flag2 = false;
-		return RELEASE;
+		key_prev[_num] = RELEASE;
+		return key_prev[_num];
 	}
-	else return SEPARATE;
+	else{
+		key_prev[_num] = SEPARATE;
+		return key_prev[_num];
+	}
 }
+
+
+int CKeyData::LongPress2(int _key, int _key_type, int _num){
+	static bool _flag1;
+	static bool _flag2;
+
+	if (_key & _key_type){
+		_flag2 = true;
+		key_prev[_num] = PRESSING;
+		return key_prev[_num];
+	}
+	else{
+		if (_flag2 == true)_flag1 = true;
+	}
+
+	if (_flag1){
+		_flag1 = false;
+		_flag2 = false;
+		key_prev[_num] = RELEASE;
+		return key_prev[_num];
+	}
+	else{
+		key_prev[_num] = SEPARATE;
+		return key_prev[_num];
+	}
+}
+
+///////////////////
 
 bool IsHitCircle(float c1, float c2, CVector2D pos1, CVector2D pos2){
 	float hlength = c1 + c2;
@@ -164,19 +212,19 @@ void Fps(){
 
 int MyLibSelect(int &_number, int key, int _max, int _min){
 	int _change_num = 0;
-	if (IsKeyTrigger(key, PAD_INPUT_UP, KEY_UP)){
+	if (CKeyData::GetInstance()->IsKeyTrigger(key, PAD_INPUT_UP, KEY_UP)){
 		_number--;
 		_change_num = 1;
 	}
-	else if (IsKeyTrigger(key, PAD_INPUT_DOWN, KEY_DOWN)){
+	else if (CKeyData::GetInstance()->IsKeyTrigger(key, PAD_INPUT_DOWN, KEY_DOWN)){
 		_number++;
 		_change_num = 1;
 	}
-	else if (IsKeyTrigger(key, PAD_INPUT_RIGHT, KEY_RIGHT)){
+	else if (CKeyData::GetInstance()->IsKeyTrigger(key, PAD_INPUT_RIGHT, KEY_RIGHT)){
 		//_number--;
 		_change_num = 3;
 	}
-	else if (IsKeyTrigger(key, PAD_INPUT_LEFT, KEY_LEFT)){
+	else if (CKeyData::GetInstance()->IsKeyTrigger(key, PAD_INPUT_LEFT, KEY_LEFT)){
 		//_number++;
 		_change_num = 3;
 	}

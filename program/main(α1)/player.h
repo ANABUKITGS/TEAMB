@@ -92,6 +92,9 @@ private:
 	int m_player_img[64];
 	int m_player_charge_img[10];
 	int m_player_avoid_img[16];
+
+	float m_timer;
+	bool m_teleport_flag;
 public:
 	CPlayer();
 	~CPlayer(){};
@@ -112,7 +115,11 @@ public:
 	//ƒAƒCƒeƒ€‚ÌŠl“¾ˆ—
 	void ItemGet();
 
+	bool Teleport(int key);
+
 	inline CPlayerData* GetData(){ return m_player; };
+	inline bool GetTeleportFlag(){ return m_teleport_flag; };
+	inline void SetTeleportFlag(bool _flag){ m_teleport_flag = _flag; };
 };
 
 class CStan			: public CBasePAType{ void Type(CPlayerData *cd); };
