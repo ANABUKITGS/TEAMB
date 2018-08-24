@@ -23,6 +23,7 @@ public:
 	void Draw();
 private:
 	int gameover_img;
+	int gameover_text_img;
 	SCREEN m_state;
 };
 

@@ -50,6 +50,9 @@ void CGameClearScreen::Init(){
 	gameclear_img[24] = LoadGraph("media\\img\\gameclear\\clear24.png");
 	gameclear_img[25] = LoadGraph("media\\img\\gameclear\\clear25.png");
 	gameclear_img[26] = LoadGraph("media\\img\\gameclear\\clear26.png");
+
+	gameclear_text_img = LoadGraph("media\\img\\screentext.png");
+
 	PlaySoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(GAMECLEAR_BGM), DX_PLAYTYPE_BACK);	//New
 }
 
@@ -59,7 +62,11 @@ void CGameClearScreen::Update()
 	m_animcounter++;
 	m_animcounter %= MAXINT;
 	m_ac = m_animcounter / 8;
-	if (CheckHitKey(KEY_INPUT_A) == 1) m_state = TITLE_SCREEN;
+	int key = GetJoypadInputState(DX_INPUT_KEY_PAD1);
+
+	if (CKeyData::GetInstance()->IsKeyTrigger(key, PAD_INPUT_2, KEY_Z_PAD_INPUT_2))m_state = TITLE_SCREEN;
+
+//	if (CheckHitKey(KEY_INPUT_A) == 1) m_state = TITLE_SCREEN;
 }
 
 //描画
@@ -67,8 +74,12 @@ void CGameClearScreen::Draw()
 {
 	ClearDrawScreen();
 	DrawGraph(0, 0, gameclear_img[(int)m_ac % 26], TRUE);
-	DrawString(10, 100, "TITLE Screen Hit A key to Next Screen", GetColor
-		(255, 255, 255));
+	DrawGraph(0, 640, gameclear_text_img, TRUE);
+
+
+#if defined(_DEBUG) | defined(DEBUG)
+	//DrawString(10, 100, "GAMECLEAR Screen Hit A key to Next Screen", GetColor(255, 255, 255));
+#endif
 }
 
 //次のステージへ

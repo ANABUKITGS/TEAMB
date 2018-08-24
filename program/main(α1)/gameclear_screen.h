@@ -22,6 +22,7 @@ public:
 	void Update();
 	void Draw();
 private:
+	int gameclear_text_img;
 	int gameclear_img[27];
 	float m_ac;
 	int m_animcounter;

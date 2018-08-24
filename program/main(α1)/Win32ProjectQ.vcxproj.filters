@@ -108,6 +108,30 @@
     <ClCompile Include="change_manager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="ui_move.cpp">
+      <Filter>ソース ファイル\game_main関連</Filter>
+    </ClCompile>
+    <ClCompile Include="boss_move.cpp">
+      <Filter>ソース ファイル\game_main関連</Filter>
+    </ClCompile>
+    <ClCompile Include="gameover_screen.cpp">
+      <Filter>ソース ファイル\screen関連</Filter>
+    </ClCompile>
+    <ClCompile Include="gameclear_screen.cpp">
+      <Filter>ソース ファイル\screen関連</Filter>
+    </ClCompile>
+    <ClCompile Include="difficulty_level.cpp">
+      <Filter>ソース ファイル\game_main関連</Filter>
+    </ClCompile>
+    <ClCompile Include="difficulty_level_manager.cpp">
+      <Filter>ソース ファイル\game_main関連</Filter>
+    </ClCompile>
+    <ClCompile Include="sounddata.cpp">
+      <Filter>ソース ファイル\game_main関連</Filter>
+    </ClCompile>
+    <ClCompile Include="sounddata_manager.cpp">
+      <Filter>ソース ファイル\game_main関連</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h">
@@ -184,6 +208,24 @@
     </ClInclude>
     <ClInclude Include="change_manager.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="gameover_screen.h">
+      <Filter>ヘッダー ファイル\screen関連</Filter>
+    </ClInclude>
+    <ClInclude Include="gameclear_screen.h">
+      <Filter>ヘッダー ファイル\screen関連</Filter>
+    </ClInclude>
+    <ClInclude Include="difficulty_level_manager.h">
+      <Filter>ヘッダー ファイル\game_main関連</Filter>
+    </ClInclude>
+    <ClInclude Include="difficulty_level.h">
+      <Filter>ヘッダー ファイル\game_main関連</Filter>
+    </ClInclude>
+    <ClInclude Include="sounddata.h">
+      <Filter>ヘッダー ファイル\game_main関連</Filter>
+    </ClInclude>
+    <ClInclude Include="sounddata_manager.h">
+      <Filter>ヘッダー ファイル\game_main関連</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
