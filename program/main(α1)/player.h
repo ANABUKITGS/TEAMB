@@ -72,6 +72,8 @@ public:
 	
 	CBaseData m_charge_effect;		//チャージエフェクト
 	CBaseData m_avoid_effect;		//回避エフェクト
+	CBaseData m_gate_effect;		//ゲートエフェクト
+	CBaseData m_attack_range;		//攻撃範囲エフェクト
 
 	float m_chage_count;	//チャージ量
 	int m_attack_type;		//攻撃の種類
@@ -91,7 +93,9 @@ private:
 	CPlayerData m_p_avatar[4];
 	int m_player_img[64];
 	int m_player_charge_img[10];
-	int m_player_avoid_img[16];
+	int m_player_avoid_img[20];
+	int m_player_gate_img[16];
+	int m_player_range_img[3][2];
 
 	float m_timer;
 	bool m_teleport_flag;

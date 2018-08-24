@@ -27,7 +27,7 @@ const float PLAYER_HURRICANE_COLLISION = 288.0f;
 
 const float ENEMY_COLLISION = 19.0f;
 const float ENEMY_LONG_COLLISION = 19.0f;
-const float ENEMY_BIG_COLLISION = 50.0f;
+const float ENEMY_BIG_COLLISION = 44.0f;
 const float ENEMY_SMALL_COLLISION = 18.0f;
 const float ENEMY_BULLET_COLLISION = 15.0f;
 const float ENEMY_ATTACK_BOMB_COLLISION = 21.0f;
@@ -51,6 +51,7 @@ const float PLAYER_ATTACK_STAN = 160.0f;
 const float PLAYER_STAN_EXRATE = 2.3f;
 const float PLAYER_ATTACK_BOMB = 20.0f;
 const float PLAYER_BOMB_EXRATE = 0.7f;
+const float PLAYER_BOMB_RANGE_EXRATE = 0.43f;
 const float PLAYER_BOMB_KNOCK_BACK = 14.0f;
 const float PLAYER_HURRICANE_KNOCK_BACK = 1.2f;
 

@@ -16,9 +16,9 @@ CEnemyDifficultyTable enemy_diff_table[] = {
 	{ 11,10, 5, 2, 1, 4, 0 },
 	{ 12,10, 9, 4, 1, 5, 0 },
 	{ 13,10, 11, 8, 1, 2, 0 },
-	{ 14,10, 8, 11, 1, 0, 0 },
+	{ 14,10, 8, 11, 2, 0, 0 },
 	{ 15,10, 14, 0, 0, 6, 2 },
-	{ 16,10, 13, 5, 1, 3, 5 },
+	{ 16,10, 13, 5, 4, 3, 5 },
 	{ 97,99, 8, 20, 2, 0, 0 },
 	{ 98,99, 0, 0, 15, 0, 0 },
 	{ 99,99, 0, 0, 0, 0, 29 }
@@ -69,7 +69,6 @@ void CDifficultyLevel::Update(){
 	if (CUiManager::GetInstance()->GetUiAdress()->GatComb() == 0){
 		_flag = false;
 	}
-	printfDx("Lv / %d\n", m_enemy_difficulty->m_enemy_level);
 }
 
 void CDifficultyLevel::Draw(){

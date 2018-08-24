@@ -71,7 +71,15 @@ CPlayer::CPlayer()
 
 	LoadDivGraph("media\\img\\hero_m.png", 64, 4, 16, 64, 64, m_player_img, 0);
 	LoadDivGraph("media\\img\\charge.png", 10, 2, 5, 384, 384, m_player_charge_img, 0);
-	LoadDivGraph("media\\img\\avoid_aria.png", 16, 2, 8, 384, 384, m_player_avoid_img, 0);
+	LoadDivGraph("media\\img\\avoid_aria.png", 20, 2, 10, 256, 256, m_player_avoid_img, 0);
+	LoadDivGraph("media\\img\\gate.png", 16, 4, 4, 256, 256, m_player_gate_img, 0);
+	
+	m_player_range_img[0][0] = LoadGraph("media\\img\\range_stn_i_ma.png");
+	m_player_range_img[0][1] = LoadGraph("media\\img\\range_stn_o_ma.png");
+	m_player_range_img[1][0] = LoadGraph("media\\img\\range_wind_i_ma.png");
+	m_player_range_img[1][1] = LoadGraph("media\\img\\range_wind_o_ma.png");
+	m_player_range_img[2][0] = LoadGraph("media\\img\\range_exp_i_ma.png");
+	m_player_range_img[2][1] = LoadGraph("media\\img\\range_exp_o_ma.png");
 
 	for (auto &pat : player_attack_table){
 		if (m_player->m_attack_type == pat.m_type){
@@ -81,8 +89,10 @@ CPlayer::CPlayer()
 	}
 
 	m_player->m_charge_effect = CBaseData(m_player->m_pos, false, m_player->m_rad, 0.6f, 0, 0, 0, 0, 0, 0, 0);
-	m_player->m_avoid_effect = CBaseData(m_player->m_pos, false, m_player->m_rad, 0.6f, 0, 0, 0, 0, 0, 0, 0);
-	
+	m_player->m_avoid_effect = CBaseData(m_player->m_pos, false, m_player->m_rad, 0.9f, 0, 0, 0, 0, 0, 0, 0);
+	m_player->m_gate_effect = CBaseData(m_player->m_pos, false, m_player->m_rad, 1.0f, 0, 0, 0, 0, 0, 0, 0);
+	m_player->m_attack_range = CBaseData(m_player->m_pos, false, m_player->m_rad, 1.0f, 0, 0, 0, 0, 0, 0, 0);
+
 	m_timer = 0.0f;
 	m_teleport_flag = false;
 	m_priority = eDWP_PLAYER;
@@ -120,9 +130,24 @@ void CPlayer::Update(){
 	//回避エフェクト
 	if (m_player->m_avoid_effect.m_living == true)
 		m_player->m_avoid_effect.m_amine_rate++;
-	if (m_player->m_avoid_effect.m_amine_rate == 16){
+	if (m_player->m_avoid_effect.m_amine_rate == 20){
 		m_player->m_avoid_effect.m_living = false;
 		m_player->m_avoid_effect.m_amine_rate = 0;
+	}
+
+	//ゲートエフェクト
+	if (m_player->m_gate_effect.m_living == true)
+		m_player->m_gate_effect.m_amine_rate++;
+	if (m_player->m_gate_effect.m_amine_rate == 80){
+		m_player->m_gate_effect.m_amine_rate = 0;
+	}
+
+	if (m_player->m_attack_range.m_living == true){
+		m_player->m_attack_range.m_amine_rate++;
+		m_player->m_attack_range.m_rad += 0.007;
+	}
+	if (m_player->m_attack_range.m_amine_rate == 22){
+		m_player->m_attack_range.m_amine_rate = 0;
 	}
 
 }
@@ -166,6 +191,8 @@ void CPlayer::Move(int key){
 			}
 		}
 		else{
+
+			//m_player->m_temporary_rad = m_player->m_rad;
 
 			m_player->Control(key, _fx, _fy);
 
@@ -299,24 +326,33 @@ void CPlayer::Attack(int key){
 		switch (m_player->m_attack_type)
 		{
 		case 0:
-			CUiManager::GetInstance()->GetUiAdress()->SetEstimationData(&m_player->m_pos, 1.0f * (1 + (int)m_player->m_chage_count * 0.1f) * m_player->m_stan,1);
+			m_player->m_attack_range.m_pos = m_player->m_pos;
+			m_player->m_attack_range.m_exrate = 0.45f * (1 + (int)m_player->m_chage_count * 0.1f) * m_player->m_stan;
+			m_player->m_attack_range.m_animtype = 0;
+			m_player->m_attack_range.m_living = true;
 			break;
 		case 1:
-			CUiManager::GetInstance()->GetUiAdress()->SetEstimationData(&CVector2D(m_player->m_pos.getX() + PLAYER_HURRICANE_RANGE * cos(m_player->m_rad), m_player->m_pos.getY() + PLAYER_HURRICANE_RANGE * sin(m_player->m_rad)), 1.0f * (1 + (int)m_player->m_chage_count * 0.1f) * m_player->m_knock_back, 0);
+			m_player->m_attack_range.m_pos = CVector2D(m_player->m_pos.getX() + PLAYER_HURRICANE_RANGE * cos(m_player->m_rad), m_player->m_pos.getY() + PLAYER_HURRICANE_RANGE * sin(m_player->m_rad));
+			m_player->m_attack_range.m_exrate = 0.65f * (1 + (int)m_player->m_chage_count * 0.1f) * m_player->m_knock_back;
+			m_player->m_attack_range.m_animtype = 1;
+			m_player->m_attack_range.m_living = true;
 			break;
 		case 2:
-			CUiManager::GetInstance()->GetUiAdress()->SetEstimationData(&CVector2D(m_player->m_pos.getX() + PLAYER_BOMB_RANGE * cos(m_player->m_rad), m_player->m_pos.getY() + PLAYER_BOMB_RANGE * sin(m_player->m_rad)), PLAYER_BOMB_EXRATE * (1 + (int)m_player->m_chage_count * 0.1f) * m_player->m_bomb, 2);
+			m_player->m_attack_range.m_pos = CVector2D(m_player->m_pos.getX() + PLAYER_BOMB_RANGE * cos(m_player->m_rad), m_player->m_pos.getY() + PLAYER_BOMB_RANGE * sin(m_player->m_rad));
+			m_player->m_attack_range.m_exrate = PLAYER_BOMB_RANGE_EXRATE * (1 + (int)m_player->m_chage_count * 0.1f) * m_player->m_bomb;
+			m_player->m_attack_range.m_animtype = 2;
+			m_player->m_attack_range.m_living = true;
 			break;
 		default:
 			break;
 		}
-		CUiManager::GetInstance()->GetUiAdress()->SetEstimationLivflag(true);
 		
 		m_player->m_motion_type = 32;
 	}
 	else if (_type == SEPARATE){
 		_temp = m_player->m_chage_count;
 		m_player->m_chage_count = 1.0f;
+		m_player->m_attack_range.m_living = false;
 	}
 }
 
@@ -327,14 +363,18 @@ bool CPlayer::Teleport(int key){
 	}
 	if (_type == PRESSING){
 		m_timer += 0.019;
+		m_player->m_gate_effect.m_living = true;
+		m_player->m_gate_effect.m_pos = m_player->m_pos;
 		if (m_timer > 3.0f){
 			m_timer = 0.0f;
+			m_player->m_gate_effect.m_living = false;
 			//CChangeManager::GetInstance()->GetChangeAdress()->SetCData(0, 2);
 			return true;
 		}
 	}
 	else if (_type == SEPARATE){
 		m_timer = 0.0f;
+		m_player->m_gate_effect.m_living = false;
 		return false;
 	}
 	return false;
@@ -419,9 +459,20 @@ void CPlayer::Draw(){
 	
 	//回避エフェクト
 	if (m_player->m_avoid_effect.m_living)
-		DrawRotaGraph(m_player->m_avoid_effect.m_pos.getX() - 2, m_player->m_avoid_effect.m_pos.getY() + 27, m_player->m_avoid_effect.m_exrate,
+		DrawRotaGraph(m_player->m_avoid_effect.m_pos.getX() - 2, m_player->m_avoid_effect.m_pos.getY()-27, m_player->m_avoid_effect.m_exrate,
 		0, m_player_avoid_img[m_player->m_avoid_effect.m_amine_rate], TRUE, FALSE);
 
+	//ゲートエフェクト
+	if (m_player->m_gate_effect.m_living)
+		DrawRotaGraph(m_player->m_gate_effect.m_pos.getX() - 2, m_player->m_gate_effect.m_pos.getY() - 27, m_player->m_gate_effect.m_exrate,
+		0, m_player_gate_img[m_player->m_gate_effect.m_amine_rate / 5], TRUE, FALSE);
+
+	if (m_player->m_attack_range.m_living){
+		DrawRotaGraph(m_player->m_attack_range.m_pos.getX() + 1, m_player->m_attack_range.m_pos.getY() + 1, m_player->m_attack_range.m_exrate,
+			m_player->m_attack_range.m_rad, m_player_range_img[m_player->m_attack_range.m_animtype][0], TRUE, FALSE);
+		DrawRotaGraph(m_player->m_attack_range.m_pos.getX() + 1, m_player->m_attack_range.m_pos.getY() + 1, m_player->m_attack_range.m_exrate,
+			-m_player->m_attack_range.m_rad, m_player_range_img[m_player->m_attack_range.m_animtype][1], TRUE, FALSE);
+	}
 	//分身
 	if (m_p_avatar[0].m_living == true){
 		SetDrawBright(0, 0, 255);

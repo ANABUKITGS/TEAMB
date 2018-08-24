@@ -66,5 +66,4 @@ void CChange::Draw(){
 		DrawGraph(m_blackback->m_pos.getX(), m_blackback->m_pos.getY(), m_blackback_img, TRUE);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	}
-	printfDx("alpha = %f\n", m_blackback->m_alpha);
 }

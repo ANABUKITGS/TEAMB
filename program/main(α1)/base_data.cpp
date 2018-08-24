@@ -261,8 +261,8 @@ void CCharaData::CBank(CBaseData* cd1, CBaseData* cd2){
 
 	_dist /= 2.0f;
 
-	cd1->m_pos += CVector2D(_vx * _dist * 1.2f, _vy*_dist * 1.2f);
-	cd2->m_pos -= CVector2D(_vx * _dist * 1.2f, _vy*_dist * 1.2f);
+	cd1->m_pos += CVector2D(_vx * _dist * 1.1f, _vy*_dist * 1.1f);
+	cd2->m_pos -= CVector2D(_vx * _dist * 1.1f, _vy*_dist * 1.1f);
 	///////////////////////
 	if (cd1->m_bank_flag){
 		//”½”­ŒW”
@@ -278,6 +278,7 @@ void CCharaData::CBank(CBaseData* cd1, CBaseData* cd2){
 		float _rad1 = PosRad(cd1->m_pos, cd2->m_pos);//Õ“ËŒã‚Ì‘Šè
 		float _rad2 = cd1->m_rad - _rad1;	//Šp“x‚Ì·
 		float _rad3 = cd1->m_rad + _rad2;	//Õ“ËŒã©•ª‚ÌŠp“x
+
 
 		if (_rad2 < 0)_rad2 = _rad2 + 2 * PI;
 		if (_rad3 < 0)_rad3 = _rad3 + 2 * PI;
@@ -318,9 +319,11 @@ void CCharaData::Draw(){
 				DrawRectGraph((*it)->m_pos.getX() - 32 + (*it)->m_hp, (*it)->m_pos.getY() - 47, 0, 0, (*it)->m_damage, 8, m_hhp_img[1], FALSE, FALSE);
 		}
 		if ((*it)->m_type == BOSS){
-			DrawRectGraph((*it)->m_pos.getX() - 382, 0, 0, 0, (*it)->m_hp, 8, m_bhp_img[0], FALSE, FALSE);
-			if ((*it)->m_damage > 0)
-				DrawRectGraph((*it)->m_pos.getX() - 382 + (*it)->m_hp, 0, 0, 0, (*it)->m_damage, 8, m_bhp_img[1], FALSE, FALSE);
+			if (!(*it)->m_invincible){
+				DrawRectGraph((*it)->m_pos.getX() - 382, 0, 0, 0, (*it)->m_hp, 8, m_bhp_img[0], FALSE, FALSE);
+				if ((*it)->m_damage > 0)
+					DrawRectGraph((*it)->m_pos.getX() - 382 + (*it)->m_hp, 0, 0, 0, (*it)->m_damage, 8, m_bhp_img[1], FALSE, FALSE);
+			}
 		}
 		if ((*it)->m_damage > 0){
 			(*it)->m_damage--;
