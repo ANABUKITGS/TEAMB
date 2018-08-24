@@ -46,35 +46,40 @@ CBossData::CBossData(CBaseData _temp)
 
 CBoss::CBoss(){
 	CBossData m_base;
-	for (m_bossy.m_type = 3; m_bossy.m_type < 8; m_bossy.m_type++){
+	for (m_bossy.m_type = body; m_bossy.m_type < lefhand + 1; m_bossy.m_type++){
 		switch (m_bossy.m_type)
 		{
-		case 3://本体
+		case body://本体
 			m_base.m_pos = CVector2D(660, 160);
-			m_base.m_hp = 150;
+			m_base.m_hp = BOSS_HP;
+			m_base.m_collision = 100;
 			break;
-		case 4://右腕
+		case rightarm://右腕
 			m_base.m_pos = CVector2D(553, 200);
-			m_base.m_hp = 15000;
+			m_base.m_hp = BOSS_HP;
+			m_base.m_collision = 10;
 			break;
-		case 5://右手
+		case righand://右手
 			m_base.m_pos = CVector2D(547, 270);
-			m_base.m_hp = 15000;
+			m_base.m_hp = BOSS_HP;
+			m_base.m_collision = 20;
 			break;
-		case 6://左腕
+		case leftarm://左腕
 			m_base.m_pos = CVector2D(745, 200);
-			m_base.m_hp = 15000;
+			m_base.m_hp = BOSS_HP;
+			m_base.m_collision = 20;
 			break;
-		case 7://左手
+		case lefhand://左手
 			m_base.m_pos = CVector2D(747, 270);
-			m_base.m_hp = 15000;
+			m_base.m_hp = BOSS_HP;
+			m_base.m_collision = 20;
 			break;
 		}
 		m_base.m_type = m_bossy.m_type;
 		m_base.m_ty++;
 
 		//座標/生きてる/角度/大きさ/アニメーション/速度/質量/体力/摩擦/当たり判定の大きさ/種類
-		CBaseData *_temp = new CBaseData(m_base.m_pos, true, 0, 0, 90, 0, 10, m_base.m_hp, 0, 0, m_base.m_type);
+		CBaseData *_temp = new CBaseData(m_base.m_pos, true, 0, 0, 90, 0, 100, m_base.m_hp, 0, m_base.m_collision, m_base.m_type);
 		m_boss.push_back(new CBossData(*_temp));
 	}
 	//ボス胴体
@@ -99,7 +104,7 @@ CBoss::CBoss(){
 
 	m_boss_shadow_img = LoadGraph("media\\img\\boss_shadow.png");
 
-	LoadDivGraph("media\\img\\boss.png", 3, 3, 1, 294, 263, m_boss_body_img, 0);
+	LoadDivGraph("media\\img\\boss.png", 3, 3, 1, 292, 263, m_boss_body_img, 0);
 
 	m_attack_move = 0;
 	m_priority = eDWP_BOSS;
@@ -163,10 +168,10 @@ void CBoss::Update(){
 					m_attack_counter = 1;
 				}
 				if (randf > 30 && randf < 100){
-					if ((*it)->m_type == 5){
+					if ((*it)->m_type == righand){
 						rocket_punch_flag1 = 1;
 					}
-					if ((*it)->m_type == 7){
+					if ((*it)->m_type == lefhand){
 						rocket_punch_flag2 = 1;
 					}
 					if (rocket_punch_flag1 == 1 && rocket_punch_flag2 == 1){
@@ -186,7 +191,7 @@ void CBoss::Update(){
 		}
 
 		//ボス本体の描画変化、上下移動変化
-		if (m_attack_counter > 0 && (*it)->m_type == 3){
+		if (m_attack_counter > 0 && (*it)->m_type == body){
 			(*it)->m_ty = 10;
 			m_v++;
 			(*it)->m_yup += 4.9f;
@@ -196,12 +201,12 @@ void CBoss::Update(){
 
 			}
 		}
-		else if (m_attack_counter == 0 && (*it)->m_type == 3){
+		else if (m_attack_counter == 0 && (*it)->m_type == body){
 			m_v = 0;
 			(*it)->m_ty = 3;
 		}
 
-		if ((*it)->m_type == 3){
+		if ((*it)->m_type == body){
 			m_hpboss = (*it)->m_hp;
 		}
 
@@ -248,28 +253,27 @@ void CBoss::Update(){
 
 int CBoss::Hp(){
 	for (auto it = m_boss.begin(); it != m_boss.end(); it++){
-		if ((*it)->m_type == 3)
+		if ((*it)->m_type == body)
 			return (*it)->m_hp;
 	}
 }
 
 void CBoss::Draw(){
 	for (auto it = m_boss.begin(); it != m_boss.end(); it++){
-
-		if ((*it)->m_type != 3){
-			DrawRotaGraph((int)(*it)->m_pos.getX(), (int)(*it)->m_pos.getY(), 1, 0, m_boss_img[(int)(*it)->m_ty - 3], TRUE, FALSE);
+		if ((*it)->m_type != body){
+			DrawRotaGraph((int)(*it)->m_pos.getX(), (int)(*it)->m_pos.getY(), 1, 0, m_boss_img[(int)(*it)->m_ty - body], TRUE, FALSE);
 		}
 
-		if (m_attack_counter > 0 && (*it)->m_type == 3){//ボス本体と影の描画
+		if (m_attack_counter > 0 && (*it)->m_type == body){//ボス本体と影の描画
 			DrawRotaGraph((int)(*it)->m_pos.getX(), (int)(*it)->m_pos.getY(), 1, 0, m_boss_body_img[2], TRUE, FALSE);
 			DrawRotaGraph((int)(*it)->m_pos.getX() - 13, (int)(*it)->m_pos.getY() + 140, 1, 0, m_boss_shadow_img, TRUE, FALSE);
 		}
-		else if (m_attack_counter == 0 && (*it)->m_type == 3 && (*it)->m_hp > 100)
+		else if (m_attack_counter == 0 && (*it)->m_type == body && (*it)->m_hp > 100)
 		{
 			DrawRotaGraph((int)(*it)->m_pos.getX(), (int)(*it)->m_pos.getY(), 1, 0, m_boss_body_img[0], TRUE, FALSE);
 			DrawRotaGraph((int)(*it)->m_pos.getX() - 13, (int)(*it)->m_pos.getY() + 150, 1, 0, m_boss_shadow_img, TRUE, FALSE);
 		}
-		else if ((*it)->m_hp < 100 && (*it)->m_type == 3)
+		else if ((*it)->m_hp < 100 && (*it)->m_type == body)
 		{
 			DrawRotaGraph((int)(*it)->m_pos.getX(), (int)(*it)->m_pos.getY(), 1, 0, m_boss_body_img[1], TRUE, FALSE);
 		}

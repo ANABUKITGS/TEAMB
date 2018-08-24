@@ -32,7 +32,7 @@ void CMoveboss_bbbb::Move(CBossData *cd, CVector2D &_pos, int m_c){
 	}
 
 	else if (m_c == 1){//ロケパン
-		cd->m_ty = 11;
+		cd->m_ty = 12;
 		cd->m_velocity = 8;
 		cd->m_rad = PosRad(cd->m_pos, CVector2D(547, 800));
 		_pos += CVector2D(cd->m_velocity * cos(cd->m_rad), cd->m_velocity * sin(cd->m_rad));
@@ -44,11 +44,11 @@ void CMoveboss_bbbb::Move(CBossData *cd, CVector2D &_pos, int m_c){
 	}
 
 	else if (m_c == 2){//近接攻撃
-		cd->m_ty = 8;
+		cd->m_ty = 9;
 		cd->m_velocity = 4;
 		cd->m_rad = PosRad(cd->m_pos, CVector2D(CPlayerManager::GetInstance()->GetPlayerAdress()->GetData()->m_pos.getX(), CPlayerManager::GetInstance()->GetPlayerAdress()->GetData()->m_pos.getY()));
 		_pos += CVector2D(cd->m_velocity * cos(cd->m_rad), cd->m_velocity * sin(cd->m_rad));
-		if (IsHitCircle(ENEMY_BULLET_COLLISION, _temp->m_collision, cd->m_pos, _temp->m_pos)){
+		if (IsHitCircle(cd->m_collision + 1, _temp->m_collision, cd->m_pos, _temp->m_pos)){
 			cd->m_attack_fla = true;
 		}
 		if (_pos.getX() > 850 || _pos.getX() < 400 || _pos.getY() > 400 || _pos.getY() < 150){
@@ -57,7 +57,7 @@ void CMoveboss_bbbb::Move(CBossData *cd, CVector2D &_pos, int m_c){
 	}
 
 	else if (m_c == 3){//横パン
-		cd->m_ty = 8;
+		cd->m_ty = 9;
 		cd->m_velocity = 8;
 		cd->m_rad = PosRad(CVector2D(0, CPlayerManager::GetInstance()->GetPlayerAdress()->GetData()->m_pos.getY()), CVector2D(CPlayerManager::GetInstance()->GetPlayerAdress()->GetData()->m_pos.getX(), CPlayerManager::GetInstance()->GetPlayerAdress()->GetData()->m_pos.getY()));
 
@@ -72,7 +72,7 @@ void CMoveboss_bbbb::Move(CBossData *cd, CVector2D &_pos, int m_c){
 		}
 
 		if (cd->m_attack_move2 == 1){//プレイヤーの縦座標に向かっていく
-			cd->m_ty = 13;
+			cd->m_ty = 14;
 			cd->m_velocity = 15;
 			_pos += CVector2D(cd->m_velocity * cos(cd->m_rad), cd->m_velocity * sin(cd->m_rad));
 		}
@@ -84,10 +84,10 @@ void CMoveboss_bbbb::Move(CBossData *cd, CVector2D &_pos, int m_c){
 		}
 	}
 
-	if (IsHitCircle(ENEMY_BULLET_COLLISION, _temp->m_collision, cd->m_pos, _temp->m_pos)){
+	if (IsHitCircle(cd->m_collision+1, _temp->m_collision, cd->m_pos, _temp->m_pos)){
 		_temp->m_control = false;
 		_temp->m_rad = PosRad(cd->m_pos, _temp->m_pos);
-		_temp->m_velocity = ENEMY_BULLET_KNOCK_BACK / _temp->m_mass;
+		_temp->m_velocity = 10 / _temp->m_mass;
 		_temp->m_damage = ENEMY_BULLET_ATTACK_DAMAGE;
 		_temp->m_hp -= _temp->m_damage;
 	}
@@ -126,7 +126,7 @@ void CMoveboss_cccc::Move(CBossData *cd, CVector2D &_pos, int m_c){
 	}
 
 	else if (m_c == 1){//ロケパン
-		cd->m_ty = 12;
+		cd->m_ty = 13;
 		cd->m_velocity = 8;
 		cd->m_rad = PosRad(cd->m_pos, CVector2D(747, 800));
 		_pos += CVector2D(cd->m_velocity * cos(cd->m_rad), cd->m_velocity * sin(cd->m_rad));
@@ -137,7 +137,7 @@ void CMoveboss_cccc::Move(CBossData *cd, CVector2D &_pos, int m_c){
 	}
 
 	else if (m_c == 3){//横パン
-		cd->m_ty = 8;
+		cd->m_ty = 10;
 		cd->m_velocity = 8;
 		cd->m_rad = PosRad(CVector2D(0, CPlayerManager::GetInstance()->GetPlayerAdress()->GetData()->m_pos.getY()), CVector2D(CPlayerManager::GetInstance()->GetPlayerAdress()->GetData()->m_pos.getX(), CPlayerManager::GetInstance()->GetPlayerAdress()->GetData()->m_pos.getY()));
 
@@ -152,7 +152,7 @@ void CMoveboss_cccc::Move(CBossData *cd, CVector2D &_pos, int m_c){
 		}
 
 		if (cd->m_attack_move2 == 1){//プレイヤーの縦座標に向かっていく
-			cd->m_ty = 14;
+			cd->m_ty = 15;
 			cd->m_velocity = 15;
 			_pos -= CVector2D(cd->m_velocity * cos(cd->m_rad), cd->m_velocity * sin(cd->m_rad));
 		}
@@ -164,10 +164,10 @@ void CMoveboss_cccc::Move(CBossData *cd, CVector2D &_pos, int m_c){
 		}
 	}
 
-	if (IsHitCircle(ENEMY_BULLET_COLLISION, _temp->m_collision, cd->m_pos, _temp->m_pos)){
+	if (IsHitCircle(cd->m_collision+1, _temp->m_collision, cd->m_pos, _temp->m_pos)){
 		_temp->m_control = false;
 		_temp->m_rad = PosRad(cd->m_pos, _temp->m_pos);
-		_temp->m_velocity = ENEMY_BULLET_KNOCK_BACK / _temp->m_mass;
+		_temp->m_velocity = 10 / _temp->m_mass;
 		_temp->m_damage = ENEMY_BULLET_ATTACK_DAMAGE;
 		_temp->m_hp -= _temp->m_damage;
 	}

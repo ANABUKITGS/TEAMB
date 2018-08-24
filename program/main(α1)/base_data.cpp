@@ -103,6 +103,8 @@ CCharaData::CCharaData(){
 	m_ehp_img[1] = LoadGraph("media\\img\\enemy_hp_b1.jpg");
 	m_hhp_img[0] = LoadGraph("media\\img\\hero_hp2.jpg");
 	m_hhp_img[1] = LoadGraph("media\\img\\hero_hp2_b1.jpg");
+	m_bhp_img[0] = LoadGraph("media\\img\\boss_hp1.jpg");
+	m_bhp_img[1] = LoadGraph("media\\img\\boss_hp2.jpg");
 	m_stan_timer_img = LoadGraph("media\\img\\enemy_stan_timer.jpg");
 }
 
@@ -200,7 +202,8 @@ void CCharaData::Update(){
 				if (IsHitCircle((*it1)->m_collision, (*it2)->m_collision, (*it1)->m_pos, (*it2)->m_pos)){
 					if (!(*it1)->m_invincible && !(*it2)->m_invincible){
 						if ((*it1)->m_type != ITEM && (*it2)->m_type != ITEM && (*it1)->m_type != ENEMY_BULLET && (*it2)->m_type != ENEMY_BULLET){
-							CBank(*it1, *it2);
+							if ((*it1)->m_type < BOSS || (*it2)->m_type < BOSS)
+								CBank(*it1, *it2);
 						}
 					}
 				}
@@ -228,13 +231,13 @@ void CCharaData::CBank(CBaseData* cd1, CBaseData* cd2){
 		if (cd1->m_type == PLAYER)
 			cd2->m_velocity = 5.5f;
 		else
-			cd1->m_velocity = 2.5f; /// cd1->m_mass;
+			cd1->m_velocity = 2.5f / cd1->m_mass; /// cd1->m_mass;
 	}
 	if (cd2->m_control){
 		if (cd2->m_type == PLAYER)
-			cd1->m_velocity = 5.5f;
+			cd1->m_velocity = 5.5f ;
 		else
-		cd2->m_velocity = 2.5f; /// cd2->m_mass;
+		cd2->m_velocity = 2.5f/ cd1->m_mass; /// cd2->m_mass;
 	}
 
 
@@ -313,6 +316,11 @@ void CCharaData::Draw(){
 			DrawRectGraph((*it)->m_pos.getX() - 32, (*it)->m_pos.getY() - 47, 0, 0, (*it)->m_hp, 8, m_hhp_img[0], FALSE, FALSE);
 			if ((*it)->m_damage > 0)
 				DrawRectGraph((*it)->m_pos.getX() - 32 + (*it)->m_hp, (*it)->m_pos.getY() - 47, 0, 0, (*it)->m_damage, 8, m_hhp_img[1], FALSE, FALSE);
+		}
+		if ((*it)->m_type == BOSS){
+			DrawRectGraph((*it)->m_pos.getX() - 382, 0, 0, 0, (*it)->m_hp, 8, m_bhp_img[0], FALSE, FALSE);
+			if ((*it)->m_damage > 0)
+				DrawRectGraph((*it)->m_pos.getX() - 382 + (*it)->m_hp, 0, 0, 0, (*it)->m_damage, 8, m_bhp_img[1], FALSE, FALSE);
 		}
 		if ((*it)->m_damage > 0){
 			(*it)->m_damage--;

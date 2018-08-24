@@ -15,7 +15,7 @@
 using namespace std;
 
 enum CHARA_TYPE{
-	PLAYER, ENEMY, ENEMY_BULLET, ITEM,BOSS
+	PLAYER, ENEMY, ENEMY_BULLET, ITEM, BOSS
 };
 
 class CBaseData{
@@ -62,6 +62,7 @@ private:
 	list<CBaseData*> m_chara_data;
 	int m_ehp_img[2];
 	int m_hhp_img[2];
+	int m_bhp_img[2];
 	int m_stan_timer_img;
 public:
 	

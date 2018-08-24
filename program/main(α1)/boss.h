@@ -9,10 +9,13 @@
 const float BOSS_EXRATE = 8.0f;
 const float BOSS_SPEED = 0.0f;
 
+const float BOSS_BACK = 15.0f;
+const int BOSS_HP = 1000;
+
 using namespace std;
 
 enum BossType{
-	body = 3, rightarm, righand, leftarm, lefhand
+	body = 4, rightarm, righand, leftarm, lefhand
 };
 
 enum BossAttackType{
