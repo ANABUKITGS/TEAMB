@@ -4,6 +4,7 @@
 #include "ui_manager.h"
 #include "item_manager.h"
 #include "change_manager.h"
+#include "sounddata_manager.h"
 
 CStan		stan;
 CKnockBack	knock_back;
@@ -261,6 +262,7 @@ void CPlayer::Change(int key){
 			if (m_player->m_attack_type == pat.m_type){
 				m_player->AttackType = pat.BaseAttackType;
 				CUiManager::GetInstance()->GetUiAdress()->SetChangeFlag(_f);
+				PlaySoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(S_ATTACK_CHANGE), DX_PLAYTYPE_BACK);
 				break;
 			}
 		}
@@ -347,6 +349,7 @@ void CPlayer::Avoid(int key){
 				m_player->m_timer = 10;
 				m_player->m_avoid_effect.m_living = true;
 				m_player->m_avoid_effect.m_pos = m_player->m_pos;
+				PlaySoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(S_P_AVOID), DX_PLAYTYPE_BACK);
 			}
 		}
 		if (m_player->m_invincible == true){
@@ -393,6 +396,12 @@ void CPlayer::ItemGet(){
 					m_player->ItemType = item_type.ItemType;
 					CEffectData *temp = new CEffectData(m_player->m_pos, true, 0, 1.9f, item_type.m_num, 0, 0, 0, 0, 0, item_type.m_type, 2, NULL);
 					CEffectManager::GetInstance()->GetEffectAdress()->GetEffectData()->push_back(temp);
+					if ((*it)->m_animtype != HEEL_ITEM){
+						PlaySoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(S_ITEM_GET), DX_PLAYTYPE_BACK);
+					}
+					else{
+						PlaySoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(S_HEEL_GET), DX_PLAYTYPE_BACK);
+					}
 					break;
 				}
 			}

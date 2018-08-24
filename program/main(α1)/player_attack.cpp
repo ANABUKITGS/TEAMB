@@ -1,6 +1,7 @@
 #include "player_manager.h"
 #include "effect_manager.h"
 #include "enemy_manager.h"
+#include "sounddata_manager.h"
 
 CEffectMovePattern1 EMP1;
 CEffectMovePattern5 EMP5;
@@ -17,6 +18,7 @@ void CStan::Type(CPlayerData *cd){
 			}
 		}
 	}
+	PlaySoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(S_ATTACK_STAN), DX_PLAYTYPE_BACK);
 	CEffectManager::GetInstance()->GetEffectAdress()->GetEffectData()->push_back(temp);
 }
 
@@ -38,6 +40,7 @@ void CKnockBack::Type(CPlayerData *cd){
 }
 
 void CHurricane::Type(CPlayerData *cd){
+	PlaySoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(S_ATTACK_WIND), DX_PLAYTYPE_BACK);
 	CEffectData *temp = new CEffectData(CVector2D(cd->m_pos.getX() + PLAYER_HURRICANE_RANGE * cos(cd->m_rad), cd->m_pos.getY() + PLAYER_HURRICANE_RANGE * sin(cd->m_rad)), true, cd->m_rad + radian(90), 2.7f * (1 + (int)cd->m_chage_count * 0.1f) * cd->m_knock_back, KNOCK_BACK_NUM, PLAYER_HURRICANE_KNOCK_BACK * cd->m_knock_back*1.3f, 10, 99, 0, PLAYER_HURRICANE_COLLISION * cd->m_knock_back, KNOCK_BACK, 3, &EMP5);
 	CEffectManager::GetInstance()->GetEffectAdress()->GetEffectData()->push_back(temp);
 }

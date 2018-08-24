@@ -1,5 +1,6 @@
 //ヘッダーファイル
 #include "gameover_screen.h"
+#include "sounddata_manager.h"
 
 //コンストラクタ
 CGameOverScreen::CGameOverScreen()
@@ -8,7 +9,9 @@ CGameOverScreen::CGameOverScreen()
 }
 
 //デストラクタ
-CGameOverScreen::~CGameOverScreen(){}
+CGameOverScreen::~CGameOverScreen(){
+	StopSoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(GAMEOVER_BGM));	//New
+}
 
 //ロード
 void CGameOverScreen::Load(){}
@@ -19,6 +22,7 @@ void CGameOverScreen::Release(){}
 //初期化
 void CGameOverScreen::Init(){
 	gameover_img = LoadGraph("media\\img\\gameover.png");
+	PlaySoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(GAMEOVER_BGM), DX_PLAYTYPE_BACK);	//New
 }
 
 //実行処理

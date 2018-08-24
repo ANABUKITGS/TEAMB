@@ -1,5 +1,6 @@
 //ヘッダーファイル
 #include "gameclear_screen.h"
+#include "sounddata_manager.h"
 
 //コンストラクタ
 CGameClearScreen::CGameClearScreen()
@@ -8,7 +9,9 @@ CGameClearScreen::CGameClearScreen()
 }
 
 //デストラクタ
-CGameClearScreen::~CGameClearScreen(){}
+CGameClearScreen::~CGameClearScreen(){
+	StopSoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(GAMECLEAR_BGM));	//New
+}
 
 //ロード
 void CGameClearScreen::Load(){}
@@ -47,6 +50,7 @@ void CGameClearScreen::Init(){
 	gameclear_img[24] = LoadGraph("media\\img\\gameclear\\clear24.png");
 	gameclear_img[25] = LoadGraph("media\\img\\gameclear\\clear25.png");
 	gameclear_img[26] = LoadGraph("media\\img\\gameclear\\clear26.png");
+	PlaySoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(GAMECLEAR_BGM), DX_PLAYTYPE_BACK);	//New
 }
 
 //実行処理

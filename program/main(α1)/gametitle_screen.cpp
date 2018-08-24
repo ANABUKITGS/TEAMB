@@ -1,5 +1,6 @@
 //ヘッダーファイル
 #include "gametitle_screen.h"
+#include "sounddata_manager.h"
 
 //コンストラクタ
 CGameTitleScreen::CGameTitleScreen()
@@ -8,7 +9,9 @@ CGameTitleScreen::CGameTitleScreen()
 }
 
 //デストラクタ
-CGameTitleScreen::~CGameTitleScreen(){}
+CGameTitleScreen::~CGameTitleScreen(){
+	StopSoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(TITLE_BGM));	//New
+}
 
 //ロード
 void CGameTitleScreen::Load(){}
@@ -19,6 +22,7 @@ void CGameTitleScreen::Release(){}
 //初期化
 void CGameTitleScreen::Init(){
 	title_img = LoadGraph("media\\img\\title.png");
+	PlaySoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(TITLE_BGM), DX_PLAYTYPE_LOOP);	//New
 }
 
 //実行処理

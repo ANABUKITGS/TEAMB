@@ -3,6 +3,7 @@
 #include "enemy_manager.h"
 #include "effect_manager.h"
 #include "difficulty_level_manager.h"
+#include "sounddata_manager.h"
 
 CEffectMovePattern2 EMP2;
 CEffectMovePattern6 EMP6;
@@ -36,6 +37,7 @@ void CEffectMovePattern1::Move(CEffectData *cd){
 		cd->m_rate = 1;
 		cd->m_exrate += 0.6;
 		cd->BEMove = &EMP2;
+		PlaySoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(S_ATTACK_BOMB), DX_PLAYTYPE_BACK);
 	}
 }
 

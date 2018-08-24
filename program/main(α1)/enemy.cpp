@@ -3,6 +3,7 @@
 #include "effect_manager.h"
 #include "ui_manager.h"
 #include "difficulty_level_manager.h"
+#include "sounddata_manager.h"
 
 CEffectMovePattern1 EMP1_b;
 CEffectMovePattern2 EMP2_a;
@@ -144,6 +145,7 @@ void CEnemy::Delete(){
 			}
 			CUiManager::GetInstance()->GetUiAdress()->AddComb();
 			CUiManager::GetInstance()->GetUiAdress()->SetCombTimer(ITEM_COMB_TIME);
+			PlaySoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(S_E_DEAD), DX_PLAYTYPE_BACK);
 			it = m_enemys.erase(it);
 			continue;
 		}

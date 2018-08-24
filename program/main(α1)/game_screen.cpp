@@ -30,6 +30,9 @@ CGameScreen::~CGameScreen(){
 	CPlayerManager::GetInstance()->GetPlayerAdress()->Kill();
 	CUiManager::GetInstance()->GetUiAdress()->KillAll();
 	CChangeManager::GetInstance()->GetChangeAdress()->Kill();
+	StopSoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(GAME_BGM1));	//New
+	StopSoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(GAME_BGM2));	//New
+
 	//CBossManager::GetInstance()->GetBossAdress()->KillAll();
 }
 
@@ -52,7 +55,6 @@ void CGameScreen::Init(){
 	CTaskManager::GetInstance()->Add(new CUi);
 	CTaskManager::GetInstance()->Add(new CItem);
 	PlaySoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(GAME_BGM1), DX_PLAYTYPE_LOOP);	//New
-
 	//if(CFieldManager::GetInstance()->GetFrameAdress()->GetFieldType() != M_BOSS)
 	CTaskManager::GetInstance()->NoUpdate(CFieldManager::GetInstance()->GetFrameAdress()->GetFieldType());
 	CCharaData::GetInstance()->AssignmentInvincible(CFieldManager::GetInstance()->GetFrameAdress()->GetFieldType());
@@ -99,9 +101,13 @@ void CGameScreen::Update()
 				CChangeManager::GetInstance()->GetChangeAdress()->SetCData(255, -2);
 				if (CFieldManager::GetInstance()->GetFrameAdress()->GetFieldType() != M_BOSS){
 					CFieldManager::GetInstance()->GetFrameAdress()->SetFieldType(M_BOSS);
+					StopSoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(GAME_BGM1));	//New
+					PlaySoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(GAME_BGM2), DX_PLAYTYPE_LOOP);	//New
 				}
 				else{
 					CFieldManager::GetInstance()->GetFrameAdress()->SetFieldType(M_NORMAL);
+					StopSoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(GAME_BGM2));	//New
+					PlaySoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(GAME_BGM1), DX_PLAYTYPE_LOOP);	//New
 				}
 				CTaskManager::GetInstance()->NoUpdate(CFieldManager::GetInstance()->GetFrameAdress()->GetFieldType());
 				_pass = true;

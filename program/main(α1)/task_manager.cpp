@@ -8,7 +8,11 @@ CTaskManager::CTaskManager(){}
 CTaskManager::~CTaskManager(){}
 
 void CTaskManager::KillAll(){
-	if (m_TaskList.size() != NULL) m_TaskList.clear();
+	for (auto it = m_TaskList.begin(); it != m_TaskList.end();){
+		it = m_TaskList.erase(it);
+		continue;
+	it++;
+	}
 }
 
 void CTaskManager::AssignmentDelete(){
