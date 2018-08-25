@@ -29,6 +29,7 @@ const float UI_NO_SELECT_EXRATE = 0.5f;
 const float UI_SELECT_EXRATE = 1.0f;
 const int ITEM_COMB_TIME = 150;
 
+
 enum UI_ICON_TYPE{
 	ATTACK_ICON
 };
@@ -71,10 +72,10 @@ class CUi : public CTask{
 private:
 	list<CUiData*> m_list_ui;
 	CUiData m_icon_ui[4];
-	CUiData m_estimation;
 	int m_icon_img[3][2];			//攻撃アイコン
 	int m_ui_img[4];				//
-	int m_estimation_img[3];		//攻撃時の予測地点
+	int m_combo_img;
+	int m_num_img[10];
 
 	int m_comb;						//コンボ数
 	int m_comb_timer;				//コンボタイマー
@@ -90,13 +91,11 @@ public:
 	~CUi(){};
 	void Update();
 	void Draw();
-
+	
 	void KillAll();
 
 	void ChengeIcon(int _direction);
 
-	inline void SetEstimationData(CVector2D *_pos, float _rate, int _type){ m_estimation.m_pos = *_pos; m_estimation.m_exrate = _rate; m_estimation.m_animtype = _type; };
-	inline void SetEstimationLivflag(bool _flag){ m_estimation.m_living = _flag; };
 	inline bool GetTimeFlag(){ return m_endflag; };
 	inline void SetTimeFlag(bool _flag){ m_endflag = _flag; };
 	inline int GetImg(int num1, int num2){ return m_icon_img[num1][num2]; };

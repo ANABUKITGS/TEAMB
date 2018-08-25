@@ -234,7 +234,7 @@ void CAttackPattern1::Attack(CEnemyData *cd){
 	}
 	else{
 		if (cd->m_amine_rate == 8){
-			CEffectData *_temp2 = new CEffectData(CVector2D(cd->m_pos.getX() + ENEMY_RANGE * cos(cd->m_rad), cd->m_pos.getY() + ENEMY_RANGE * sin(cd->m_rad)), true, cd->m_rad, ENEMY_ATTACK_EXRATE, ENEMY_ATTACK_NUM, 0, 1.0f, 0, 0, ENEMY_ATTACK_COLLISION, ENEMY_ATTACK, 1, &EMP3);
+			CEffectData *_temp2 = new CEffectData(CVector2D(cd->m_pos.getX() + ENEMY_RANGE * cos(cd->m_rad), cd->m_pos.getY() + ENEMY_RANGE * sin(cd->m_rad)), true, cd->m_rad + radian(180), ENEMY_ATTACK_EXRATE, ENEMY_ATTACK_NUM, 0, 1.0f, 0, 0, ENEMY_ATTACK_COLLISION, ENEMY_ATTACK, 1, &EMP3);
 			CEffectManager::GetInstance()->GetEffectAdress()->GetEffectData()->push_back(_temp2);
 		}
 	}
@@ -269,12 +269,12 @@ void CAttackPattern2::Attack(CEnemyData *cd){
 
 void CAttackPattern3::Attack(CEnemyData *cd){
 	CPlayerData *_temp = CPlayerManager::GetInstance()->GetPlayerAdress()->GetData();
-	if (!_temp->m_invincible){
+	if (_temp->m_invincible == 0){
 		if (IsHitCircle(ENEMY_BULLET_COLLISION, _temp->m_collision, cd->m_pos, _temp->m_pos)){
 			_temp->m_control = false;
 			_temp->m_rad = PosRad(cd->m_pos, _temp->m_pos);
 			_temp->m_velocity = ENEMY_BULLET_KNOCK_BACK / _temp->m_mass;
-
+			CUiManager::GetInstance()->GetUiAdress()->SetComb(0);
 			_temp->m_damage = ENEMY_BULLET_ATTACK_DAMAGE;
 			_temp->m_hp -= _temp->m_damage;
 			cd->m_living = false;
@@ -290,7 +290,7 @@ void CAttackPattern4::Attack(CEnemyData *cd){
 			cd->m_pos, _temp1->m_pos)){
 			for (auto it = CCharaData::GetInstance()->GetCharaData()->begin();
 				it != CCharaData::GetInstance()->GetCharaData()->end(); it++){
-				if (!(*it)->m_invincible){
+				if ((*it)->m_invincible == 0){
 					if (cd->m_pos != (*it)->m_pos){
 						if (IsHitCircle(ENEMY_IMPACK_COLLISION, (*it)->m_collision,
 							cd->m_pos, (*it)->m_pos)){
@@ -300,6 +300,7 @@ void CAttackPattern4::Attack(CEnemyData *cd){
 							(*it)->m_rad = PosRad(cd->m_pos, (*it)->m_pos);
 							if ((*it)->m_type == PLAYER){
 								(*it)->m_damage = ENEMY_BIG_ATTACK_DAMAGE;
+								CUiManager::GetInstance()->GetUiAdress()->SetComb(0);
 								(*it)->m_hp -= (*it)->m_damage;
 							}
 							cd->m_amine_rate = 0;
@@ -330,11 +331,13 @@ void CAttackPattern5::Attack(CEnemyData *cd){
 	CPlayerData *_temp = CPlayerManager::GetInstance()->GetPlayerAdress()->GetData();
 		if (IsHitCircle(ENEMY_SMALL_COLLISION + 6, _temp->m_collision,
 			cd->m_pos, _temp->m_pos)){
-			if (!_temp->m_invincible){
+			if (_temp->m_invincible == 0){
+				_temp->m_control = false;
 				_temp->m_rad = PosRad(cd->m_pos, _temp->m_pos);
-				_temp->m_velocity = 4.0f / _temp->m_mass;
+				_temp->m_velocity = 7.0f / _temp->m_mass;
 				_temp->m_damage = 2;
 				_temp->m_hp -= _temp->m_damage;
+				CUiManager::GetInstance()->GetUiAdress()->SetComb(0);
 
 			}
 			cd->m_amine_rate = 0;
@@ -355,7 +358,7 @@ void CAttackPattern5::Attack(CEnemyData *cd){
 void CAttackPattern6::Attack(CEnemyData *cd){
 	if (!cd->m_attack_flag){
 		CPlayerData *_temp = CPlayerManager::GetInstance()->GetPlayerAdress()->GetData();
-		if (!_temp->m_invincible){
+		if (_temp->m_invincible == 0){
 			if (IsHitCircle(ENEMY_ATTACK_BOMB_COLLISION + 6, _temp->m_collision,
 				cd->m_pos, _temp->m_pos)){
 				cd->m_amine_rate = 0;

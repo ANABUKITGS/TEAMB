@@ -33,11 +33,11 @@ CAttackPattern5 AP5;
 CAttackPattern6 AP6;
 
 CECreateTable e_c_table[] = {
-	{ 0, NORMAL, ENEMY_EXRATE, ENEMY_NORMAL_SPEED, ENEMY_NORMAL_MASS, ENEMY_NORMAL_HP, ENEMY_COLLISION, &MP1, &AP1 },
-	{ 1, LONG_RANGE, ENEMY_LONG_EXRATE, ENEMY_LONG_SPEED, ENEMY_LONG_MASS, ENEMY_LONG_HP, ENEMY_LONG_COLLISION, &MP2, &AP2 },
-	{ 2, BIG, ENEMY_EXRATE, ENEMY_BIG_SPEED, ENEMY_BIG_MASS, ENEMY_BIG_HP, ENEMY_BIG_COLLISION, &MP4, &AP4 },
-	{ 3, SMALL, ENEMY_EXRATE, ENEMY_SMALL_SPEED, ENEMY_SMALL_MASS, ENEMY_SMALL_HP, ENEMY_SMALL_COLLISION, &MP5, &AP5 },
-	{ 4, E_BOMB, ENEMY_EXRATE, ENEMY_BOMB_SPEED, ENEMY_BOMB_MASS, ENEMY_BOMB_HP, ENEMY_ATTACK_BOMB_COLLISION, &MP6, &AP6 },
+	{ 0, NORMAL, ENEMY_EXRATE, ENEMY_NORMAL_SPEED, ENEMY_NORMAL_MASS, ENEMY_NORMAL_HP, ENEMY_COLLISION, 1, &MP1, &AP1 },
+	{ 1, LONG_RANGE, ENEMY_LONG_EXRATE, ENEMY_LONG_SPEED, ENEMY_LONG_MASS, ENEMY_LONG_HP, ENEMY_LONG_COLLISION, 1, &MP2, &AP2 },
+	{ 2, BIG, ENEMY_EXRATE, ENEMY_BIG_SPEED, ENEMY_BIG_MASS, ENEMY_BIG_HP, ENEMY_BIG_COLLISION, 2, &MP4, &AP4 },
+	{ 3, SMALL, ENEMY_EXRATE, ENEMY_SMALL_SPEED, ENEMY_SMALL_MASS, ENEMY_SMALL_HP, ENEMY_SMALL_COLLISION, 0.25f, &MP5, &AP5 },
+	{ 4, E_BOMB, ENEMY_EXRATE, ENEMY_BOMB_SPEED, ENEMY_BOMB_MASS, ENEMY_BOMB_HP, ENEMY_ATTACK_BOMB_COLLISION, 0.25f, &MP6, &AP6 },
 };
 
 CEnemyData::CEnemyData(){
@@ -45,7 +45,7 @@ CEnemyData::CEnemyData(){
 }
 
 CEnemyData::CEnemyData(CVector2D _pos, bool _living, float _alpha, float _rad, float _exrate, int _animtype, float _velocity, float _mass, int _hp, float _friction, float _collision, float _type, CBaseEemeyMove *_BEMove, CBaseEemeyAttack *_BEAttack)
-:CBaseData(_pos, _living, _alpha, _rad, _exrate, _animtype, _velocity, _mass, _hp, _friction, _collision,_type)
+:CBaseData(_pos, _living, _alpha, _rad, _exrate, _animtype, _velocity, _mass, _hp, _friction, _collision, _type)
 , BEMove(_BEMove)
 , BEAttack(_BEAttack)
 , m_counter(0)
@@ -140,7 +140,7 @@ void CEnemy::Delete(){
 		}
 		if ((*it)->m_living == false){
 			if ((*it)->m_animtype != E_BOMB){
-				CBaseData *_temp = new CBaseData((*it)->m_pos, true, 0, 1, ENEMY_DELETE_NUM, 0, 0, 0, 0, 0, ENEMY_DELETE);
+				CBaseData *_temp = new CBaseData((*it)->m_pos, true, 0, 1.5f, ENEMY_DELETE_NUM, 0, 0, 0, 0, 0, ENEMY_DELETE);
 				CEffectManager::GetInstance()->GetEffectAdress()->GetEffectData()->push_back(new CEffectData(*_temp, 2, NULL));
 			}
 			CUiManager::GetInstance()->GetUiAdress()->AddComb();
@@ -182,7 +182,7 @@ void CEnemy::Update(){
 
 		_pos = (*it)->m_pos;
 
-		if (!(*it)->m_invincible){
+		if ((*it)->m_invincible == 0){
 
 			if (!(*it)->m_kill_flag){
 
@@ -277,7 +277,7 @@ void CEnemy::Update(){
 				(*it)->m_pos.addY(10.0f);
 			else{
 				(*it)->m_pos.setY((*it)->m_move_pos.getY());
-				(*it)->m_invincible = false;
+				(*it)->m_invincible = 0;
 			}
 		}
 	}
@@ -301,21 +301,21 @@ void CEnemy::Update(){
 		CVector2D _pos1 = CVector2D(rand() % MAP_RANGE_X + 64, rand() % MAP_RANGE_Y + 73);
 		CVector2D _pos2 = CVector2D(_pos1.getX(), _pos1.getY() - 820);
 		
-		if (m_enemy_num.m_normal_num < CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetEnemyDifficulty()->m_nomal_num/*GetNormalNum()*/)
+		if (m_enemy_num.m_normal_num < CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetEnemyDifficulty()->m_nomal_num)
 			_type = 0;
-		else if (m_enemy_num.m_long_num < CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetEnemyDifficulty()->m_long_num/*GetLongNum()*/)
+		else if (m_enemy_num.m_long_num < CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetEnemyDifficulty()->m_long_num)
 			_type = 1;
-		else if (m_enemy_num.m_big_num < CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetEnemyDifficulty()->m_big_num/*GetBigNum()*/)
+		else if (m_enemy_num.m_big_num < CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetEnemyDifficulty()->m_big_num)
 			_type = 2;
-		else if (m_enemy_num.m_small_num < CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetEnemyDifficulty()->m_small_num/*GetSmallNum()*/)
+		else if (m_enemy_num.m_small_num < CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetEnemyDifficulty()->m_small_num)
 			_type = 3;
-		else if (m_enemy_num.m_bomb_num < CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetEnemyDifficulty()->m_bomb_num/*GetBombNum()*/)
+		else if (m_enemy_num.m_bomb_num < CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetEnemyDifficulty()->m_bomb_num)
 			_type = 4;
 
 		for (auto &ect : e_c_table){
 			if (ect.m_num == _type){
 				CBaseData *_temp = new CBaseData(_pos2, true, radian((rand() % 360)), ect.m_exrate, ect.m_type, ect.m_speed, ect.m_mass, ect.m_hp, ENEMY_FRICTION, ect.m_collision, ENEMY);
-				CEnemyManager::GetInstance()->GetEnemyAdress()->GetEnemyData()->push_back(new CEnemyData(*_temp, _pos1, true, ect.m_BEMove, ect.m_BEAttack));
+				CEnemyManager::GetInstance()->GetEnemyAdress()->GetEnemyData()->push_back(new CEnemyData(*_temp, _pos1, 2, ect.m_BEMove, ect.m_BEAttack));
 				break;
 			}
 		}

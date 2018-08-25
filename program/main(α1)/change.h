@@ -6,7 +6,7 @@
 class CChangeData : public CBaseData{
 public:
 	int m_add;					//“§‰ß‰ÁŽZ’l
-	CChangeData(CVector2D _pos, bool _living, float _alpha, float _rad, float _exrate, int _animtype, float _velocity, float _mass, float _friction, float _type,int _add);
+	CChangeData(CVector2D _pos, bool _living, float _alpha, float _rad, float _exrate, int _animtype, int _type, int _add);
 	~CChangeData();
 };
 

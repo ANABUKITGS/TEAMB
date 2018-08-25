@@ -37,7 +37,7 @@ public:
 	int m_type;				//種類
 	int m_timer;			//何らかの時間
 	int m_damage;			//ダメージ量
-	bool m_invincible;		//無敵かどうか				true:無敵		 false:通常
+	int m_invincible;		//無敵かどうか				0:通常		1:無敵		2:落下(ENEMYで使用)
 	bool m_knock_stan;		//ノックバック時のスタン	true:スタンあり　false:スタンなし
 	bool m_bank_flag;		//反射処理を行うかどうか　　true:する		 false:しない
 	bool m_kill_flag;		//体力がなくなったかどうか　true:ない		 false:ある
@@ -47,10 +47,10 @@ public:
 	CBaseData();
 	//CharaDataに保存
 	CBaseData(CVector2D _pos, bool _living, float _alpha, float _rad, float _exrate, int _animtype, float _velocity, float _mass, int _hp, float _friction, float _collision, int _type);
-	//保存されない HPと当たり判定がない
-	CBaseData(CVector2D _pos, bool _living, float _alpha, float _rad, float _exrate, int _animtype, float _velocity, float _mass, float _friction,int _type);
 	//alphaがない
 	CBaseData(CVector2D _pos, bool _living, float _rad, float _exrate, int _animtype, float _velocity, float _mass, int _hp, float _friction, float _collision, int _type);
+	//必要最低限
+	CBaseData(CVector2D _pos, bool _living, float _alpha, float _rad, float _exrate, int _animtype,int _type);
 	~CBaseData();
 	void Update();
 };
@@ -78,6 +78,7 @@ public:
 	//削除
 	void Delete();
 
+	//敵の当たり判定の有無
 	void AssignmentDelete();
 
 	void AssignmentInvincible(int _type);

@@ -29,9 +29,9 @@ const float ENEMY_FRICTION = 0.1f;
 const int ENEMY_NORMAL_HP = 64;
 const int ENEMY_LONG_HP = 64;
 const int ENEMY_BULLET_HP = 30;
-const int ENEMY_BIG_HP = 128;
-const int ENEMY_SMALL_HP = 20;
-const int ENEMY_BOMB_HP = 10;
+const int ENEMY_BIG_HP = 192;
+const int ENEMY_SMALL_HP = 16; //16;
+const int ENEMY_BOMB_HP = 16;
 
 const int MAX_ENEMY = 20;
 const int ENEMY_TYPE = 5;
@@ -85,6 +85,7 @@ public:
 	float m_mass;
 	int m_hp;
 	float m_collision;
+	int m_division;
 	CBaseEemeyMove *m_BEMove;
 	CBaseEemeyAttack *m_BEAttack;
 };

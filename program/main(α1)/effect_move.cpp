@@ -4,6 +4,7 @@
 #include "effect_manager.h"
 #include "difficulty_level_manager.h"
 #include "sounddata_manager.h"
+#include "ui_manager.h"
 
 CEffectMovePattern2 EMP2;
 CEffectMovePattern6 EMP6;
@@ -46,14 +47,16 @@ void CEffectMovePattern2::Move(CEffectData *cd){
 	if (cd->m_amine_rate % cd->m_animtype == 4){
 		for (auto it1 = CCharaData::GetInstance()->GetCharaData()->begin();
 			it1 != CCharaData::GetInstance()->GetCharaData()->end(); it1++){
-			if (!(*it1)->m_invincible){
+			if ((*it1)->m_invincible == 0){
 				if (IsHitCircle(cd->m_collision, (*it1)->m_collision, CVector2D(cd->m_pos.getX(),
 					cd->m_pos.getY()), (*it1)->m_pos)){
 					(*it1)->m_rad = PosRad(cd->m_pos, (*it1)->m_pos);
 					(*it1)->m_velocity = PLAYER_BOMB_KNOCK_BACK / (*it1)->m_mass;
 					if (cd->m_friction == 0){
-						if ((*it1)->m_type == PLAYER)
+						if ((*it1)->m_type == PLAYER){
+							CUiManager::GetInstance()->GetUiAdress()->SetComb(0);
 							(*it1)->m_damage = (int)PLAYER_ATTACK_BOMB * cd->m_mass / 3;
+						}
 						else
 							(*it1)->m_damage = (int)PLAYER_ATTACK_BOMB * cd->m_mass;
 						(*it1)->m_hp -= (*it1)->m_damage;
@@ -78,15 +81,16 @@ void CEffectMovePattern2::Move(CEffectData *cd){
 void CEffectMovePattern3::Move(CEffectData *cd){
 	if (cd->m_amine_rate % cd->m_animtype == 4){
 		CPlayerData *_temp = CPlayerManager::GetInstance()->GetPlayerAdress()->GetData();
-		if (!_temp->m_invincible){
+		if (_temp->m_invincible == 0){
 			if (IsHitCircle(ENEMY_ATTACK_COLLISION, _temp->m_collision,
 				CVector2D(cd->m_pos.getX(), cd->m_pos.getY()), _temp->m_pos)){
 				_temp->m_temporary_rad = _temp->m_rad;
-				_temp->m_rad = cd->m_rad;
+				_temp->m_rad = cd->m_rad - radian(180);
 				_temp->m_velocity = ENEMY_ATTACK_KNOCK_BACK / _temp->m_mass;
 				_temp->m_control = false;
 				_temp->m_damage = ENEMY_ATTACK_DAMAGE;
 				_temp->m_hp -= _temp->m_damage;
+				CUiManager::GetInstance()->GetUiAdress()->SetComb(0);
 			}
 		}
 	}
@@ -114,7 +118,7 @@ void CEffectMovePattern5::Move(CEffectData *cd){
 	for (auto it1 = CCharaData::GetInstance()->GetCharaData()->begin();
 		it1 != CCharaData::GetInstance()->GetCharaData()->end(); it1++){
 		if (!(*it1)->m_control){
-			if (!(*it1)->m_invincible){
+			if ((*it1)->m_invincible == 0){
 				if (IsHitCircle(cd->m_collision, (*it1)->m_collision, CVector2D(cd->m_pos.getX(),
 					cd->m_pos.getY()), (*it1)->m_pos)){
 					(*it1)->m_rad = PosRad( (*it1)->m_pos,cd->m_pos);
@@ -128,7 +132,7 @@ void CEffectMovePattern5::Move(CEffectData *cd){
 
 //”š”­‚Ì‡”Ôˆ—
 void CEffectMovePattern6::Move(CEffectData *cd){
-	cd->m_collision += 5;
+	cd->m_collision += 3;
 	if (cd->m_collision <= cd->m_friction){
 		for (auto it1 = CCharaData::GetInstance()->GetCharaData()->begin();
 			it1 != CCharaData::GetInstance()->GetCharaData()->end(); it1++){
@@ -138,9 +142,9 @@ void CEffectMovePattern6::Move(CEffectData *cd){
 						cd->m_pos.getY()), (*it1)->m_pos)){
 						(*it1)->m_living = false;
 					}
-				}
-				if (cd->m_collision == cd->m_friction - 2){
-					(*it1)->m_living = false;
+					if (cd->m_collision >= cd->m_friction - 4){
+						(*it1)->m_living = false;
+					}
 				}
 			}
 		}

@@ -1,5 +1,6 @@
 #include "base_data.h"
 #include "field_manager.h"
+#include "enemy_manager.h"
 
 CCharaData* CCharaData::m_pInstance = nullptr;
 
@@ -25,7 +26,7 @@ CBaseData::CBaseData(CVector2D _pos, bool _living, float _alpha, float _rad, flo
 , m_type(_type)
 , m_timer(0)
 , m_damage(0)
-, m_invincible(false)
+, m_invincible(0)
 , m_knock_stan(false)
 , m_bank_flag(true)
 , m_kill_flag(false)
@@ -34,34 +35,6 @@ CBaseData::CBaseData(CVector2D _pos, bool _living, float _alpha, float _rad, flo
 , m_anim_division(15)
 {
 	CCharaData::GetInstance()->AddTaskInner(this);
-}
-
-CBaseData::CBaseData(CVector2D _pos, bool _living, float _alpha, float _rad, float _exrate, int _animtype, float _velocity, float _mass, float _friction, int _type)
-: m_pos(_pos)
-, m_living(_living)
-, m_alpha(_alpha)
-, m_rad(_rad)
-, m_exrate(_exrate)
-, m_animtype(_animtype)
-, m_velocity(_velocity)
-, m_speed(_velocity)
-, m_mass(_mass)
-, m_amine_rate(0)
-, m_hp(0)
-, m_friction(_friction)
-, m_collision(0)
-, m_control(true)
-, m_type(_type)
-, m_timer(0)
-, m_damage(0)
-, m_invincible(false)
-, m_knock_stan(false)
-, m_bank_flag(true)
-, m_kill_flag(false)
-, m_motion_type(0)
-, m_direction_type(0)
-, m_anim_division(15)
-{
 }
 
 CBaseData::CBaseData(CVector2D _pos, bool _living, float _rad, float _exrate, int _animtype, float _velocity, float _mass, int _hp, float _friction, float _collision, int _type)
@@ -82,7 +55,35 @@ CBaseData::CBaseData(CVector2D _pos, bool _living, float _rad, float _exrate, in
 , m_type(_type)
 , m_timer(0)
 , m_damage(0)
-, m_invincible(false)
+, m_invincible(0)
+, m_knock_stan(false)
+, m_bank_flag(true)
+, m_kill_flag(false)
+, m_motion_type(0)
+, m_direction_type(0)
+, m_anim_division(15)
+{
+}
+
+CBaseData::CBaseData(CVector2D _pos, bool _living, float _alpha, float _rad, float _exrate, int _animtype, int _type)
+: m_pos(_pos)
+, m_living(_living)
+, m_alpha(_alpha)
+, m_rad(_rad)
+, m_exrate(_exrate)
+, m_animtype(_animtype)
+, m_velocity(0)
+, m_speed(0)
+, m_mass(0)
+, m_amine_rate(0)
+, m_hp(0)
+, m_friction(0)
+, m_collision(0)
+, m_control(true)
+, m_type(_type)
+, m_timer(0)
+, m_damage(0)
+, m_invincible(0)
 , m_knock_stan(false)
 , m_bank_flag(true)
 , m_kill_flag(false)
@@ -146,18 +147,18 @@ void CCharaData::AssignmentInvincible(int _type){
 	for (auto it = m_chara_data.begin(); it != m_chara_data.end(); it++){
 		if (_type == 0){
 			if ((*it)->m_animtype == 90){
-				(*it)->m_invincible = true;
+				(*it)->m_invincible = 1;
 			}
 			if ((*it)->m_type == ENEMY){
-				(*it)->m_invincible = false;
+				(*it)->m_invincible = 0;
 			}
 		}
 		else{
 			if ((*it)->m_animtype == 90){
-				(*it)->m_invincible = false;
+				(*it)->m_invincible = 0;
 			}
 			if ((*it)->m_type == ENEMY){
-				(*it)->m_invincible = true;
+				(*it)->m_invincible = 1;
 			}
 		}
 	}
@@ -200,7 +201,7 @@ void CCharaData::Update(){
 		for (auto it2 = m_chara_data.begin(); it2 != m_chara_data.end(); it2++){
 			if ((*it1)->m_pos != (*it2)->m_pos){
 				if (IsHitCircle((*it1)->m_collision, (*it2)->m_collision, (*it1)->m_pos, (*it2)->m_pos)){
-					if (!(*it1)->m_invincible && !(*it2)->m_invincible){
+					if ((*it1)->m_invincible == 0 && (*it2)->m_invincible == 0){
 						if ((*it1)->m_type != ITEM && (*it2)->m_type != ITEM && (*it1)->m_type != ENEMY_BULLET && (*it2)->m_type != ENEMY_BULLET){
 							if ((*it1)->m_type < BOSS || (*it2)->m_type < BOSS)
 								CBank(*it1, *it2);
@@ -268,7 +269,7 @@ void CCharaData::CBank(CBaseData* cd1, CBaseData* cd2){
 		//”½”­ŒW”
 		float _e = 1.0f;
 		bool _a = false;
-		if (cd2->m_velocity > cd1->m_velocity){
+		if (cd2->m_velocity < cd1->m_velocity){
 			float temp = cd2->m_velocity;
 			cd2->m_velocity = cd1->m_velocity;
 			cd1->m_velocity = temp;
@@ -302,13 +303,20 @@ void CCharaData::CBank(CBaseData* cd1, CBaseData* cd2){
 }
 
 void CCharaData::Draw(){
+	float _hp_division = 1.0f;
 	for (auto it = m_chara_data.begin(); it != m_chara_data.end(); it++){
 		if ((*it)->m_type == ENEMY){
-			if (!(*it)->m_invincible){
-				if ((*it)->m_hp < 64)
-					DrawRectGraph((*it)->m_pos.getX() - 32, (*it)->m_pos.getY() - 25, 0, 0, (*it)->m_hp, 4, m_ehp_img[0], FALSE, FALSE);
+			if ((*it)->m_invincible == 0){
+				if ((*it)->m_animtype == SMALL || (*it)->m_animtype == E_BOMB)
+					_hp_division = 0.25f;
+				else if ((*it)->m_animtype == BIG)
+					_hp_division = 3;
+				else
+					_hp_division = 1;
+				if (((*it)->m_hp / _hp_division) < 64)
+					DrawRectGraph((*it)->m_pos.getX() - 32, (*it)->m_pos.getY() - 25, 0, 0, (*it)->m_hp / _hp_division, 4, m_ehp_img[0], FALSE, FALSE);
 				if ((*it)->m_damage > 0)
-					DrawRectGraph((*it)->m_pos.getX() - 32 + (*it)->m_hp, (*it)->m_pos.getY() - 25, 0, 0, (*it)->m_damage, 4, m_ehp_img[1], FALSE, FALSE);
+					DrawRectGraph((*it)->m_pos.getX() - 32 + (*it)->m_hp / _hp_division, (*it)->m_pos.getY() - 25, 0, 0, (*it)->m_damage / _hp_division, 4, m_ehp_img[1], FALSE, FALSE);
 				if ((*it)->m_timer > 0)
 					DrawRectGraph((*it)->m_pos.getX() - 32, (*it)->m_pos.getY() - 21, 0, 0, (*it)->m_timer / 15, 2, m_stan_timer_img, FALSE, FALSE);
 			}
@@ -319,7 +327,7 @@ void CCharaData::Draw(){
 				DrawRectGraph((*it)->m_pos.getX() - 32 + (*it)->m_hp, (*it)->m_pos.getY() - 47, 0, 0, (*it)->m_damage, 8, m_hhp_img[1], FALSE, FALSE);
 		}
 		if ((*it)->m_type == BOSS){
-			if (!(*it)->m_invincible){
+			if ((*it)->m_invincible == 0){
 				DrawRectGraph((*it)->m_pos.getX() - 382, 0, 0, 0, (*it)->m_hp, 8, m_bhp_img[0], FALSE, FALSE);
 				if ((*it)->m_damage > 0)
 					DrawRectGraph((*it)->m_pos.getX() - 382 + (*it)->m_hp, 0, 0, 0, (*it)->m_damage, 8, m_bhp_img[1], FALSE, FALSE);

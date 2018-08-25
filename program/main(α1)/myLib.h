@@ -33,7 +33,7 @@ const float ENEMY_BULLET_COLLISION = 15.0f;
 const float ENEMY_ATTACK_BOMB_COLLISION = 21.0f;
 const float ENEMY_BOMB_COLLISION = 200.0f;
 
-const float ENEMY_ATTACK_COLLISION = 35.0f;
+const float ENEMY_ATTACK_COLLISION = 50.0f;
 const float ENEMY_BIG_ATTACK_COLLISION = 85.0f;
 const float ENEMY_IMPACK_COLLISION = 180.0f;
 
@@ -61,7 +61,7 @@ const int ENEMY_LONG_ATTACK_COOL_TIME = 200;
 const float ENEMY_BULLET_ATTACK_DAMAGE = 10.0f;
 const float ENEMY_BULLET_KNOCK_BACK = 5.0f;
 const int ENEMY_ATTACK_COOL_TIME = 70;
-const float ENEMY_ATTACK_EXRATE = 0.6f;
+const float ENEMY_ATTACK_EXRATE = 1.3f;
 const float ENEMY_RANGE = 10.0f;
 const int ENEMY_CHANGE = 600;
 const int ENEMY_MOVE = 360;

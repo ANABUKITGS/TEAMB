@@ -44,7 +44,7 @@ CItemTable item_table[] = {
 };
 
 CPlayerData::CPlayerData()
-:CBaseData(CVector2D(0,0),false,0,0,0,0,0,0,0,0)
+:CBaseData(CVector2D(0,0),false,0,0,0,0,0,0,0,0,0)
 {
 
 }
@@ -311,7 +311,6 @@ void CPlayer::Attack(int key){
 		m_player->m_anim_division = 8;
 		m_player->m_amine_rate = 0;
 		m_player->Action();
-		CUiManager::GetInstance()->GetUiAdress()->SetEstimationLivflag(false);
 	}
 	else if (_type == PRESSING){
 		m_player->m_chage_count += 0.019;
@@ -384,7 +383,7 @@ void CPlayer::Avoid(int key){
 	if (m_player->m_control){
 		if (!m_player->m_avoid_effect.m_living){
 			if (CKeyData::GetInstance()->IsKeyTrigger(key, PAD_INPUT_3, KEY_PAD_INPUT_3)){
-				m_player->m_invincible = true;
+				m_player->m_invincible = 1;
 				m_player->m_velocity = 19.0f;
 				m_player->m_timer = 10;
 				m_player->m_avoid_effect.m_living = true;
@@ -392,7 +391,7 @@ void CPlayer::Avoid(int key){
 				PlaySoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(S_P_AVOID), DX_PLAYTYPE_BACK);
 			}
 		}
-		if (m_player->m_invincible == true){
+		if (m_player->m_invincible == 1){
 
 			//‰ñ”ðŽž‚Ì•ªg¶¬
 			if (m_player->m_timer % 2 == 0){
@@ -409,7 +408,7 @@ void CPlayer::Avoid(int key){
 			}
 			else{
 				m_player->m_velocity = PLAYER_SPEED;
-				m_player->m_invincible = false;
+				m_player->m_invincible = 0;
 			}
 		}
 	}
