@@ -58,7 +58,7 @@ CEnemyData::CEnemyData(CVector2D _pos, bool _living, float _alpha, float _rad, f
 {
 }
 
-CEnemyData::CEnemyData(CBaseData _temp, CVector2D _move_pos, bool _invincible, CBaseEemeyMove *_BEMove, CBaseEemeyAttack *_BEAttack)
+CEnemyData::CEnemyData(CBaseData _temp, CVector2D _move_pos, int _invincible, CBaseEemeyMove *_BEMove, CBaseEemeyAttack *_BEAttack)
 :CBaseData(_temp.m_pos, _temp.m_living, _temp.m_alpha, _temp.m_rad, _temp.m_exrate, _temp.m_animtype, _temp.m_velocity, _temp.m_mass, _temp.m_hp, _temp.m_friction, _temp.m_collision, _temp.m_type)
 , BEMove(_BEMove)
 , BEAttack(_BEAttack)

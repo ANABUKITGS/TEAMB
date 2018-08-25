@@ -74,6 +74,7 @@ public:
 	CBaseData m_avoid_effect;		//回避エフェクト
 	CBaseData m_gate_effect;		//ゲートエフェクト
 	CBaseData m_attack_range;		//攻撃範囲エフェクト
+	CBaseData m_change_effect;		//切り替え時のエフェクト
 
 	float m_chage_count;	//チャージ量
 	int m_attack_type;		//攻撃の種類

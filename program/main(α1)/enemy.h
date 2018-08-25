@@ -94,7 +94,7 @@ class CEnemyData : public CBaseData{
 public:
 	CEnemyData();
 	CEnemyData(CVector2D _pos, bool _living, float _alpha, float _rad, float _exrate, int _animtype, float _velocity, float _mass, int _hp, float _friction, float _collision, float _type, CBaseEemeyMove *_BEMove, CBaseEemeyAttack *_BEAttack);
-	CEnemyData(CBaseData _temp, CVector2D _move_pos, bool _invincible, CBaseEemeyMove *_BEMove, CBaseEemeyAttack *_BEAttack);
+	CEnemyData(CBaseData _temp, CVector2D _move_pos, int _invincible, CBaseEemeyMove *_BEMove, CBaseEemeyAttack *_BEAttack);
 	~CEnemyData(){};
 	
 	CBaseEemeyMove *BEMove;

@@ -69,6 +69,8 @@ public:
 	CCharaData();
 	~CCharaData(){};
 
+	//めり込み防止（ボス用）
+	void LieOnTopProtect(CBaseData* cd1, CBaseData* cd2);
 	//衝突時の反射
 	void CBank(CBaseData* cd1, CBaseData* cd2);
 	//全削除

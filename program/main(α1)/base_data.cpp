@@ -201,17 +201,42 @@ void CCharaData::Update(){
 		for (auto it2 = m_chara_data.begin(); it2 != m_chara_data.end(); it2++){
 			if ((*it1)->m_pos != (*it2)->m_pos){
 				if (IsHitCircle((*it1)->m_collision, (*it2)->m_collision, (*it1)->m_pos, (*it2)->m_pos)){
+					if (((*it1)->m_type >= BOSS || (*it2)->m_type >= BOSS)){
+						LieOnTopProtect(*it1, *it2);//ボスのみ特殊で当たっても弾く処理をしない
+						break;
+					}
 					if ((*it1)->m_invincible == 0 && (*it2)->m_invincible == 0){
 						if ((*it1)->m_type != ITEM && (*it2)->m_type != ITEM && (*it1)->m_type != ENEMY_BULLET && (*it2)->m_type != ENEMY_BULLET){
 							if ((*it1)->m_type < BOSS || (*it2)->m_type < BOSS)
 								CBank(*it1, *it2);
 						}
 					}
+
 				}
 			}
 		}
 		_f = false;
 	}
+}
+
+void CCharaData::LieOnTopProtect(CBaseData* cd1, CBaseData* cd2){
+	float _vx = cd1->m_pos.getX() - cd2->m_pos.getX();
+	float _vy = cd1->m_pos.getY() - cd2->m_pos.getY();
+
+	float _len = sqrt(_vx * _vx + _vy * _vy);
+
+	float _dist = (cd1->m_collision + cd2->m_collision) - _len;
+
+	if (_len > 0)_len = 1 / _len;
+
+	_vx *= _len;
+	_vy *= _len;
+		if (cd1->m_type == PLAYER)
+		if (cd2->m_type >= BOSS && cd2->m_invincible == 0)
+			cd1->m_pos += CVector2D(_vx * _dist * 1.1f, _vy*_dist * 1.1f);
+		if (cd2->m_type == PLAYER)
+		if (cd1->m_type >= BOSS && cd1->m_invincible == 0)
+			cd1->m_pos -= CVector2D(_vx * _dist * 1.1f, _vy*_dist * 1.1f);
 }
 
 void CCharaData::CBank(CBaseData* cd1, CBaseData* cd2){
@@ -238,10 +263,8 @@ void CCharaData::CBank(CBaseData* cd1, CBaseData* cd2){
 		if (cd2->m_type == PLAYER)
 			cd1->m_velocity = 5.5f ;
 		else
-		cd2->m_velocity = 2.5f/ cd1->m_mass; /// cd2->m_mass;
+		cd2->m_velocity = 2.5f / cd2->m_mass; /// cd2->m_mass;
 	}
-
-
 
 	////操作不可能////
 	cd1->m_control = false;

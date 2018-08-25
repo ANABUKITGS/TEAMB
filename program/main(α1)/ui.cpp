@@ -168,14 +168,19 @@ void CUi::Draw(){
 
 	//ƒRƒ“ƒ{Œn
 	char buf[100];
-	float num;
-	num = sprintf_s(buf, 100, "%d", m_comb);
-	for (int i = 0; i < num; i++){
-		DrawRotaGraph( 1150 + i * 60,
+	int _num;
+	int _temp = 0;
+	_num = sprintf_s(buf, 100, "%d", m_comb);
+	if (_num > 1)
+		_temp = 26;
+	else if (_num > 2)
+		_temp = 52;
+	for (int i = 0; i < _num; i++){
+		DrawRotaGraph(1150 - _temp + i * 52,
 			64,0.6f, 0 , m_num_img[(buf[i] - '0')], TRUE,FALSE);		//'0'
 	}
 	DrawRotaGraph(1150,
-		138, 1.0f, 0, m_combo_img, TRUE, FALSE);		//'0'
+		118, 1.0f, 0, m_combo_img, TRUE, FALSE);		//'0'
 
 	IconDraw();
 }
