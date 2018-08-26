@@ -72,10 +72,13 @@ class CUi : public CTask{
 private:
 	list<CUiData*> m_list_ui;
 	CUiData m_icon_ui[4];
+	CUiData m_combo_ui[3];
+	CUiData m_item_ui[3];
 	int m_icon_img[3][2];			//攻撃アイコン
 	int m_ui_img[4];				//
-	int m_combo_img;
-	int m_num_img[10];
+	int m_combo_img[2];				//コンボの文字
+	int m_num_img[10];				//数字
+	int m_item_text_img;				//「アイテム出現」の文字
 
 	int m_comb;						//コンボ数
 	int m_comb_timer;				//コンボタイマー
@@ -101,6 +104,8 @@ public:
 	inline int GetImg(int num1, int num2){ return m_icon_img[num1][num2]; };
 	inline void const SetChangeFlag(bool _flag){ m_change_flag = _flag; };
 	inline list<CUiData*> *GetUiData(){ return &m_list_ui; };
+	inline CUiData* GetComboUiData(int _num){ return &m_combo_ui[_num]; };
+	inline CUiData* GetItemUiData(int _num){ return &m_item_ui[_num]; };
 
 	inline void AddComb(){ m_comb++; };
 	inline void SetComb(int _num){ m_comb = _num; };
@@ -131,6 +136,14 @@ class CTimer : public CBaseUpdate{
 };
 
 class CSecondHand : public CBaseUpdate{
+	void Update(CUiData *cd);
+};
+
+class CComb : public CBaseUpdate{
+	void Update(CUiData *cd);
+};
+
+class CItemText : public CBaseUpdate{
 	void Update(CUiData *cd);
 };
 

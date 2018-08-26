@@ -90,7 +90,7 @@ CEnemy::CEnemy(){
 	LoadDivGraph("media\\img\\enemy_b_m.png", 88, 4, 22, 128, 128, m_enemy_img[BIG]);
 	LoadDivGraph("media\\img\\enemy_s_m.png", 88, 4, 22, 64, 64, m_enemy_img[SMALL]);
 	LoadDivGraph("media\\img\\enemy_bom_m.png", 88, 4, 22, 64, 64, m_enemy_img[E_BOMB]);
-	m_enemy_img[BULLET][0] = LoadGraph("media\\img\\enemy_long_range_attack.png");
+	LoadDivGraph("media\\img\\enkyori.png", 14, 2, 7, 128, 128, m_enemy_img[BULLET]);
 	m_enemy_img[MAGIC_SQUARE][0] = LoadGraph("media\\img\\magic_square.png");
 	m_shadow_img = LoadGraph("media\\img\\shadow.png");
 
@@ -145,6 +145,8 @@ void CEnemy::Delete(){
 			}
 			CUiManager::GetInstance()->GetUiAdress()->AddComb();
 			CUiManager::GetInstance()->GetUiAdress()->SetCombTimer(ITEM_COMB_TIME);
+			CUiManager::GetInstance()->GetUiAdress()->GetComboUiData(0)->m_alpha = 0;
+			CUiManager::GetInstance()->GetUiAdress()->GetComboUiData(0)->m_exrate = 1.0f;
 			PlaySoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(S_E_DEAD), DX_PLAYTYPE_BACK);
 			it = m_enemys.erase(it);
 			continue;
@@ -369,6 +371,7 @@ void CEnemy::Reflect(CEnemyData &cd,CVector2D &_pos){
 }
 
 void CEnemy::Draw(){
+	//–‚–@w
 	for (auto it = m_ene_eff.begin(); it != m_ene_eff.end(); it++){
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, (*it)->m_alpha);
 		DrawRotaGraph((*it)->m_pos->getX(), (*it)->m_pos->getY(), (*it)->m_exrate, (*it)->m_rad, m_enemy_img[MAGIC_SQUARE][0],
@@ -386,7 +389,7 @@ void CEnemy::Draw(){
 			DrawRotaGraph((*it)->m_pos.getX(), (*it)->m_pos.getY(), (*it)->m_exrate, /*(*it)->m_rad - degree(90)*/0, m_enemy_img[(*it)->m_animtype][(*it)->m_motion_type + (*it)->m_direction_type + (*it)->m_amine_rate / (*it)->m_anim_division % 2],
 			TRUE, FALSE);
 		else
-			DrawRotaGraph((*it)->m_pos.getX(), (*it)->m_pos.getY(), (*it)->m_exrate, (*it)->m_rad - degree(90), m_enemy_img[(*it)->m_animtype][0],
+			DrawRotaGraph((*it)->m_pos.getX(), (*it)->m_pos.getY(), (*it)->m_exrate, (*it)->m_rad - radian(180), m_enemy_img[(*it)->m_animtype][(*it)->m_amine_rate % 14],
 			TRUE, FALSE);
 	}
 }

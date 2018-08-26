@@ -10,6 +10,8 @@ CLeftIcon LIcon;
 
 CTimer			Timer;
 CSecondHand		SecondHand;
+CComb			Combo;
+CItemText		ItemText;
 
 CUiData::CUiData(){
 
@@ -52,6 +54,13 @@ CUi::CUi()
 		}
 	}
 
+	m_combo_ui[0] = CUiData(CVector2D(1150, 64), false, 0, 1.0f, 1, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, 0, 0, &Combo);
+	m_combo_ui[1] = CUiData(CVector2D(1150, 118), false, 0, 1.0f, 2, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, 0, 0, NULL);
+	m_combo_ui[2] = CUiData(CVector2D(1150, 64), false, 0, 1.0f, 1, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, 0, 0, NULL);
+
+	m_item_ui[0] = CUiData(CVector2D(430, 64), false, 0, 1.0f, 1, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, 0, 0, &ItemText);
+	m_item_ui[1] = CUiData(CVector2D(720, 81), false, 0, 1.0f, 2, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, 0, 0, &ItemText);
+
 	LoadDivGraph("media\\img\\stn_book.png", 2, 2, 1, 128, 128, m_icon_img[1], 0);
 	LoadDivGraph("media\\img\\wind_book.png", 2, 2, 1, 128, 128, m_icon_img[0], 0);
 	LoadDivGraph("media\\img\\exp_book.png", 2, 2, 1, 128, 128, m_icon_img[2], 0);
@@ -62,7 +71,8 @@ CUi::CUi()
 	m_ui_img[3] = LoadGraph("media\\img\\second_hand_s.png");
 	//m_ui_img[SYMBOL] = LoadGraph("media\\img\\symbol.png");
 
-	m_combo_img = LoadGraph("media\\img\\combo.png");
+	m_combo_img[0] = LoadGraph("media\\img\\combo.png");
+	m_combo_img[1] = LoadGraph("media\\img\\item_create_text.png");
 	LoadDivGraph("media\\img\\num.png", 10, 4, 3, 128, 128, m_num_img, 0);
 
 	m_priority = eDWP_UI;
@@ -106,6 +116,13 @@ void CUi::Update(){
 		m_comb_timer--;
 	}
 
+	for (int i = 0; i < 2; i++){
+		m_combo_ui[i].Update();
+	}
+
+	for (int i = 0; i < 2; i++){
+		m_item_ui[i].Update();
+	}
 }
 
 void CUi::ChengeIcon(int _direction){
@@ -148,8 +165,6 @@ void CUi::ChengeIcon(int _direction){
 
 void CUi::Draw(){
 
-
-
 	for (auto it = m_list_ui.begin(); it != m_list_ui.end(); it++){
 		if ((*it)->m_animtype == TIMER)
 			DrawRotaGraph((*it)->m_pos.getX(), (*it)->m_pos.getY(), (*it)->m_exrate, (*it)->m_rad, m_ui_img[(*it)->m_animtype],
@@ -175,12 +190,33 @@ void CUi::Draw(){
 		_temp = 26;
 	else if (_num > 2)
 		_temp = 52;
-	for (int i = 0; i < _num; i++){
-		DrawRotaGraph(1150 - _temp + i * 52,
-			64,0.6f, 0 , m_num_img[(buf[i] - '0')], TRUE,FALSE);		//'0'
+	if (m_combo_ui[0].m_living == true){
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, m_combo_ui[0].m_alpha);
+		for (int i = 0; i < _num; i++){
+			DrawRotaGraph(m_combo_ui[0].m_pos.getX() - _temp + i * 52,
+				m_combo_ui[0].m_pos.getY(), m_combo_ui[0].m_exrate, 0, m_num_img[(buf[i] - '0')], TRUE, FALSE);		//'0'
+		}
+		DrawRotaGraph(m_combo_ui[1].m_pos.getX(),m_combo_ui[1].m_pos.getY(), 
+			m_combo_ui[1].m_exrate, 0, m_combo_img[0], TRUE, FALSE);
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	}
-	DrawRotaGraph(1150,
-		118, 1.0f, 0, m_combo_img, TRUE, FALSE);		//'0'
+
+	//出現アイテム数
+	_num = sprintf_s(buf, 100, "%d", m_item_ui[0].m_hp);
+	if (_num > 1)
+		_temp = 26;
+	else if (_num > 2)
+		_temp = 52;
+	if (m_item_ui[0].m_living == true){
+		SetDrawBlendMode(DX_BLENDMODE_ALPHA, m_item_ui[0].m_alpha);
+		for (int i = 0; i < _num; i++){
+			DrawRotaGraph(m_item_ui[0].m_pos.getX() - _temp + i * 68,
+				m_item_ui[0].m_pos.getY(), m_item_ui[0].m_exrate, 0, m_num_img[(buf[i] - '0')], TRUE, FALSE);		//'0'
+		}
+		DrawRotaGraph(m_item_ui[1].m_pos.getX(),m_item_ui[1].m_pos.getY(), 
+			m_item_ui[1].m_exrate, 0, m_combo_img[1], TRUE, FALSE);
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	}
 
 	IconDraw();
 }

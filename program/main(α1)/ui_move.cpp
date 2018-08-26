@@ -60,3 +60,48 @@ void CSecondHand::Update(CUiData *cd){
 		CUiManager::GetInstance()->GetUiAdress()->SetTimeFlag(true);
 	cd->m_rad = cd->m_timer / TIME_SPLIT;
 }
+
+void CComb::Update(CUiData *cd){
+	if (CUiManager::GetInstance()->GetUiAdress()->GatComb() > 0){
+		if (cd->m_living == false){
+			cd->m_living = true;
+		}
+		if (cd->m_exrate > 0.6f){
+			cd->m_exrate -= 0.03;
+		}
+		if (cd->m_alpha < 256){
+			cd->m_alpha += 25;
+		}
+	}
+	else{
+		if (cd->m_exrate < 1.1f){
+			cd->m_exrate += 0.01f;
+			cd->m_alpha -= 23;
+		}
+		else{
+			cd->m_living = false;
+			
+		}
+	}
+}
+
+void CItemText::Update(CUiData *cd){
+	if (cd->m_pos.getX() >  430 + cd->m_mass){
+		cd->m_pos.addX(-7);
+		if (cd->m_alpha < 256)
+			cd->m_alpha += 10;
+		else
+			cd->m_alpha = 255;
+	}
+	else if (cd->m_pos.getX() > 370 + cd->m_mass){
+		cd->m_pos.addX(-1);
+	}
+	else{
+		cd->m_pos.addX(-7);
+		if (cd->m_alpha > 0)
+			cd->m_alpha -= 10;
+		else
+			cd->m_living = false;
+
+	}
+}

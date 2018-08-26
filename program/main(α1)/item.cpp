@@ -3,6 +3,9 @@
 #include "enemy_manager.h"
 #include "difficulty_level_manager.h"
 #include "ui_manager.h"
+#include "effect_manager.h"
+
+CEffectMovePattern8 EMP8;
 
 CItemData::CItemData()
 :CBaseData()
@@ -67,9 +70,22 @@ void CItem::Update(){
 
 void CItem::Create(){
 	int _item_num = CUiManager::GetInstance()->GetUiAdress()->GatComb() / CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetItemDropLevel();
-	for (int i = 0; i < _item_num; i++){
-		CBaseData* _temp = new CBaseData(CVector2D(rand() % MAP_RANGE_X + 64, rand() % MAP_RANGE_Y + 73), true, radian((rand() % 360)), ITEM_EXRATE, rand() % 4, ITEM_SPEED, ITEM_MASS, ITEM_HP, ITEM_FRICTION, ITEM_COLLISION, ITEM);
-		m_items.push_back(new CItemData(*_temp));
+	if (_item_num > 0){
+		//出現アイテム数
+		CUiManager::GetInstance()->GetUiAdress()->GetItemUiData(0)->m_hp = _item_num;
+		CUiManager::GetInstance()->GetUiAdress()->GetItemUiData(0)->m_pos = CVector2D(580, 70);
+		CUiManager::GetInstance()->GetUiAdress()->GetItemUiData(1)->m_pos = CVector2D(870, 87);
+		CUiManager::GetInstance()->GetUiAdress()->GetItemUiData(0)->m_mass = 0;
+		CUiManager::GetInstance()->GetUiAdress()->GetItemUiData(1)->m_mass = 290;
+		for (int i = 0; i < 2; i++){
+			CUiManager::GetInstance()->GetUiAdress()->GetItemUiData(i)->m_alpha = 0;
+			CUiManager::GetInstance()->GetUiAdress()->GetItemUiData(i)->m_living = true;
+		}
+		
+		for (int i = 0; i < _item_num; i++){
+			CEffectData *temp = new CEffectData(CVector2D(rand() % MAP_RANGE_X + 64, rand() % MAP_RANGE_Y + 73), true, 0, 0.7f, E_ITEM_CREATE_NUM, 0, 0, 0, 0, 0, ITEM_CREATE, 2, &EMP8);
+			CEffectManager::GetInstance()->GetEffectAdress()->GetEffectData()->push_back(temp);
+		}
 	}
 }
 

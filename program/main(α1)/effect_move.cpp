@@ -5,6 +5,7 @@
 #include "difficulty_level_manager.h"
 #include "sounddata_manager.h"
 #include "ui_manager.h"
+#include "item_manager.h"
 
 CEffectMovePattern2 EMP2;
 CEffectMovePattern6 EMP6;
@@ -160,4 +161,12 @@ void CEffectMovePattern7::Move(CEffectData *cd){
 		cd->m_exrate += 0.17;
 	else
 		cd->m_living = false;
+}
+
+//アイテム出現処理
+void CEffectMovePattern8::Move(CEffectData *cd){
+	if (cd->m_amine_rate > E_ITEM_CREATE_NUM * cd->m_rate - 3){
+		CBaseData* _temp = new CBaseData(cd->m_pos, true, 0, ITEM_EXRATE, rand() % 4, ITEM_SPEED, ITEM_MASS, ITEM_HP, ITEM_FRICTION, ITEM_COLLISION, ITEM);
+		CItemManager::GetInstance()->GetItemAdress()->GetItemData()->push_back(new CItemData(*_temp));
+	}
 }

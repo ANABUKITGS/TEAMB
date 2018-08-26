@@ -256,7 +256,7 @@ void CAttackPattern2::Attack(CEnemyData *cd){
 		if (cd->m_attack_cool_time == ENEMY_LONG_ATTACK_COOL_TIME){
 			CPlayerData *_temp1 = CPlayerManager::GetInstance()->GetPlayerAdress()->GetData();
 			cd->m_rad = PosRad(cd->m_pos, _temp1->m_pos);
-			CBaseData *_temp2 = new CBaseData(cd->m_pos, true, cd->m_rad, ENEMY_EXRATE, BULLET, ENEMY_BULLET_SPEED, ENEMY_BULLET_MASS, ENEMY_BULLET_HP, ENEMY_FRICTION, ENEMY_COLLISION, ENEMY_BULLET);
+			CBaseData *_temp2 = new CBaseData(cd->m_pos, true, cd->m_rad, ENEMY_BULLET_EXRATE, BULLET, ENEMY_BULLET_SPEED, ENEMY_BULLET_MASS, ENEMY_BULLET_HP, ENEMY_FRICTION, ENEMY_COLLISION, ENEMY_BULLET);
 			CEnemyManager::GetInstance()->GetEnemyAdress()->GetEnemyData()->push_back(new CEnemyData(*_temp2, CVector2D(0,0),false, &MP3, &AP3));
 			cd->m_attack_cool_time = 0;
 

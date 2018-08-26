@@ -60,6 +60,7 @@ const int ENEMY_ATTACK_DAMAGE = 4;
 const int ENEMY_LONG_ATTACK_COOL_TIME = 200;
 const float ENEMY_BULLET_ATTACK_DAMAGE = 10.0f;
 const float ENEMY_BULLET_KNOCK_BACK = 5.0f;
+const float ENEMY_BULLET_EXRATE = 0.5f;
 const int ENEMY_ATTACK_COOL_TIME = 70;
 const float ENEMY_ATTACK_EXRATE = 1.3f;
 const float ENEMY_RANGE = 10.0f;

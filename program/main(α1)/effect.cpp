@@ -34,6 +34,7 @@ CEffect::CEffect(){
 	LoadDivGraph("media\\img\\stn_up.png", STN_UP_NUM, 4, 5, 64, 64, m_effect_img[STN_UP], 0);
 	LoadDivGraph("media\\img\\wind_up.png", WIN_UP_NUM, 4, 5, 64, 64, m_effect_img[WIN_UP], 0);
 	LoadDivGraph("media\\img\\exp_up.png", EXP_UP_NUM, 4, 5, 64, 64, m_effect_img[EXP_UP], 0);
+	LoadDivGraph("media\\img\\item_create.png", E_ITEM_CREATE_NUM, 2, 7, 384, 384, m_effect_img[ITEM_CREATE], 0);
 
 	//LoadDivGraph("media\\img\\impact2.png", 1, 1, 1, 256, 256, m_effect_img[IMPACT], 0);
 	m_effect_img[IMPACT][0] = LoadGraph("media\\img\\impact2.png");

@@ -19,13 +19,14 @@ const int PLAYER_HEEL_NUM = 16;
 const int EXP_UP_NUM = 17;
 const int STN_UP_NUM = 17;
 const int WIN_UP_NUM = 17;
+const int E_ITEM_CREATE_NUM = 14;
 
-const int EFFECT_IMG = 13;
+const int EFFECT_IMG = 14;
 
 //m_typeで使用している　
 enum EFFECT_TYPE{
 	KNOCK_BACK, STAN, CHARGE_BOMB, BOMB, ENEMY_ATTACK, ENEMY_CREATE ,ENEMY_DELETE,
-	PLAYER_HIT,IMPACT,P_HEEL,STN_UP,WIN_UP,EXP_UP
+	PLAYER_HIT,IMPACT,P_HEEL,STN_UP,WIN_UP,EXP_UP,ITEM_CREATE
 };
 
 class CEffectData;
@@ -100,6 +101,10 @@ class CEffectMovePattern7 :public CBaseEffectMove{
 public:
 	void Move(CEffectData *cd);
 };
-
+//アイテム出現処理
+class CEffectMovePattern8 :public CBaseEffectMove{
+public:
+	void Move(CEffectData *cd);
+};
 
 #endif EFFECT_H
