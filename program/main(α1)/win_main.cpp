@@ -39,7 +39,7 @@ void win_main_init()
 
 	ChangeWindowMode(WINDOW_SCREEN);
 		SetGraphMode(1280, 720, 32);
-		SetMainWindowText(_T("テストプログラム"));
+		SetMainWindowText(_T("まじけし"));
 	if (WINDOW_SCREEN)
 	{
 	}

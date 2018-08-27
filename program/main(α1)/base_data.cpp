@@ -223,6 +223,18 @@ void CCharaData::LieOnTopProtect(CBaseData* cd1, CBaseData* cd2){
 	float _vx = cd1->m_pos.getX() - cd2->m_pos.getX();
 	float _vy = cd1->m_pos.getY() - cd2->m_pos.getY();
 
+	float _mx = 0;
+	float _my = 0;
+
+	if (cd1->m_type == PLAYER){
+		_mx = cd1->m_pos.getX();
+		_my = cd1->m_pos.getY();
+	}
+	else if (cd2->m_type == PLAYER){
+		_mx = cd2->m_pos.getX();
+		_my = cd2->m_pos.getY();
+	}
+
 	float _len = sqrt(_vx * _vx + _vy * _vy);
 
 	float _dist = (cd1->m_collision + cd2->m_collision) - _len;
@@ -231,12 +243,29 @@ void CCharaData::LieOnTopProtect(CBaseData* cd1, CBaseData* cd2){
 
 	_vx *= _len;
 	_vy *= _len;
-		if (cd1->m_type == PLAYER)
+
+	if (cd1->m_type == PLAYER){
 		if (cd2->m_type >= BOSS && cd2->m_invincible == 0)
 			cd1->m_pos += CVector2D(_vx * _dist * 1.1f, _vy*_dist * 1.1f);
-		if (cd2->m_type == PLAYER)
+		//プレイヤーのマップ外移動防止
+		if (cd1->m_pos.getY() < 83 || cd1->m_pos.getY() >  615){
+			cd1->m_pos.setY(_my);
+		}
+		if (cd1->m_pos.getX() < 64 || cd1->m_pos.getX() > 1216){
+			cd1->m_pos.setX(_mx);
+		}
+	}
+	if (cd2->m_type == PLAYER){
 		if (cd1->m_type >= BOSS && cd1->m_invincible == 0)
-			cd1->m_pos -= CVector2D(_vx * _dist * 1.1f, _vy*_dist * 1.1f);
+			cd2->m_pos -= CVector2D(_vx * _dist * 1.1f, _vy*_dist * 1.1f);
+		//プレイヤーのマップ外移動防止
+		if (cd2->m_pos.getY() < 83 || cd2->m_pos.getY() >  615){
+			cd2->m_pos.setY(_my);
+		}
+		if (cd2->m_pos.getX() < 64 || cd2->m_pos.getX() > 1216){
+			cd2->m_pos.setX(_mx);
+		}
+	}
 }
 
 void CCharaData::CBank(CBaseData* cd1, CBaseData* cd2){
