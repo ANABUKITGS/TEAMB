@@ -12,18 +12,22 @@ CTimer			Timer;
 CSecondHand		SecondHand;
 CComb			Combo;
 CItemText		ItemText;
+CLvNum			LvNum;
 
 CUiData::CUiData(){
 
 }
 
-CUiData::CUiData(CVector2D _pos, bool _living, float _rad, float _exrate, int _animtype, float _velocity, float _mass, int _hp, float _friction, float _collision, int _type, int _prio,CBaseUpdate* _BUpdate)
+CUiData::CUiData(CVector2D _pos, bool _living, float _rad, float _exrate, int _animtype, float _velocity, float _mass, int _hp, float _friction, float _collision, int _type, int _prio, int _r, int _g, int _b, CBaseUpdate* _BUpdate)
 :CBaseData(_pos,_living,_rad,_exrate,_animtype,_velocity,_mass,_hp,_friction,_collision,_type)
 , m_move_pos(_pos)
 , m_move_exrate(0)
 , m_move_count(0)
 , m_priority(_prio)
 , BUpdate(_BUpdate)
+, m_red(_r)
+, m_green(_g)
+, m_blue(_b)
 {
 }
 
@@ -37,29 +41,33 @@ CUi::CUi()
 	//攻撃アイコン
 	for (int i = 0; i < 3; i++){
 		if (i == 1)
-			m_icon_ui[i] = CUiData(CVector2D(ATTACK_ICON_X + ATTACK_SPACE_ICON_X * i, ATTACK_ICON_Y), true, 0, UI_SELECT_EXRATE, i, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, ATTACK_ICON, i, NULL);
+			m_icon_ui[i] = CUiData(CVector2D(ATTACK_ICON_X + ATTACK_SPACE_ICON_X * i, ATTACK_ICON_Y), true, 0, UI_SELECT_EXRATE, i, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, 0, 0, 0, ATTACK_ICON, i, NULL);
 		else
-			m_icon_ui[i] = CUiData(CVector2D(ATTACK_ICON_X + ATTACK_SPACE_ICON_X * i, ATTACK_ICON_Y), true, 0, UI_NO_SELECT_EXRATE, i, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, ATTACK_ICON, i, NULL);
+			m_icon_ui[i] = CUiData(CVector2D(ATTACK_ICON_X + ATTACK_SPACE_ICON_X * i, ATTACK_ICON_Y), true, 0, UI_NO_SELECT_EXRATE, i, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, 0, 0, 0, ATTACK_ICON, i, NULL);
 	}
 	//UI関連（現在時間のみ）
 	for (int i = 0; i < 3; i++){
 		if (i == TIMER){
-			m_list_ui.push_back(new CUiData(CVector2D(TIMER_ICON_X,TIMER_BACK_ICON_Y), true, 0, UI_SELECT_EXRATE, i, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, TIMER, 0, NULL));
+			m_list_ui.push_back(new CUiData(CVector2D(TIMER_ICON_X, TIMER_BACK_ICON_Y), true, 0, UI_SELECT_EXRATE, i, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, 0, 0, 0, TIMER, 0, NULL));
 		}
 		else if (i == TIMER_BACK){
-			m_list_ui.push_back(new CUiData(CVector2D(TIMER_ICON_X-1, TIMER_ICON_Y), true, 0, UI_SELECT_EXRATE, i, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, TIMER_BACK, 0, &Timer));
+			m_list_ui.push_back(new CUiData(CVector2D(TIMER_ICON_X - 1, TIMER_ICON_Y), true, 0, UI_SELECT_EXRATE, i, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, 0, 0, 0, TIMER_BACK, 0, &Timer));
 		}
 		else if (i == SECOND_HAND){
-			m_list_ui.push_back(new CUiData(CVector2D(TIMER_ICON_X, TIMER_ICON_Y+3), true, 0, UI_SELECT_EXRATE, i, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, SECOND_HAND, 0, &SecondHand));
+			m_list_ui.push_back(new CUiData(CVector2D(TIMER_ICON_X, TIMER_ICON_Y + 3), true, 0, UI_SELECT_EXRATE, i, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, 0, 0, 0, SECOND_HAND, 0, &SecondHand));
 		}
 	}
 
-	m_combo_ui[0] = CUiData(CVector2D(1150, 64), false, 0, 1.0f, 1, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, 0, 0, &Combo);
-	m_combo_ui[1] = CUiData(CVector2D(1150, 118), false, 0, 1.0f, 2, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, 0, 0, NULL);
-	m_combo_ui[2] = CUiData(CVector2D(1150, 64), false, 0, 1.0f, 1, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, 0, 0, NULL);
+	m_combo_ui[0] = CUiData(CVector2D(1150, 64), false, 0, 1.0f, 1, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, 0, 0,0,0,0, &Combo);
+	m_combo_ui[1] = CUiData(CVector2D(1150, 118), false, 0, 1.0f, 2, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, 0, 0, 0, 0, 0, NULL);
+	m_combo_ui[2] = CUiData(CVector2D(1150, 64), false, 0, 1.0f, 1, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, 0, 0, 0, 0, 0, NULL);
 
-	m_item_ui[0] = CUiData(CVector2D(430, 64), false, 0, 1.0f, 1, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, 0, 0, &ItemText);
-	m_item_ui[1] = CUiData(CVector2D(720, 81), false, 0, 1.0f, 2, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, 0, 0, &ItemText);
+	m_item_ui[0] = CUiData(CVector2D(430, 64), false, 0, 1.0f, 1, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, 0, 0, 0, 0, 0, &ItemText);
+	m_item_ui[1] = CUiData(CVector2D(720, 81), false, 0, 1.0f, 2, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, 0, 0, 0, 0, 0, &ItemText);
+
+	m_lv_ui[0] = CUiData(CVector2D(950, 670), true, 0, 0.4f, 3, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, 0, 0,255,255,120, &LvNum);
+	m_lv_ui[1] = CUiData(CVector2D(1050, 670), true, 0, 0.4f, 3, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, 0, 0,120,255,120, &LvNum);
+	m_lv_ui[2] = CUiData(CVector2D(1150, 670), true, 0, 0.4f, 3, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, 0, 0,255,120,120, &LvNum);
 
 	LoadDivGraph("media\\img\\stn_book.png", 2, 2, 1, 128, 128, m_icon_img[1], 0);
 	LoadDivGraph("media\\img\\wind_book.png", 2, 2, 1, 128, 128, m_icon_img[0], 0);
@@ -71,9 +79,12 @@ CUi::CUi()
 	m_ui_img[3] = LoadGraph("media\\img\\second_hand_s.png");
 	//m_ui_img[SYMBOL] = LoadGraph("media\\img\\symbol.png");
 
-	m_combo_img[0] = LoadGraph("media\\img\\combo.png");
-	m_combo_img[1] = LoadGraph("media\\img\\item_create_text.png");
+	m_text_img[COMBO] = LoadGraph("media\\img\\combo.png");
+	m_text_img[ITEM_CREATE_TEXT] = LoadGraph("media\\img\\item_create_text.png");
+	m_text_img[LEVEL_TEXT] = LoadGraph("media\\img\\lv.png");
+
 	LoadDivGraph("media\\img\\num.png", 10, 4, 3, 128, 128, m_num_img, 0);
+	m_combo_gage_img = LoadGraph("media\\img\\combo_gage.jpg");
 
 	m_priority = eDWP_UI;
 	m_update_priority = 2;
@@ -81,6 +92,7 @@ CUi::CUi()
 	m_update = true;
 
 	BIconDraw = &RIcon;
+
 
 	CUiManager::GetInstance()->Init(this);
 }
@@ -108,12 +120,12 @@ void CUi::Update(){
 	}
 
 
-	if (m_comb_timer == 0){
+	if (m_comb_timer < 1){
 		CItemManager::GetInstance()->GetItemAdress()->Create();
 		m_comb = 0;
 	}
 	else{
-		m_comb_timer--;
+		m_comb_timer-=0.8533333f;
 	}
 
 	for (int i = 0; i < 2; i++){
@@ -122,6 +134,10 @@ void CUi::Update(){
 
 	for (int i = 0; i < 2; i++){
 		m_item_ui[i].Update();
+	}
+
+	for (int i = 0; i < 3; i++){
+		m_lv_ui[i].Update();
 	}
 }
 
@@ -185,37 +201,51 @@ void CUi::Draw(){
 	char buf[100];
 	int _num;
 	int _temp = 0;
-	_num = sprintf_s(buf, 100, "%d", m_comb);
-	if (_num > 1)
-		_temp = 26;
-	else if (_num > 2)
-		_temp = 52;
 	if (m_combo_ui[0].m_living == true){
+		_num = sprintf_s(buf, 100, "%d", m_comb);
+		if (_num > 1)
+			_temp = 26;
+		else if (_num > 2)
+			_temp = 52;
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, m_combo_ui[0].m_alpha);
 		for (int i = 0; i < _num; i++){
 			DrawRotaGraph(m_combo_ui[0].m_pos.getX() - _temp + i * 52,
 				m_combo_ui[0].m_pos.getY(), m_combo_ui[0].m_exrate, 0, m_num_img[(buf[i] - '0')], TRUE, FALSE);		//'0'
 		}
-		DrawRotaGraph(m_combo_ui[1].m_pos.getX(),m_combo_ui[1].m_pos.getY(), 
-			m_combo_ui[1].m_exrate, 0, m_combo_img[0], TRUE, FALSE);
+		DrawRotaGraph(m_combo_ui[1].m_pos.getX(), m_combo_ui[1].m_pos.getY(),
+			m_combo_ui[1].m_exrate, 0, m_text_img[0], TRUE, FALSE);
+		//ゲージ
+		DrawRectGraph(m_combo_ui[1].m_pos.getX() - 64, m_combo_ui[1].m_pos.getY() + 19, 0, 0, m_comb_timer, 4, m_combo_gage_img, FALSE, FALSE);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	}
 
 	//出現アイテム数
-	_num = sprintf_s(buf, 100, "%d", m_item_ui[0].m_hp);
-	if (_num > 1)
-		_temp = 26;
-	else if (_num > 2)
-		_temp = 52;
 	if (m_item_ui[0].m_living == true){
+		_num = sprintf_s(buf, 100, "%d", m_item_ui[0].m_hp);
+		if (_num > 1)
+			_temp = 26;
+		else if (_num > 2)
+			_temp = 52;
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, m_item_ui[0].m_alpha);
 		for (int i = 0; i < _num; i++){
 			DrawRotaGraph(m_item_ui[0].m_pos.getX() - _temp + i * 68,
 				m_item_ui[0].m_pos.getY(), m_item_ui[0].m_exrate, 0, m_num_img[(buf[i] - '0')], TRUE, FALSE);		//'0'
 		}
-		DrawRotaGraph(m_item_ui[1].m_pos.getX(),m_item_ui[1].m_pos.getY(), 
-			m_item_ui[1].m_exrate, 0, m_combo_img[1], TRUE, FALSE);
+		DrawRotaGraph(m_item_ui[1].m_pos.getX(), m_item_ui[1].m_pos.getY(),
+			m_item_ui[1].m_exrate, 0, m_text_img[1], TRUE, FALSE);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	}
+
+	//レベル
+	for (int i = 0; i < 3; i++){
+		_num = sprintf_s(buf, 100, "%d", m_lv_ui[i].m_hp);
+		SetDrawBright(m_lv_ui[i].m_red, m_lv_ui[i].m_green, m_lv_ui[i].m_blue);
+		for (int j = 0; j < _num; j++){
+			DrawRotaGraph(m_lv_ui[i].m_pos.getX() + 40 + j * 35,
+				m_lv_ui[i].m_pos.getY() - 8, m_lv_ui[i].m_exrate, 0, m_num_img[(buf[j] - '0')], TRUE, FALSE);		//'0'
+		}
+		DrawRotaGraph(m_lv_ui[i].m_pos.getX(), m_lv_ui[i].m_pos.getY(), /*m_lv_ui[i].m_exrate*/0.4f, 0, m_text_img[2], TRUE, FALSE);		//'0'
+		SetDrawBright(255, 255, 255);
 	}
 
 	IconDraw();

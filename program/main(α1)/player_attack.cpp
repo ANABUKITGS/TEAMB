@@ -1,6 +1,7 @@
 #include "player_manager.h"
 #include "effect_manager.h"
 #include "enemy_manager.h"
+#include "ui_manager.h"
 #include "sounddata_manager.h"
 
 CEffectMovePattern1 EMP1;
@@ -85,14 +86,20 @@ void CKeyBoard::Type(CPlayerData *cd, int key, float &_fx, float &_fy){
 
 void CStanUp::Type(CPlayerData *cd){
 	cd->m_stan += ITEM_STAN_UP;
+	CUiManager::GetInstance()->GetUiAdress()->GetLvUiData(0)->m_hp++;
+	CUiManager::GetInstance()->GetUiAdress()->GetLvUiData(0)->m_exrate = 0.7f;
 }
 
 void CKnockBackUp::Type(CPlayerData *cd){
 	cd->m_knock_back += ITEM_KNOCK_BACK_UP;
+	CUiManager::GetInstance()->GetUiAdress()->GetLvUiData(1)->m_hp++;
+	CUiManager::GetInstance()->GetUiAdress()->GetLvUiData(1)->m_exrate = 0.7f;
 }
 
 void CBombUp::Type(CPlayerData *cd){
 	cd->m_bomb += ITEM_BOMB_UP;
+	CUiManager::GetInstance()->GetUiAdress()->GetLvUiData(2)->m_hp++;
+	CUiManager::GetInstance()->GetUiAdress()->GetLvUiData(2)->m_exrate = 0.7f;
 }
 
 void CHeelUp::Type(CPlayerData *cd){

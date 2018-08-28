@@ -102,6 +102,9 @@ CPlayer::CPlayer()
 	m_player->m_attack_range = CAttackRange(m_player->m_pos, false, m_player->m_rad, 1.0f, 0, 0, 0, 0, 0, 0, 0);
 	m_player->m_change_effect = CBaseData(m_player->m_pos, false, m_player->m_rad, 0.3f, 0, 0, 0, 0, 0, 0, 0);
 
+	for (int i = 0; i < 3; i++)
+		CUiManager::GetInstance()->GetUiAdress()->GetLvUiData(i)->m_hp = 1;
+
 	m_timer = 0.0f;
 	m_teleport_flag = false;
 	m_priority = eDWP_PLAYER;
@@ -290,12 +293,12 @@ void CPlayer::Change(int key){
 	bool _f = false;
 	int _direction = 0;
 	if (_f = CKeyData::GetInstance()->IsKeyTrigger(key, PAD_INPUT_7, KEY_PAD_INPUT_7) == true){
-		_direction = -1;
-		m_player->m_attack_type--;
-	}
-	else if (_f = CKeyData::GetInstance()->IsKeyTrigger(key, PAD_INPUT_8, KEY_PAD_INPUT_8) == true){
 		_direction = 1;
 		m_player->m_attack_type++;
+	}
+	else if (_f = CKeyData::GetInstance()->IsKeyTrigger(key, PAD_INPUT_8, KEY_PAD_INPUT_8) == true){
+		_direction = -1;
+		m_player->m_attack_type--;
 	}
 
 	if (m_player->m_attack_type > 2)
@@ -456,8 +459,11 @@ void CPlayer::AttackRangeMove(){
 		}
 		else{
 			m_player->m_attack_range.m_move_rad = PosRad(m_player->m_attack_range.m_pos, m_player->m_attack_range.m_move_pos);
-			m_player->m_attack_range.m_pos += CVector2D(cos(m_player->m_attack_range.m_move_rad) * 17, sin(m_player->m_attack_range.m_move_rad) * 17);
+			m_player->m_attack_range.m_pos += CVector2D(cos(m_player->m_attack_range.m_move_rad) * 11, sin(m_player->m_attack_range.m_move_rad) * 11);
 		}
+	}
+	else{
+		m_player->m_attack_range.m_pos = m_player->m_pos;
 	}
 }
 

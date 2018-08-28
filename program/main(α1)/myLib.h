@@ -87,7 +87,7 @@ const int ITEM_CREATE_NUM = 6;						//ƒAƒCƒeƒ€Œn
 const float ITEM_STAN_UP = 0.1f;
 const float ITEM_KNOCK_BACK_UP = 0.1f;
 const float ITEM_BOMB_UP = 0.2f;
-const int ITEM_HEEL_UP = 20;
+const int ITEM_HEEL_UP = 30;
 
 const int TIME_LIMIT = 18000;	//5•ª				//UIŒn
 const int TIME_SPLIT = 50;		//5•ª

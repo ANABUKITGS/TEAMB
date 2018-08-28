@@ -27,7 +27,7 @@ const int UI_TIMER = 60;
 
 const float UI_NO_SELECT_EXRATE = 0.5f;
 const float UI_SELECT_EXRATE = 1.0f;
-const int ITEM_COMB_TIME = 150;
+const float ITEM_COMB_TIME = 128.0f;
 
 
 enum UI_ICON_TYPE{
@@ -36,6 +36,10 @@ enum UI_ICON_TYPE{
 
 enum UI_TYPE{
 	TIMER,TIMER_BACK,SECOND_HAND,KALMA
+};
+
+enum TEXT_TYPE{
+	COMBO,ITEM_CREATE_TEXT,LEVEL_TEXT
 };
 
 class CUiData;
@@ -56,7 +60,7 @@ public:
 class CUiData : public CBaseData{
 public:
 	CUiData();
-	CUiData(CVector2D _pos, bool _living, float _rad, float _exrate, int _animtype, float _velocity, float _mass, int _hp, float _friction, float _collision, int _type, int _prio, CBaseUpdate* _BUpdate);
+	CUiData(CVector2D _pos, bool _living, float _rad, float _exrate, int _animtype, float _velocity, float _mass, int _hp, float _friction, float _collision, int _type, int _prio,int _r,int _g,int _b, CBaseUpdate* _BUpdate);
 	~CUiData(){};
 
 	CBaseUpdate* BUpdate;
@@ -66,6 +70,9 @@ public:
 	float m_move_exrate;		//大きさの変更値
 	float m_move_count;
 	int m_priority;			//描画順序
+	int m_red;
+	int m_green;
+	int m_blue;
 };
 
 class CUi : public CTask{
@@ -74,14 +81,15 @@ private:
 	CUiData m_icon_ui[4];
 	CUiData m_combo_ui[3];
 	CUiData m_item_ui[3];
+	CUiData m_lv_ui[3];
 	int m_icon_img[3][2];			//攻撃アイコン
 	int m_ui_img[4];				//
-	int m_combo_img[2];				//コンボの文字
+	int m_text_img[3];				//文字系
 	int m_num_img[10];				//数字
-	int m_item_text_img;				//「アイテム出現」の文字
+	int m_combo_gage_img;
 
 	int m_comb;						//コンボ数
-	int m_comb_timer;				//コンボタイマー
+	float m_comb_timer;				//コンボタイマー
 	bool m_change_flag;				//切り替えを行ったか？
 	bool m_endflag;					//タイムリミットに達したか？
 
@@ -106,6 +114,7 @@ public:
 	inline list<CUiData*> *GetUiData(){ return &m_list_ui; };
 	inline CUiData* GetComboUiData(int _num){ return &m_combo_ui[_num]; };
 	inline CUiData* GetItemUiData(int _num){ return &m_item_ui[_num]; };
+	inline CUiData* GetLvUiData(int _num){ return &m_lv_ui[_num]; };
 
 	inline void AddComb(){ m_comb++; };
 	inline void SetComb(int _num){ m_comb = _num; };
@@ -144,6 +153,10 @@ class CComb : public CBaseUpdate{
 };
 
 class CItemText : public CBaseUpdate{
+	void Update(CUiData *cd);
+};
+
+class CLvNum : public CBaseUpdate{
 	void Update(CUiData *cd);
 };
 
