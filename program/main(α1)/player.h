@@ -57,6 +57,15 @@ public:
 	CBaseItemType *ItemType;
 };
 
+class CAttackRange : public CBaseData{
+public:
+	CAttackRange(){};
+	CAttackRange(CVector2D _pos, bool _living, float _rad, float _exrate, int _animtype, float _velocity, float _mass, int _hp, float _friction, float _collision, int _type);
+	~CAttackRange(){};
+	CVector2D m_move_pos;
+	float m_move_rad;
+};
+
 class CPlayerData : public CBaseData{
 public:
 	CBasePAType *AttackType;
@@ -73,7 +82,7 @@ public:
 	CBaseData m_charge_effect;		//チャージエフェクト
 	CBaseData m_avoid_effect;		//回避エフェクト
 	CBaseData m_gate_effect;		//ゲートエフェクト
-	CBaseData m_attack_range;		//攻撃範囲エフェクト
+	CAttackRange m_attack_range;		//攻撃範囲エフェクト
 	CBaseData m_change_effect;		//切り替え時のエフェクト
 
 	float m_chage_count;	//チャージ量
@@ -119,8 +128,10 @@ public:
 	void Attack(int key);
 	//アイテムの獲得処理
 	void ItemGet();
-
+	//テレポート処理
 	bool Teleport(int key);
+	//攻撃範囲の移動処理
+	void AttackRangeMove();
 
 	inline CPlayerData* GetData(){ return m_player; };
 	inline bool GetTeleportFlag(){ return m_teleport_flag; };

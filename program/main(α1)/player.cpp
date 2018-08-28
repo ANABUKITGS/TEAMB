@@ -43,6 +43,14 @@ CItemTable item_table[] = {
 	{ HEEL_ITEM, PLAYER_HEEL_NUM, P_HEEL, &item_heel },
 };
 
+CAttackRange::CAttackRange(CVector2D _pos, bool _living, float _rad, float _exrate, int _animtype, float _velocity, float _mass, int _hp, float _friction, float _collision, int _type)
+: CBaseData(_pos,_living,_rad,_exrate,_animtype,_velocity,_mass,_hp,_friction,_collision,_type)
+, m_move_pos(_pos)
+, m_move_rad(0)
+{
+
+}
+
 CPlayerData::CPlayerData()
 :CBaseData(CVector2D(0,0),false,0,0,0,0,0,0,0,0,0)
 {
@@ -91,7 +99,7 @@ CPlayer::CPlayer()
 	m_player->m_charge_effect = CBaseData(m_player->m_pos, false, m_player->m_rad, 0.6f, 0, 0, 0, 0, 0, 0, 0);
 	m_player->m_avoid_effect = CBaseData(m_player->m_pos, false, m_player->m_rad, 0.9f, 0, 0, 0, 0, 0, 0, 0);
 	m_player->m_gate_effect = CBaseData(m_player->m_pos, false, m_player->m_rad, 1.0f, 0, 0, 0, 0, 0, 0, 0);
-	m_player->m_attack_range = CBaseData(m_player->m_pos, false, m_player->m_rad, 1.0f, 0, 0, 0, 0, 0, 0, 0);
+	m_player->m_attack_range = CAttackRange(m_player->m_pos, false, m_player->m_rad, 1.0f, 0, 0, 0, 0, 0, 0, 0);
 	m_player->m_change_effect = CBaseData(m_player->m_pos, false, m_player->m_rad, 0.3f, 0, 0, 0, 0, 0, 0, 0);
 
 	m_timer = 0.0f;
@@ -107,7 +115,6 @@ CPlayer::CPlayer()
 void CPlayer::Update(){
 	int key = GetJoypadInputState(DX_INPUT_KEY_PAD1);
 
-
 	Attack(key);
 
 	Move(key);
@@ -119,6 +126,8 @@ void CPlayer::Update(){
 	ItemGet();
 
 	m_teleport_flag = Teleport(key);
+
+	AttackRangeMove();
 
 	//チャージエフェクト
 	if (m_player->m_charge_effect.m_living == true)
@@ -341,17 +350,17 @@ void CPlayer::Attack(int key){
 		switch (m_player->m_attack_type)
 		{
 		case 0:
-			m_player->m_attack_range.m_pos = m_player->m_pos;
+			m_player->m_attack_range.m_move_pos = m_player->m_pos;
 			m_player->m_attack_range.m_exrate = 0.45f * (1 + (int)m_player->m_chage_count * 0.1f) * m_player->m_stan;
 			m_player->m_attack_range.m_animtype = 0;
 			break;
 		case 1:
-			m_player->m_attack_range.m_pos = CVector2D(m_player->m_pos.getX() + PLAYER_HURRICANE_RANGE * cos(m_player->m_rad), m_player->m_pos.getY() + PLAYER_HURRICANE_RANGE * sin(m_player->m_rad));
+			m_player->m_attack_range.m_move_pos = CVector2D(m_player->m_pos.getX() + PLAYER_HURRICANE_RANGE * cos(m_player->m_rad), m_player->m_pos.getY() + PLAYER_HURRICANE_RANGE * sin(m_player->m_rad));
 			m_player->m_attack_range.m_exrate = 0.65f * (1 + (int)m_player->m_chage_count * 0.1f) * m_player->m_knock_back;
 			m_player->m_attack_range.m_animtype = 1;
 			break;
 		case 2:
-			m_player->m_attack_range.m_pos = CVector2D(m_player->m_pos.getX() + PLAYER_BOMB_RANGE * cos(m_player->m_rad), m_player->m_pos.getY() + PLAYER_BOMB_RANGE * sin(m_player->m_rad));
+			m_player->m_attack_range.m_move_pos = CVector2D(m_player->m_pos.getX() + PLAYER_BOMB_RANGE * cos(m_player->m_rad), m_player->m_pos.getY() + PLAYER_BOMB_RANGE * sin(m_player->m_rad));
 			m_player->m_attack_range.m_exrate = PLAYER_BOMB_RANGE_EXRATE * (1 + (int)m_player->m_chage_count * 0.1f) * m_player->m_bomb;
 			m_player->m_attack_range.m_animtype = 2;
 			break;
@@ -437,6 +446,19 @@ void CPlayer::Avoid(int key){
 		}
 	}
 
+}
+
+void CPlayer::AttackRangeMove(){
+	if (m_player->m_attack_range.m_living){
+		if (m_player->m_attack_range.m_pos.getX() < m_player->m_attack_range.m_move_pos.getX() + 15 && m_player->m_attack_range.m_pos.getX() > m_player->m_attack_range.m_move_pos.getX() - 15 &&
+			m_player->m_attack_range.m_pos.getY() < m_player->m_attack_range.m_move_pos.getY() + 15 && m_player->m_attack_range.m_pos.getY() > m_player->m_attack_range.m_move_pos.getY() - 15){
+			m_player->m_attack_range.m_pos = m_player->m_attack_range.m_move_pos;
+		}
+		else{
+			m_player->m_attack_range.m_move_rad = PosRad(m_player->m_attack_range.m_pos, m_player->m_attack_range.m_move_pos);
+			m_player->m_attack_range.m_pos += CVector2D(cos(m_player->m_attack_range.m_move_rad) * 17, sin(m_player->m_attack_range.m_move_rad) * 17);
+		}
+	}
 }
 
 void CPlayer::ItemGet(){

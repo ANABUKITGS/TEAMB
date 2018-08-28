@@ -41,12 +41,12 @@ void CKnockBack::Type(CPlayerData *cd){
 
 void CHurricane::Type(CPlayerData *cd){
 	PlaySoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(S_ATTACK_WIND), DX_PLAYTYPE_BACK);
-	CEffectData *temp = new CEffectData(CVector2D(cd->m_pos.getX() + PLAYER_HURRICANE_RANGE * cos(cd->m_rad), cd->m_pos.getY() + PLAYER_HURRICANE_RANGE * sin(cd->m_rad)), true, cd->m_rad + radian(90), 0.8f * (1 + (int)cd->m_chage_count * 0.1f) * cd->m_knock_back, KNOCK_BACK_NUM, PLAYER_HURRICANE_KNOCK_BACK * cd->m_knock_back*1.3f, 10, 99, 0, PLAYER_HURRICANE_COLLISION * cd->m_knock_back, KNOCK_BACK, 3, &EMP5);
+	CEffectData *temp = new CEffectData(CVector2D(cd->m_attack_range.m_pos.getX(), cd->m_attack_range.m_pos.getY()), true, cd->m_rad + radian(90), 0.8f * (1 + (int)cd->m_chage_count * 0.1f) * cd->m_knock_back, KNOCK_BACK_NUM, PLAYER_HURRICANE_KNOCK_BACK * cd->m_knock_back*1.3f, 10, 99, 0, PLAYER_HURRICANE_COLLISION * cd->m_knock_back, KNOCK_BACK, 3, &EMP5);
 	CEffectManager::GetInstance()->GetEffectAdress()->GetEffectData()->push_back(temp);
 }
 
 void CBomb::Type(CPlayerData *cd){
-	CEffectData *temp = new CEffectData(CVector2D(cd->m_pos.getX() + PLAYER_BOMB_RANGE * cos(cd->m_rad), cd->m_pos.getY() + PLAYER_BOMB_RANGE * sin(cd->m_rad)), true, cd->m_rad + radian(90), PLAYER_BOMB_EXRATE * (1 + (int)cd->m_chage_count * 0.1f) * cd->m_bomb, BOMB_CHARGE_NUM, 0, (int)cd->m_chage_count * cd->m_bomb, 0, 0, PLAYER_BOMB_COLLISION * (1 + (int)cd->m_chage_count * 0.1f) * cd->m_bomb, CHARGE_BOMB, 4, &EMP1);
+	CEffectData *temp = new CEffectData(CVector2D(cd->m_attack_range.m_pos.getX(), cd->m_attack_range.m_pos.getY()), true, cd->m_rad + radian(90), PLAYER_BOMB_EXRATE * (1 + (int)cd->m_chage_count * 0.1f) * cd->m_bomb, BOMB_CHARGE_NUM, 0, (int)cd->m_chage_count * cd->m_bomb, 0, 0, PLAYER_BOMB_COLLISION * (1 + (int)cd->m_chage_count * 0.1f) * cd->m_bomb, CHARGE_BOMB, 4, &EMP1);
 	CEffectManager::GetInstance()->GetEffectAdress()->GetEffectData()->push_back(temp);
 }
 

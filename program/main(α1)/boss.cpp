@@ -241,11 +241,11 @@ void CBoss::Update(){
 
 	bool _f = false;
 	if (_f = CKeyData::GetInstance()->IsKeyTrigger(key, PAD_INPUT_10, 10/*sƒL[*/) == true){
-		printfDx("‰Ÿ‚µ‚Ä‚¢‚é\n");
+		//printfDx("‰Ÿ‚µ‚Ä‚¢‚é\n");
 		m_attack_move = 1;
 	}
 	else{
-		printfDx("‰Ÿ‚µ‚Ä‚È‚¢\n");
+		//printfDx("‰Ÿ‚µ‚Ä‚È‚¢\n");
 	}
 	//íœ
 	Delete();
