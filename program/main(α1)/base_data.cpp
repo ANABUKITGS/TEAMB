@@ -284,15 +284,15 @@ void CCharaData::CBank(CBaseData* cd1, CBaseData* cd2){
 
 	if (cd1->m_control){
 		if (cd1->m_type == PLAYER)
-			cd2->m_velocity = 5.5f;
+			cd2->m_velocity = 5.5f;// / cd2->m_mass;
 		else
-			cd1->m_velocity = 2.5f / cd1->m_mass; /// cd1->m_mass;
+			cd1->m_velocity = 2.5f;// / cd1->m_mass;
 	}
 	if (cd2->m_control){
 		if (cd2->m_type == PLAYER)
-			cd1->m_velocity = 5.5f ;
+			cd1->m_velocity = 5.5f;// / cd1->m_mass;
 		else
-		cd2->m_velocity = 2.5f / cd2->m_mass; /// cd2->m_mass;
+		cd2->m_velocity = 2.5f;// / cd2->m_mass;
 	}
 
 	////‘€ì•s‰Â”\////
@@ -321,7 +321,7 @@ void CCharaData::CBank(CBaseData* cd1, CBaseData* cd2){
 		//”½”­ŒW”
 		float _e = 1.0f;
 		bool _a = false;
-		if (cd2->m_velocity < cd1->m_velocity){
+		if (cd2->m_velocity > cd1->m_velocity){
 			float temp = cd2->m_velocity;
 			cd2->m_velocity = cd1->m_velocity;
 			cd1->m_velocity = temp;
@@ -370,7 +370,7 @@ void CCharaData::Draw(){
 				if ((*it)->m_damage > 0)
 					DrawRectGraph((*it)->m_pos.getX() - 32 + (*it)->m_hp / _hp_division, (*it)->m_pos.getY() - 25, 0, 0, (*it)->m_damage / _hp_division, 4, m_ehp_img[1], FALSE, FALSE);
 				if ((*it)->m_timer > 0)
-					DrawRectGraph((*it)->m_pos.getX() - 32, (*it)->m_pos.getY() - 21, 0, 0, (*it)->m_timer / 15, 2, m_stan_timer_img, FALSE, FALSE);
+					DrawRectGraph((*it)->m_pos.getX() - 32, (*it)->m_pos.getY() - 21, 0, 0, (*it)->m_timer / 20, 2, m_stan_timer_img, FALSE, FALSE);
 			}
 		}
 		if ((*it)->m_type == PLAYER){

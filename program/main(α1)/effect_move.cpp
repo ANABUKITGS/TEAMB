@@ -9,6 +9,7 @@
 
 CEffectMovePattern2 EMP2;
 CEffectMovePattern6 EMP6;
+CEffectMovePattern9 EMP9;
 
 //enemyの行動パターン
 /*CMovePattern1 MP1;
@@ -37,7 +38,7 @@ void CEffectMovePattern1::Move(CEffectData *cd){
 		cd->m_animtype = BOMB_NUM;
 		cd->m_amine_rate = 1;
 		cd->m_rate = 1;
-		cd->m_exrate += 0.6;
+		cd->m_exrate += 0.1;
 		cd->BEMove = &EMP2;
 		PlaySoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(S_ATTACK_BOMB), DX_PLAYTYPE_BACK);
 	}
@@ -56,16 +57,18 @@ void CEffectMovePattern2::Move(CEffectData *cd){
 					if (cd->m_friction == 0){
 						if ((*it1)->m_type == PLAYER){
 							CUiManager::GetInstance()->GetUiAdress()->SetComb(0);
+							CEnemyManager::GetInstance()->GetEnemyAdress()->SetKillConutData(0);
 							(*it1)->m_damage = (int)PLAYER_ATTACK_BOMB * cd->m_mass / 3;
 						}
 						else
 							(*it1)->m_damage = (int)PLAYER_ATTACK_BOMB * cd->m_mass;
-						(*it1)->m_hp -= (*it1)->m_damage;
+						//(*it1)->m_hp -= (*it1)->m_damage;
 					}
 					if (cd->m_friction == 1){//ボム敵のダメージ
 						(*it1)->m_damage = (int)PLAYER_ATTACK_BOMB * cd->m_mass;
-						(*it1)->m_hp -= (*it1)->m_damage;
+						//(*it1)->m_hp -= (*it1)->m_damage;
 					}
+					(*it1)->m_hp -= (*it1)->m_damage;
 					if ((*it1)->m_hp < 0)
 						(*it1)->m_hp = 0;
 					(*it1)->m_control = false;
@@ -92,6 +95,7 @@ void CEffectMovePattern3::Move(CEffectData *cd){
 				_temp->m_damage = ENEMY_ATTACK_DAMAGE;
 				_temp->m_hp -= _temp->m_damage;
 				CUiManager::GetInstance()->GetUiAdress()->SetComb(0);
+				CEnemyManager::GetInstance()->GetEnemyAdress()->SetKillConutData(0);
 			}
 		}
 	}
@@ -166,7 +170,19 @@ void CEffectMovePattern7::Move(CEffectData *cd){
 //アイテム出現処理
 void CEffectMovePattern8::Move(CEffectData *cd){
 	if (cd->m_amine_rate > E_ITEM_CREATE_NUM * cd->m_rate - 3){
-		CBaseData* _temp = new CBaseData(cd->m_pos, true, 0, ITEM_EXRATE, rand() % 4, ITEM_SPEED, ITEM_MASS, ITEM_HP, ITEM_FRICTION, ITEM_COLLISION, ITEM);
-		CItemManager::GetInstance()->GetItemAdress()->GetItemData()->push_back(new CItemData(*_temp));
+		CBaseData* _temp1 = new CBaseData(cd->m_pos, true, 0, ITEM_EXRATE, rand() % 4, ITEM_SPEED, ITEM_MASS, ITEM_HP, ITEM_FRICTION, ITEM_COLLISION, ITEM);
+		CItemManager::GetInstance()->GetItemAdress()->GetItemData()->push_back(new CItemData(*_temp1));
+		CEffectData *_temp2 = new CEffectData(cd->m_pos, true, 0, 0.0f, 0, 0, 0, 0, 0, 0, ITEM_CREATE2, 2, &EMP9);
+		CEffectManager::GetInstance()->GetEffectAdress()->GetEffectData()->push_back(_temp2);
 	}
+}
+
+//アイテム出現処理２
+void CEffectMovePattern9::Move(CEffectData *cd){
+	if (cd->m_exrate < 1.5f)
+		cd->m_exrate += 0.03;
+	else
+		cd->m_living = false;
+
+	cd->m_alpha -= 6;
 }

@@ -47,12 +47,12 @@ void CGameScreen::Release(){}
 void CGameScreen::Init(){
 	//‚±‚±‚Åƒ^ƒXƒN¶¬
 	CTaskManager::GetInstance()->Add(new CDifficultyLevel);
+	CTaskManager::GetInstance()->Add(new CUi);
 	CTaskManager::GetInstance()->Add(new CPlayer);
 	CTaskManager::GetInstance()->Add(new CField);
 	CTaskManager::GetInstance()->Add(new CBoss);
 	CTaskManager::GetInstance()->Add(new CEnemy);
 	CTaskManager::GetInstance()->Add(new CEffect);
-	CTaskManager::GetInstance()->Add(new CUi);
 	CTaskManager::GetInstance()->Add(new CItem);
 	PlaySoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(GAME_BGM1), DX_PLAYTYPE_LOOP);	//New
 	//if(CFieldManager::GetInstance()->GetFrameAdress()->GetFieldType() != M_BOSS)

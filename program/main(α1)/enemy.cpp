@@ -84,7 +84,8 @@ CEneEffect::CEneEffect(CVector2D *_pos, bool *_living, float _alpha, float _rad,
 	CEnemyManager::GetInstance()->GetEnemyAdress()->GetEneEffData()->push_back(this);
 }
 
-CEnemy::CEnemy(){
+CEnemy::CEnemy()
+{
 	LoadDivGraph("media\\img\\enemy_n_m.png",88,4,22,64,64,m_enemy_img[NORMAL]);
 	LoadDivGraph("media\\img\\enemy_l_m.png", 88, 4, 22, 48, 48, m_enemy_img[LONG_RANGE]);
 	LoadDivGraph("media\\img\\enemy_b_m.png", 88, 4, 22, 128, 128, m_enemy_img[BIG]);
@@ -105,7 +106,8 @@ CEnemy::CEnemy(){
 	m_draw_priority = 2;
 	m_update = true;
 	
-	m_count = 1;
+	m_kill_count = 0;
+	m_create_timer = 0;
 
 	CEnemyManager::GetInstance()->Init(this);
 
@@ -136,11 +138,12 @@ void CEnemy::Delete(){
 				(*it)->m_anim_division = 999;
 				(*it)->m_motion_type = 32;
 				(*it)->m_direction_type /= 2;
+				m_kill_count++;
 			}
 		}
 		if ((*it)->m_living == false){
 			if ((*it)->m_animtype != E_BOMB){
-				CBaseData *_temp = new CBaseData((*it)->m_pos, true, 0, 1.5f, ENEMY_DELETE_NUM, 0, 0, 0, 0, 0, ENEMY_DELETE);
+				CBaseData *_temp = new CBaseData((*it)->m_pos, true, 0, 1.0f + m_kill_count * 0.1f, ENEMY_DELETE_NUM, 0, 0, 0, 0, 0, ENEMY_DELETE);
 				CEffectManager::GetInstance()->GetEffectAdress()->GetEffectData()->push_back(new CEffectData(*_temp, 2, NULL));
 			}
 			CUiManager::GetInstance()->GetUiAdress()->AddComb();
@@ -298,28 +301,55 @@ void CEnemy::Update(){
 	Delete();
 
 	//è¢ä´
-	for (int i = _num; i < CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetEneMax();i++){
-		int _type = 0;//= 4;
-		CVector2D _pos1 = CVector2D(rand() % MAP_RANGE_X + 64, rand() % MAP_RANGE_Y + 73);
-		CVector2D _pos2 = CVector2D(_pos1.getX(), _pos1.getY() - 820);
-		
-		if (m_enemy_num.m_normal_num < CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetEnemyDifficulty()->m_nomal_num)
-			_type = 0;
-		else if (m_enemy_num.m_long_num < CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetEnemyDifficulty()->m_long_num)
-			_type = 1;
-		else if (m_enemy_num.m_big_num < CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetEnemyDifficulty()->m_big_num)
-			_type = 2;
-		else if (m_enemy_num.m_small_num < CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetEnemyDifficulty()->m_small_num)
-			_type = 3;
-		else if (m_enemy_num.m_bomb_num < CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetEnemyDifficulty()->m_bomb_num)
-			_type = 4;
+	/*printfDx("k = %d\n", m_kill_count);
+	printfDx("next = %d\n", CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetEnemyDifficulty()->m_next_kill);
+	printfDx("t = %d\n", m_create_timer);*/
 
-		for (auto &ect : e_c_table){
-			if (ect.m_num == _type){
-				CBaseData *_temp = new CBaseData(_pos2, true, radian((rand() % 360)), ect.m_exrate, ect.m_type, ect.m_speed, ect.m_mass, ect.m_hp, ENEMY_FRICTION, ect.m_collision, ENEMY);
-				CEnemyManager::GetInstance()->GetEnemyAdress()->GetEnemyData()->push_back(new CEnemyData(*_temp, _pos1, 2, ect.m_BEMove, ect.m_BEAttack));
-				break;
+	printfDx("%d\n", m_enemy_num.m_normal_num);
+	printfDx("%d\n", m_enemy_num.m_long_num);
+	printfDx("%d\n", m_enemy_num.m_big_num);
+	printfDx("%d\n", m_enemy_num.m_small_num);
+	printfDx("%d\n", m_enemy_num.m_bomb_num);
+
+	if (m_kill_count <= CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetEnemyDifficulty()->m_next_kill){
+		if (m_create_timer == 0){
+			for (int i = _num; i < CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetEneMax(); i++){
+				int _type = 99;//= 4;
+				CVector2D _pos1 = CVector2D(rand() % MAP_RANGE_X + 64, rand() % MAP_RANGE_Y + 73);
+				CVector2D _pos2 = CVector2D(_pos1.getX(), _pos1.getY() - 820);
+
+				if (m_enemy_num.m_normal_num < CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetEnemyDifficulty()->m_nomal_num){
+					_type = 0;
+					m_enemy_num.m_normal_num++;
+				}
+				else if (m_enemy_num.m_long_num < CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetEnemyDifficulty()->m_long_num){
+					_type = 1;
+					m_enemy_num.m_long_num++;
+				}
+				else if (m_enemy_num.m_big_num < CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetEnemyDifficulty()->m_big_num){
+					_type = 2;
+					m_enemy_num.m_big_num++;
+				}
+				else if (m_enemy_num.m_small_num < CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetEnemyDifficulty()->m_small_num){
+					_type = 3;
+					m_enemy_num.m_small_num++;
+				}
+				else if (m_enemy_num.m_bomb_num < CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetEnemyDifficulty()->m_bomb_num){
+					_type = 4;
+					m_enemy_num.m_bomb_num++;
+				}
+
+				for (auto &ect : e_c_table){
+					if (ect.m_num == _type){
+						CBaseData *_temp = new CBaseData(_pos2, true, radian((rand() % 360)), ect.m_exrate, ect.m_type, ect.m_speed, ect.m_mass, ect.m_hp, ENEMY_FRICTION, ect.m_collision, ENEMY);
+						CEnemyManager::GetInstance()->GetEnemyAdress()->GetEnemyData()->push_back(new CEnemyData(*_temp, _pos1, 2, ect.m_BEMove, ect.m_BEAttack));
+						break;
+					}
+				}
 			}
+		}
+		if (m_create_timer != 0){
+			m_create_timer--;
 		}
 	}
 }
@@ -337,8 +367,11 @@ void CEnemy::EnemyNum(CEnemyData &cd,int _num){
 	else if (cd.m_animtype == SMALL){
 		m_enemy_num.m_small_num += _num;
 	}
-	else{
+	else if (cd.m_animtype == E_BOMB){
 		m_enemy_num.m_bomb_num += _num;
+	}
+	else{
+		;
 	}
 }
 
@@ -367,6 +400,20 @@ void CEnemy::Reflect(CEnemyData &cd,CVector2D &_pos){
 		_pos.setX(MAP_REFLECT_LEFT * 2 - _pos.getX());
 		if (cd.m_control == false)
 			cd.m_timer += BANK_STAN;
+	}
+
+	if (_pos.getY() > MAP_REFLECT_DOWN + 100){
+		cd.m_living = false;
+	}
+	else if (_pos.getY() < MAP_REFLECT_UP - 100){
+		cd.m_living = false;
+	}
+
+	if (_pos.getX() > MAP_REFLECT_RIGHT + 100){
+		cd.m_living = false;
+	}
+	else if (_pos.getX() < MAP_REFLECT_LEFT - 100){
+		cd.m_living = false;
 	}
 }
 

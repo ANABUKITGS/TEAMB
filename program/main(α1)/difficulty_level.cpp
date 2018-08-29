@@ -4,17 +4,17 @@
 
 CEnemyDifficultyTable enemy_diff_table[] = {
 	{ 1,7, 0, 0, 0, 8, 0 },
-	{ 2,7, 0, 0, 0, 12, 0 },
-	{ 3,8, 0, 0, 0, 16, 0 },
-	{ 4,9, 4, 0, 0, 14, 0 },
-	{ 5,10, 8, 0, 0, 12, 0 },
-	{ 6,10, 11, 0, 0, 9, 0 },
-	{ 7,10, 17, 0, 0, 6, 0 },
-	{ 8,10, 9, 4, 0, 4, 0 },
-	{ 9,10, 8, 8, 0, 5, 0 },
-	{ 10,10, 8, 14, 0, 2, 0 },
-	{ 11,10, 5, 2, 1, 4, 0 },
-	{ 12,10, 9, 4, 1, 5, 0 },
+	{ 2,7, 0, 0, 0, 16, 0 },
+	{ 3,10, 4, 0, 0, 16, 0 },
+	{ 4,13, 9, 0, 0, 12, 0 },
+	{ 5,14, 17, 0, 0, 8, 0 },
+	{ 6,12, 11, 6, 0, 6, 0 },
+	{ 7,16, 15, 10, 0, 3, 0 },
+	{ 8,10, 10, 5, 1, 3, 0 },
+	{ 9,14, 8, 8, 2, 5, 0 },
+	{ 10,15, 8, 14, 2, 2, 0 },
+	{ 11,10, 9, 4, 0, 4, 3 },
+	{ 12,10, 10, 9, 1, 0, 6 },//Œ»Ý‚±‚±‚Ü‚Å
 	{ 13,10, 11, 8, 1, 2, 0 },
 	{ 14,10, 8, 11, 2, 0, 0 },
 	{ 15,10, 14, 0, 0, 6, 2 },
@@ -42,12 +42,13 @@ CDifficultyLevel::CDifficultyLevel()
 , m_level_up(1)
 {
 	m_enemy_difficulty = new CEnemyDifficulty();
-	m_priority = eDWP_UI;
+	m_priority = 0;
 	CDifficultyLevelManager::GetInstance()->Init(this);
 }
 
 void CDifficultyLevel::Update(){
 	static bool _flag;
+	//printfDx("%d\n", m_enemy_difficulty->m_enemy_level);
 	if (!_flag){
 		if (CUiManager::GetInstance()->GetUiAdress()->GatComb() > m_enemy_difficulty->m_next_kill){
 			m_enemy_difficulty->m_enemy_level++;

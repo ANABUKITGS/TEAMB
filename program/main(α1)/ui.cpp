@@ -1,6 +1,7 @@
 #include "ui_manager.h"
 #include "player_manager.h"
 #include "item_manager.h"
+#include "enemy_manager.h"
 
 CRightRotation RRotation;
 CLeftRotation LRotation;
@@ -120,11 +121,13 @@ void CUi::Update(){
 	}
 
 
-	if (m_comb_timer < 1){
+	if (m_comb_timer < 0){
 		CItemManager::GetInstance()->GetItemAdress()->Create();
+		CEnemyManager::GetInstance()->GetEnemyAdress()->SetCreateTimer(210);
 		m_comb = 0;
+		m_comb_timer = 0;
 	}
-	else{
+	else if (m_comb_timer > 0){
 		m_comb_timer-=0.8533333f;
 	}
 
@@ -241,7 +244,7 @@ void CUi::Draw(){
 		_num = sprintf_s(buf, 100, "%d", m_lv_ui[i].m_hp);
 		SetDrawBright(m_lv_ui[i].m_red, m_lv_ui[i].m_green, m_lv_ui[i].m_blue);
 		for (int j = 0; j < _num; j++){
-			DrawRotaGraph(m_lv_ui[i].m_pos.getX() + 40 + j * 35,
+			DrawRotaGraph(m_lv_ui[i].m_pos.getX() + 30 + j * 32,
 				m_lv_ui[i].m_pos.getY() - 8, m_lv_ui[i].m_exrate, 0, m_num_img[(buf[j] - '0')], TRUE, FALSE);		//'0'
 		}
 		DrawRotaGraph(m_lv_ui[i].m_pos.getX(), m_lv_ui[i].m_pos.getY(), /*m_lv_ui[i].m_exrate*/0.4f, 0, m_text_img[2], TRUE, FALSE);		//'0'

@@ -141,8 +141,10 @@ private:
 	CEnemyNum m_enemy_num;
 	int m_enemy_img[7][88];
 	int m_shadow_img;
-	int m_count;			//出現用カウンター
+	int m_kill_count;			//Kill確定数
+	int m_create_timer;			//リスポーン停止時間
 	int m_timer;
+
 public:
 	CEnemy();
 	~CEnemy(){};
@@ -160,6 +162,8 @@ public:
 
 	list<CEnemyData*> *GetEnemyData(){ return &m_enemys; };
 	list<CEneEffect*> *GetEneEffData(){ return &m_ene_eff; };
+	void SetKillConutData(int _num){ m_kill_count = _num; };
+	void SetCreateTimer(int _timer){ m_create_timer = _timer; };
 };
 
 //通常

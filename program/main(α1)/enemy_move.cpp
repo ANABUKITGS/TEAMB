@@ -275,6 +275,7 @@ void CAttackPattern3::Attack(CEnemyData *cd){
 			_temp->m_rad = PosRad(cd->m_pos, _temp->m_pos);
 			_temp->m_velocity = ENEMY_BULLET_KNOCK_BACK / _temp->m_mass;
 			CUiManager::GetInstance()->GetUiAdress()->SetComb(0);
+			CEnemyManager::GetInstance()->GetEnemyAdress()->SetKillConutData(0);
 			_temp->m_damage = ENEMY_BULLET_ATTACK_DAMAGE;
 			_temp->m_hp -= _temp->m_damage;
 			cd->m_living = false;
@@ -301,6 +302,7 @@ void CAttackPattern4::Attack(CEnemyData *cd){
 							if ((*it)->m_type == PLAYER){
 								(*it)->m_damage = ENEMY_BIG_ATTACK_DAMAGE;
 								CUiManager::GetInstance()->GetUiAdress()->SetComb(0);
+								CEnemyManager::GetInstance()->GetEnemyAdress()->SetKillConutData(0);
 								(*it)->m_hp -= (*it)->m_damage;
 							}
 							cd->m_amine_rate = 0;
@@ -338,7 +340,7 @@ void CAttackPattern5::Attack(CEnemyData *cd){
 				_temp->m_damage = 2;
 				_temp->m_hp -= _temp->m_damage;
 				CUiManager::GetInstance()->GetUiAdress()->SetComb(0);
-
+				CEnemyManager::GetInstance()->GetEnemyAdress()->SetKillConutData(0);
 			}
 			cd->m_amine_rate = 0;
 			cd->m_motion_type = 16;
