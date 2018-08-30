@@ -8,6 +8,7 @@
 CEffectMovePattern1 EMP1_b;
 CEffectMovePattern2 EMP2_a;
 CEffectMovePattern4 EMP4;
+CEffectMovePattern11 EMP11;
 
 CEnemyRadTable e_rad_table[] = {
 	{ 0, 22.5f, 337.5f, ENEMY_RIGHT },
@@ -144,7 +145,7 @@ void CEnemy::Delete(){
 		if ((*it)->m_living == false){
 			if ((*it)->m_animtype != E_BOMB){
 				CBaseData *_temp = new CBaseData((*it)->m_pos, true, 0, 1.0f + m_kill_count * 0.1f, ENEMY_DELETE_NUM, 0, 0, 0, 0, 0, ENEMY_DELETE);
-				CEffectManager::GetInstance()->GetEffectAdress()->GetEffectData()->push_back(new CEffectData(*_temp, 2, NULL));
+				CEffectManager::GetInstance()->GetEffectAdress()->GetEffectData()->push_back(new CEffectData(*_temp, 2, &EMP11));	
 			}
 			CUiManager::GetInstance()->GetUiAdress()->AddComb();
 			CUiManager::GetInstance()->GetUiAdress()->SetCombTimer(ITEM_COMB_TIME);

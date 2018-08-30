@@ -6,8 +6,6 @@
 #include "change_manager.h"
 #include "sounddata_manager.h"
 
-CEffectMovePattern10 EMP10;
-
 CStan		stan;
 CKnockBack	knock_back;
 CBomb		bomb;
@@ -122,7 +120,7 @@ void CPlayer::Update(){
 
 	/*if (CKeyData::GetInstance()->IsKeyTrigger(key, PAD_INPUT_3, KEY_PAD_INPUT_3)){
 		for (int i = 0; i < 10; i++){
-			CEffectData *_temp2 = new CEffectData(CVector2D(640, 360), true, rand() % 360, (rand() % 30) * 0.01f + 0.15f, 0, 10.0f, 0, 0, 0, 0, STAR, 1, &EMP10);
+			CEffectData *_temp2 = new CEffectData(CVector2D(640, 360), true, rand() % 360, (rand() % 20) * 0.01f + 0.15f, 0, 10.0f, 0, 0, 0, 0, STAR, 1, &EMP10);
 			CEffectManager::GetInstance()->GetEffectAdress()->GetEffectData()->push_back(_temp2);
 		}
 	}*/

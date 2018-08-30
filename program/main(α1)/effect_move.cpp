@@ -10,6 +10,7 @@
 CEffectMovePattern2 EMP2;
 CEffectMovePattern6 EMP6;
 CEffectMovePattern9 EMP9;
+CEffectMovePattern10 EMP10;
 
 //enemyの行動パターン
 /*CMovePattern1 MP1;
@@ -189,12 +190,48 @@ void CEffectMovePattern9::Move(CEffectData *cd){
 
 //アイテム出現処理３（☆）
 void CEffectMovePattern10::Move(CEffectData *cd){
-	if (cd->m_timer < 40)
+	//static float _amo;
+	if (cd->m_timer < 50)
 		cd->m_timer += 1;
 	else
 		cd->m_living = false;
-
-	cd->m_pos += CVector2D(cd->m_velocity * sin(cd->m_rad),cd->m_velocity * cos(cd->m_rad));
 	
-	cd->m_pos.addY(0.4f*cd->m_timer);
+	if (degree(cd->m_speed) < 89){
+		cd->m_speed += 0.04f;
+	}
+
+	cd->m_mass += 0.1f;
+
+	cd->m_pos += CVector2D((cos(cd->m_speed)*cd->m_velocity) * cos(cd->m_rad), (cos(cd->m_speed)*cd->m_velocity) * sin(cd->m_rad));
+	
+	/*if (cd->m_pos.getY() > 690){
+		cd->m_rad = cd->m_rad*(-1);
+		//cd->m_pos.setY();
+	}
+	if (cd->m_pos.getY() < 30){
+		cd->m_rad = cd->m_rad*(-1);
+	}
+	if (cd->m_pos.getX() > 1250){
+		cd->m_rad = PI - cd->m_rad;
+	}
+	if (cd->m_pos.getX() < 30){
+		cd->m_rad = PI - cd->m_rad;
+	}*/
+
+	//cd->m_pos.addY(0.35f*cd->m_timer);
 }
+
+//敵爆破処理
+void CEffectMovePattern11::Move(CEffectData *cd){
+	if (cd->m_amine_rate / cd->m_rate % cd->m_animtype == 7){
+		for (int i = 0; i < 2; i++){
+			CEffectData *_temp2 = new CEffectData(cd->m_pos, true, rand() % 360, (rand() % 10) * 0.01f + 0.12f, 0, 8.0f, 0, 0, 0, 0, STAR, 1, &EMP10);
+			CEffectManager::GetInstance()->GetEffectAdress()->GetEffectData()->push_back(_temp2);
+		}
+	}
+}
+/*
+for (int i = 0; i < 4; i++){
+	CEffectData *_temp2 = new CEffectData((*it)->m_pos, true, rand() % 360, (rand() % 15) * 0.01f + 0.13f, 0, 8.0f, 0, 0, 0, 0, STAR, 1, &EMP10);
+	CEffectManager::GetInstance()->GetEffectAdress()->GetEffectData()->push_back(_temp2);
+}*/

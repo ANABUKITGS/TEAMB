@@ -1,6 +1,7 @@
 //ヘッダーファイル
 #include "gametitle_screen.h"
 #include "sounddata_manager.h"
+#include "change_manager.h"
 
 //コンストラクタ
 CGameTitleScreen::CGameTitleScreen()
@@ -11,6 +12,7 @@ CGameTitleScreen::CGameTitleScreen()
 //デストラクタ
 CGameTitleScreen::~CGameTitleScreen(){
 	StopSoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(TITLE_BGM));	//New
+	CChangeManager::GetInstance()->GetChangeAdress()->Kill();
 }
 
 //ロード
@@ -44,6 +46,9 @@ void CGameTitleScreen::Init(){
 	
 	m_timer = 0;
 	m_title_num = 0;
+
+	new CChange(0, 2);
+
 }
 
 //実行処理
@@ -51,7 +56,17 @@ void CGameTitleScreen::Update()
 {
 	int key = GetJoypadInputState(DX_INPUT_KEY_PAD1);
 	
-	if (CKeyData::GetInstance()->IsKeyTrigger(key, PAD_INPUT_2, KEY_Z_PAD_INPUT_2))m_state = GAME_SCREEN;
+	if (CKeyData::GetInstance()->IsKeyTrigger(key, PAD_INPUT_2, KEY_Z_PAD_INPUT_2)){
+		if (m_title[3].m_alpha < 256){
+			for (int i = 0; i < 4; i++){
+				m_title[i].m_alpha = 256;
+			}
+			m_title_num = 3;
+		}
+		else{
+			CChangeManager::GetInstance()->GetChangeAdress()->SetChange(true);
+		}
+	}
 
 	if (m_timer < 80){
 		m_timer++;
@@ -67,11 +82,14 @@ void CGameTitleScreen::Update()
 			m_title[i].m_alpha += 6;
 	}
 
-	if (m_title[3].m_alpha > 256){
+	if (m_title[3].m_alpha > 255){
 		m_title[3].m_add_move -= 0.04f;
 		if (m_title[3].m_add_move < -6.3f)
 			m_title[3].m_add_move = 0;
 	}
+	if (CChangeManager::GetInstance()->GetChangeAdress()->GetOut())m_state = GAME_SCREEN;
+	CChangeManager::GetInstance()->GetChangeAdress()->Update();
+
 //	if (CheckHitKey(KEY_INPUT_A) == 1) m_state = GAME_SCREEN;
 }
 
@@ -85,8 +103,10 @@ void CGameTitleScreen::Draw()
 		DrawGraph(m_title[i].m_pos.getX(), m_title[i].m_pos.getY() + 15 * sin(m_title[i].m_add_move), title1_img[i], TRUE);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	}
+	if (m_title[3].m_alpha > 255)
+		DrawGraph(0, 640, title_text_img, TRUE);
 
-	DrawGraph(0, 640, title_text_img, TRUE);
+	CChangeManager::GetInstance()->GetChangeAdress()->Draw();
 
 #if defined(_DEBUG) | defined(DEBUG)
 	//DrawString(10, 100, "TITLE Screen Hit A key to Next Screen", GetColor(255, 255, 255));

@@ -12,6 +12,7 @@ CEffectData::CEffectData(CVector2D _pos, bool _living, float _rad, float _exrate
 , m_rate(_rate)
 , BEMove(_BEMove)
 {
+	m_speed = 0;
 }
 
 CEffectData::CEffectData(CBaseData _temp, int _rate, CBaseEffectMove *_BEMove)
@@ -67,9 +68,14 @@ void CEffect::Update(){
 
 void CEffect::Draw(){
 	for (auto it = m_effects.begin(); it != m_effects.end(); it++){
-		if ((*it)->m_type == IMPACT || (*it)->m_type == ITEM_CREATE2 || (*it)->m_type == STAR){
+		if ((*it)->m_type == IMPACT || (*it)->m_type == ITEM_CREATE2){
 			SetDrawBlendMode(DX_BLENDMODE_ALPHA, (*it)->m_alpha);
 			DrawRotaGraph((*it)->m_pos.getX(), (*it)->m_pos.getY(), (*it)->m_exrate, (*it)->m_rad, m_effect_img[(*it)->m_type][0], TRUE, FALSE);
+			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+		}
+		else if ((*it)->m_type == STAR){
+			SetDrawBlendMode(DX_BLENDMODE_ALPHA, (*it)->m_alpha);
+			DrawRotaGraph((*it)->m_pos.getX(), (*it)->m_pos.getY(), (*it)->m_exrate, (*it)->m_rad + (*it)->m_mass, m_effect_img[(*it)->m_type][0], TRUE, FALSE);
 			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 		}
 		else if ((*it)->m_type != 99){

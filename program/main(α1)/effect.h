@@ -117,6 +117,11 @@ class CEffectMovePattern10 :public CBaseEffectMove{
 public:
 	void Move(CEffectData *cd);
 };
+//“G”š”jˆ—
+class CEffectMovePattern11 :public CBaseEffectMove{
+public:
+	void Move(CEffectData *cd);
+};
 
 
 #endif EFFECT_H
