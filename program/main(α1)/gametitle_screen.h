@@ -9,6 +9,13 @@
 //プロトタイプ
 struct GameData;
 
+class CTitleData{
+public:
+	CVector2D m_pos;
+	int m_alpha;
+	float m_add_move;
+};
+
 //タイトルスクリーンクラス
 class CGameTitleScreen : public CScreen
 {
@@ -23,7 +30,13 @@ public:
 	void Draw();
 private:
 	int title_img[2];
+	int title1_img[4];
 	int title_text_img;
+
+	int m_timer;
+	int m_title_num;
+	CTitleData m_title[4];
+	
 	SCREEN m_state;
 };
 

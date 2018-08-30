@@ -300,17 +300,12 @@ void CEnemy::Update(){
 	//íœ
 	Delete();
 
-	//¢Š«
-	/*printfDx("k = %d\n", m_kill_count);
-	printfDx("next = %d\n", CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetEnemyDifficulty()->m_next_kill);
-	printfDx("t = %d\n", m_create_timer);*/
-
-	printfDx("%d\n", m_enemy_num.m_normal_num);
+	/*printfDx("%d\n", m_enemy_num.m_normal_num);
 	printfDx("%d\n", m_enemy_num.m_long_num);
 	printfDx("%d\n", m_enemy_num.m_big_num);
 	printfDx("%d\n", m_enemy_num.m_small_num);
 	printfDx("%d\n", m_enemy_num.m_bomb_num);
-
+	*/
 	if (m_kill_count <= CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetEnemyDifficulty()->m_next_kill){
 		if (m_create_timer == 0){
 			for (int i = _num; i < CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetEneMax(); i++){

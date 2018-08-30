@@ -89,7 +89,6 @@ void CTaskManager::NoUpdate(int _type){
 }
 
 void CTaskManager::UpdateAll(){
-	clsDx();
 	for (auto it = m_TaskList.begin(); it != m_TaskList.end(); it++){
 		if ((*it)->m_update)
 			(*it)->Update();

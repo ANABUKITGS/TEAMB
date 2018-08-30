@@ -186,3 +186,15 @@ void CEffectMovePattern9::Move(CEffectData *cd){
 
 	cd->m_alpha -= 6;
 }
+
+//アイテム出現処理３（☆）
+void CEffectMovePattern10::Move(CEffectData *cd){
+	if (cd->m_timer < 40)
+		cd->m_timer += 1;
+	else
+		cd->m_living = false;
+
+	cd->m_pos += CVector2D(cd->m_velocity * sin(cd->m_rad),cd->m_velocity * cos(cd->m_rad));
+	
+	cd->m_pos.addY(0.4f*cd->m_timer);
+}

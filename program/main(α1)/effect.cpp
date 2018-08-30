@@ -39,6 +39,7 @@ CEffect::CEffect(){
 	//LoadDivGraph("media\\img\\impact2.png", 1, 1, 1, 256, 256, m_effect_img[IMPACT], 0);
 	m_effect_img[IMPACT][0] = LoadGraph("media\\img\\impact2.png");
 	m_effect_img[ITEM_CREATE2][0] = LoadGraph("media\\img\\item_c_c.png");
+	m_effect_img[STAR][0] = LoadGraph("media\\img\\star.png");
 
 	m_priority = eDWP_EFFECT;
 	m_update_priority = 2;
@@ -55,7 +56,7 @@ void CEffect::Update(){
 			(*it)->m_amine_rate++;
 
 		(*it)->Mover();
-		if ((*it)->m_type != 99 && (*it)->m_type != IMPACT && (*it)->m_type != ITEM_CREATE2){
+		if ((*it)->m_type != 99 && (*it)->m_type != IMPACT && (*it)->m_type != ITEM_CREATE2 && (*it)->m_type != STAR){
 			if ((*it)->m_amine_rate / (*it)->m_rate % (*it)->m_animtype == (*it)->m_animtype - 1)
 				(*it)->m_living = false;
 		}
@@ -66,7 +67,7 @@ void CEffect::Update(){
 
 void CEffect::Draw(){
 	for (auto it = m_effects.begin(); it != m_effects.end(); it++){
-		if ((*it)->m_type == IMPACT || (*it)->m_type == ITEM_CREATE2){
+		if ((*it)->m_type == IMPACT || (*it)->m_type == ITEM_CREATE2 || (*it)->m_type == STAR){
 			SetDrawBlendMode(DX_BLENDMODE_ALPHA, (*it)->m_alpha);
 			DrawRotaGraph((*it)->m_pos.getX(), (*it)->m_pos.getY(), (*it)->m_exrate, (*it)->m_rad, m_effect_img[(*it)->m_type][0], TRUE, FALSE);
 			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);

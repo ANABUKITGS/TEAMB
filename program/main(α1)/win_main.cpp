@@ -18,7 +18,9 @@ int WINAPI WinMain(HINSTANCE hinstance, HINSTANCE hPrevinstance, LPSTR IpCmdLine
 
 	while (true){
 		SetDrawScreen(DX_SCREEN_BACK);
-
+		
+		clsDx();
+		
 		win_main_loop();
 
 		if (CheckHitKey(KEY_INPUT_ESCAPE) == 1) exit(-1);
