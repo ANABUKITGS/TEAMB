@@ -4,6 +4,7 @@
 #include "ui_manager.h"
 #include "difficulty_level_manager.h"
 #include "sounddata_manager.h"
+#include "field_manager.h"
 
 CEffectMovePattern1 EMP1_b;
 CEffectMovePattern2 EMP2_a;
@@ -313,28 +314,41 @@ void CEnemy::Update(){
 				int _type = 99;//= 4;
 				CVector2D _pos1 = CVector2D(rand() % MAP_RANGE_X + 64, rand() % MAP_RANGE_Y + 73);
 				CVector2D _pos2 = CVector2D(_pos1.getX(), _pos1.getY() - 820);
+				//í«â¡Å´
+				if (CFieldManager::GetInstance()->GetFrameAdress()->GetFieldType() == M_BOSS){
+					if (m_enemy_num.m_normal_num < CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetEnemyDifficulty()->m_nomal_num){
+						_type = 0;
+						m_enemy_num.m_normal_num++;
+					}
+					else if (m_enemy_num.m_small_num < CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetEnemyDifficulty()->m_small_num){
+						_type = 3;
+						m_enemy_num.m_small_num++;
+					}
+				}
+				//í«â¡Å™
+				else{
 
-				if (m_enemy_num.m_normal_num < CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetEnemyDifficulty()->m_nomal_num){
-					_type = 0;
-					m_enemy_num.m_normal_num++;
+					if (m_enemy_num.m_normal_num < CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetEnemyDifficulty()->m_nomal_num){
+						_type = 0;
+						m_enemy_num.m_normal_num++;
+					}
+					else if (m_enemy_num.m_long_num < CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetEnemyDifficulty()->m_long_num){
+						_type = 1;
+						m_enemy_num.m_long_num++;
+					}
+					else if (m_enemy_num.m_big_num < CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetEnemyDifficulty()->m_big_num){
+						_type = 2;
+						m_enemy_num.m_big_num++;
+					}
+					else if (m_enemy_num.m_small_num < CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetEnemyDifficulty()->m_small_num){
+						_type = 3;
+						m_enemy_num.m_small_num++;
+					}
+					else if (m_enemy_num.m_bomb_num < CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetEnemyDifficulty()->m_bomb_num){
+						_type = 4;
+						m_enemy_num.m_bomb_num++;
+					}
 				}
-				else if (m_enemy_num.m_long_num < CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetEnemyDifficulty()->m_long_num){
-					_type = 1;
-					m_enemy_num.m_long_num++;
-				}
-				else if (m_enemy_num.m_big_num < CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetEnemyDifficulty()->m_big_num){
-					_type = 2;
-					m_enemy_num.m_big_num++;
-				}
-				else if (m_enemy_num.m_small_num < CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetEnemyDifficulty()->m_small_num){
-					_type = 3;
-					m_enemy_num.m_small_num++;
-				}
-				else if (m_enemy_num.m_bomb_num < CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetEnemyDifficulty()->m_bomb_num){
-					_type = 4;
-					m_enemy_num.m_bomb_num++;
-				}
-
 				for (auto &ect : e_c_table){
 					if (ect.m_num == _type){
 						CBaseData *_temp = new CBaseData(_pos2, true, radian((rand() % 360)), ect.m_exrate, ect.m_type, ect.m_speed, ect.m_mass, ect.m_hp, ENEMY_FRICTION, ect.m_collision, ENEMY);

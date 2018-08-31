@@ -1,6 +1,7 @@
 #include "boss.h"
 #include "boss_manager.h"
 #include "player_manager.h"
+#include "field_manager.h"
 
 CMoveboss aa;
 CMoveboss_aaaa bb;
@@ -21,9 +22,10 @@ CBossData::CBossData(CVector2D _pos, bool _living, float _alpha, float _rad, flo
 , m_start_pos()
 , m_yup(0)
 , m_attack_fla(0)
-, m_attack_movea(0)
+, m_attack_movea(false)
 , m_attack_move2(0)
 , m_ty()
+, m_rocket_flag(0)
 {
 
 }
@@ -40,6 +42,7 @@ CBossData::CBossData(CBaseData _temp)
 , m_attack_movea(false)
 , m_attack_move2(0)
 , m_ty(_temp.m_type)
+, m_rocket_flag(0)
 {
 
 }
@@ -102,21 +105,22 @@ CBoss::CBoss(){
 	m_boss_img[10] = LoadGraph("media\\img\\sidepunch1.png");
 	m_boss_img[11] = LoadGraph("media\\img\\sidepunch2.png");
 
+	m_boss_img[12] = LoadGraph("media\\img\\damage_boss_arm2.png");
+	m_boss_img[13] = LoadGraph("media\\img\\damage_boss_hand2.png");
+	m_boss_img[14] = LoadGraph("media\\img\\damage_boss_arm1.png");
+	m_boss_img[15] = LoadGraph("media\\img\\damage_boss_hand1.png");
+
 	m_boss_shadow_img = LoadGraph("media\\img\\boss_shadow.png");
 
 	LoadDivGraph("media\\img\\boss.png", 3, 3, 1, 292, 263, m_boss_body_img, 0);
 
-	m_attack_move = 0;
 	m_priority = eDWP_BOSS;
 	m_update_priority = 2;
 	m_draw_priority = 2;
 	m_update = true;
 	m_attack_flag = false;
 	m_attack_counter = 0;
-	m_v = 0;
-
-	rocket_punch_flag1 = 0;
-	rocket_punch_flag2 = 0;
+	m_attack_interval = -100;
 
 	m_hpboss = 1;
 
@@ -144,13 +148,13 @@ void CBoss::KillAll(){
 
 void CBoss::Update(){
 	CVector2D _pos_;
-	
-	int randf = rand() % 100;
+
+	int randf = rand() % 500;
 	int key = GetJoypadInputState(DX_INPUT_KEY_PAD1);
 
 	for (auto it = m_boss.begin(); it != m_boss.end(); it++){
 		_pos_ = (*it)->m_pos;
-		if ((*it)->m_type != 9){
+		if ((*it)->m_type != 0){
 			//待機浮遊モーション//
 			if ((*it)->m_yup >= 0){
 				(*it)->m_yup += 0.5f;
@@ -158,25 +162,17 @@ void CBoss::Update(){
 			}
 		}
 		//boss攻撃ランダム
-		if (m_count % 500 == 0){
+		if (m_count % 200 == 0){
 			m_count = 1;
 			if (m_attack_counter == 0){
-				if (randf > 0 && randf < 20){
+				if (randf > 0 && randf < 100){
 					m_attack_counter = 2;
 				}
-				if (randf > 20 && randf < 30){
+				if (randf > 100 && randf < 375){
 					m_attack_counter = 1;
 				}
-				if (randf > 30 && randf < 100){
-					if ((*it)->m_type == righand){
-						rocket_punch_flag1 = 1;
-					}
-					if ((*it)->m_type == lefhand){
-						rocket_punch_flag2 = 1;
-					}
-					if (rocket_punch_flag1 == 1 && rocket_punch_flag2 == 1){
-						m_attack_counter = 3;
-					}
+				if (randf > 375 && randf < 500){
+					m_attack_counter = 3;
 				}
 			}
 		}
@@ -184,33 +180,36 @@ void CBoss::Update(){
 
 		if ((*it)->m_attack_movea == true){
 			m_attack_counter = 0;
-			rocket_punch_flag1 = 0;
-			rocket_punch_flag2 = 0;
 			(*it)->m_attack_move2 = 0;
 			(*it)->m_attack_movea = false;
 		}
 
-		//ボス本体の描画変化、上下移動変化
-		if (m_attack_counter > 0 && (*it)->m_type == body){
-			(*it)->m_ty = 10;
-			m_v++;
-			(*it)->m_yup += 4.9f;
-			if (m_v < 20){
-				_pos_ = CVector2D(_pos_.getX(), 160);
-				_pos_ += CVector2D(cos(PI*((*it)->m_yup) / 3.0f) / 0.5f, 0);
+		if (CFieldManager::GetInstance()->GetFrameAdress()->GetFieldType() != M_BOSS){
+			m_attack_interval = -300;
+		}
 
+		//ボス本体の描画変化、上下移動変化
+		if ((*it)->m_type == body){
+			if (m_attack_counter > 0){
+				(*it)->m_ty = 10;
+				m_attack_interval++;
+				(*it)->m_yup += 4.9f;
+				if (m_attack_interval < 20){
+					_pos_ = CVector2D(_pos_.getX(), 160);
+					_pos_ += CVector2D(cos(PI*((*it)->m_yup) / 3.0f) / 0.5f, 0);
+				}
+			}
+			else if (m_attack_counter == 0 && (*it)->m_type == body){
+				m_attack_interval = -20;
+				_pos_ = CVector2D(660, 160);
+				(*it)->m_ty = 3;
 			}
 		}
-		else if (m_attack_counter == 0 && (*it)->m_type == body){
-			m_v = 0;
-			(*it)->m_ty = 3;
-		}
-
 		if ((*it)->m_type == body){
 			m_hpboss = (*it)->m_hp;
 		}
 
-		if (m_v > 20){
+		if (m_attack_interval > 20){
 			switch ((*it)->m_type){
 			case body:
 				break;
@@ -239,14 +238,6 @@ void CBoss::Update(){
 
 	}
 
-	bool _f = false;
-	if (_f = CKeyData::GetInstance()->IsKeyTrigger(key, PAD_INPUT_10, 10/*sキー*/) == true){
-		//printfDx("押している\n");
-		m_attack_move = 1;
-	}
-	else{
-		//printfDx("押してない\n");
-	}
 	//削除
 	Delete();
 }
@@ -260,32 +251,52 @@ int CBoss::Hp(){
 
 void CBoss::Draw(){
 	for (auto it = m_boss.begin(); it != m_boss.end(); it++){
-		if ((*it)->m_type != body){
-			DrawRotaGraph((int)(*it)->m_pos.getX(), (int)(*it)->m_pos.getY(), 1, 0, m_boss_img[(int)(*it)->m_ty - body], TRUE, FALSE);
+		/*if ((*it)->m_hp > 100 && (*it)->m_type != body){
+		DrawRotaGraph((int)(*it)->m_pos.getX(), (int)(*it)->m_pos.getY(), 1, 0, m_boss_img[(int)(*it)->m_ty - body], TRUE, FALSE);
+		}
+		else if ((*it)->m_hp <= 100 && (*it)->m_type != body)
+		{
+		DrawRotaGraph((int)(*it)->m_pos.getX(), (int)(*it)->m_pos.getY(), 1, 0, m_boss_img[(int)(*it)->m_ty - body], TRUE, FALSE);
+		}*/
+
+		if (m_attack_counter > 0 && (*it)->m_type != body){
+			//ロケットパンチ描画
+			if ((*it)->m_rocket_flag != 0 && (*it)->m_type == righand)
+				DrawRotaGraph((int)(*it)->m_pos.getX(), (int)(*it)->m_pos.getY(), 1, (*it)->m_rad - radian(90), m_boss_img[(int)(*it)->m_ty - body], TRUE, FALSE);
+
+			if ((*it)->m_rocket_flag != 0 && (*it)->m_type == lefhand)
+				DrawRotaGraph((int)(*it)->m_pos.getX(), (int)(*it)->m_pos.getY(), 1, (*it)->m_rad - radian(90), m_boss_img[(int)(*it)->m_ty - body], TRUE, FALSE);
+
+			if ((*it)->m_rocket_flag == 0)
+				DrawRotaGraph((int)(*it)->m_pos.getX(), (int)(*it)->m_pos.getY(), 1, 0, m_boss_img[(int)(*it)->m_ty - body], TRUE, FALSE);
 		}
 
-		if (m_attack_counter > 0 && (*it)->m_type == body){//ボス本体と影の描画
+		//HP減少による描画変化
+		else if (m_attack_counter == 0 && (*it)->m_type != body && (*it)->m_hp > 150){
+			DrawRotaGraph((int)(*it)->m_pos.getX(), (int)(*it)->m_pos.getY(), 1, 0, m_boss_img[(int)(*it)->m_ty - body], TRUE, FALSE);
+		}
+		else if (m_attack_counter == 0 && (*it)->m_type != body && (*it)->m_hp <= 150){
+			DrawRotaGraph((int)(*it)->m_pos.getX(), (int)(*it)->m_pos.getY(), 1, 0, m_boss_img[(int)(*it)->m_ty + 7], TRUE, FALSE);
+		}
+
+		//ボス本体と影の描画、HP減少による描画変化
+		if (m_attack_counter > 0 && (*it)->m_type == body){
 			DrawRotaGraph((int)(*it)->m_pos.getX(), (int)(*it)->m_pos.getY(), 1, 0, m_boss_body_img[2], TRUE, FALSE);
 			DrawRotaGraph((int)(*it)->m_pos.getX() - 13, (int)(*it)->m_pos.getY() + 140, 1, 0, m_boss_shadow_img, TRUE, FALSE);
 		}
-		else if (m_attack_counter == 0 && (*it)->m_type == body && (*it)->m_hp > 100)
+		else if (m_attack_counter == 0 && (*it)->m_type == body && (*it)->m_hp > 150)
 		{
 			DrawRotaGraph((int)(*it)->m_pos.getX(), (int)(*it)->m_pos.getY(), 1, 0, m_boss_body_img[0], TRUE, FALSE);
 			DrawRotaGraph((int)(*it)->m_pos.getX() - 13, (int)(*it)->m_pos.getY() + 150, 1, 0, m_boss_shadow_img, TRUE, FALSE);
 		}
-		else if ((*it)->m_hp < 100 && (*it)->m_type == body)
+		else if ((*it)->m_hp <= 150 && (*it)->m_type == body)
 		{
 			DrawRotaGraph((int)(*it)->m_pos.getX(), (int)(*it)->m_pos.getY(), 1, 0, m_boss_body_img[1], TRUE, FALSE);
+			DrawRotaGraph((int)(*it)->m_pos.getX() - 13, (int)(*it)->m_pos.getY() + 140, 1, 0, m_boss_shadow_img, TRUE, FALSE);
 		}
-
-		//printfDx("m_type==%d\n", (*it)->m_type);
-		//printfDx("m_attack_counter==%d\n", m_attack_counter);
-		//printfDx("m_attack_movea==%d\n", (*it)->m_attack_movea);
 	}
 #if defined(_DEBUG) | defined(DEBUG)
 	//printfDx("%d\n", m_attack_move);
 	//printfDx("%d\n", m_attack_flag);
-	//printfDx("rocket_punch_flag1==%d\n", rocket_punch_flag1);
-	//printfDx("rocket_punch_flag2==%d\n", rocket_punch_flag2);
 #endif
 }

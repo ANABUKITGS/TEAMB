@@ -10,7 +10,8 @@ const float BOSS_EXRATE = 8.0f;
 const float BOSS_SPEED = 0.0f;
 
 const float BOSS_BACK = 15.0f;
-const int BOSS_HP = 1000;
+const int BOSS_HP = 450;
+const int BOSS_DAMAGE = 10;
 
 using namespace std;
 
@@ -52,28 +53,23 @@ public:
 	float m_yup = 0;
 	int m_ty;
 	bool m_attack_fla;
-	int m_attack_movea;
+	bool m_attack_movea;
 	int m_attack_move2;
+	int m_rocket_flag;
 };
 
 class CBoss : public CTask{
 private:
 	list<CBossData*> m_boss;
 	CBossData m_bossy;
-	int m_boss_img[12];
+	int m_boss_img[16];
 	int m_boss_shadow_img;
 	int m_boss_body_img[3];
-	int m_boss_leftarm_img;
-	int m_boss_rightarm_img;
-	int m_count;			//出現用カウンター
-	int m_attack_move;
+	int m_count;			//攻撃用カウンター
 	bool m_attack_flag;
-	float m_current;
 	int m_dead_count;		//死亡数
-	int m_attack_counter;
-	int rocket_punch_flag1;
-	int rocket_punch_flag2;
-	int m_v;
+	int m_attack_counter;	//攻撃の種類
+	int m_attack_interval;	//攻撃発動の間隔
 	int m_hpboss;
 public:
 	CBoss();

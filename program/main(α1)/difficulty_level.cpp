@@ -24,6 +24,10 @@ CEnemyDifficultyTable enemy_diff_table[] = {
 	{ 99,99, 0, 0, 0, 0, 29 }
 };
 
+CEnemyDifficultyTable boss_diff_table[] = {
+	{ 1, 0, 6, 0, 0, 8, 0 },//Œ»Ý‚±‚±‚Ü‚Å
+};
+
 CEnemyDifficulty::CEnemyDifficulty()
 : m_enemy_level(1)
 , m_nomal_num(0)
@@ -53,6 +57,17 @@ void CDifficultyLevel::Update(){
 		if (CUiManager::GetInstance()->GetUiAdress()->GatComb() > m_enemy_difficulty->m_next_kill){
 			m_enemy_difficulty->m_enemy_level++;
 			for (auto edt : enemy_diff_table){
+				if (m_enemy_difficulty->m_enemy_level == edt.m_enemy_level){
+					m_enemy_difficulty->m_next_kill = edt.m_next_kill;
+					m_enemy_difficulty->m_nomal_num = edt.m_nomal_num;
+					m_enemy_difficulty->m_long_num = edt.m_long_num;
+					m_enemy_difficulty->m_big_num = edt.m_big_num;
+					m_enemy_difficulty->m_small_num = edt.m_small_num;
+					m_enemy_difficulty->m_bomb_num = edt.m_bomb_num;
+					break;
+				}
+			}
+			for (auto edt : boss_diff_table){
 				if (m_enemy_difficulty->m_enemy_level == edt.m_enemy_level){
 					m_enemy_difficulty->m_next_kill = edt.m_next_kill;
 					m_enemy_difficulty->m_nomal_num = edt.m_nomal_num;

@@ -61,8 +61,19 @@ void CEffectMovePattern2::Move(CEffectData *cd){
 							CEnemyManager::GetInstance()->GetEnemyAdress()->SetKillConutData(0);
 							(*it1)->m_damage = (int)PLAYER_ATTACK_BOMB * cd->m_mass / 3;
 						}
-						else
+						//追加↓
+						else if ((*it1)->m_type == ENEMY){
 							(*it1)->m_damage = (int)PLAYER_ATTACK_BOMB * cd->m_mass;
+							(*it1)->m_hp -= (*it1)->m_damage;
+						}
+						//追加↓
+						else if ((*it1)->m_type == BOSS){
+							(*it1)->m_damage = (int)PLAYER_ATTACK_BOMB * cd->m_mass;
+							(*it1)->m_hp -= (*it1)->m_damage / 2;
+						}
+						//追加↑
+						//else
+						//	(*it1)->m_damage = (int)PLAYER_ATTACK_BOMB * cd->m_mass;
 						//(*it1)->m_hp -= (*it1)->m_damage;
 					}
 					if (cd->m_friction == 1){//ボム敵のダメージ

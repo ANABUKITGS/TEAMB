@@ -104,8 +104,10 @@ CCharaData::CCharaData(){
 	m_ehp_img[1] = LoadGraph("media\\img\\enemy_hp_b1.jpg");
 	m_hhp_img[0] = LoadGraph("media\\img\\hero_hp2.jpg");
 	m_hhp_img[1] = LoadGraph("media\\img\\hero_hp2_b1.jpg");
-	m_bhp_img[0] = LoadGraph("media\\img\\boss_hp1.jpg");
-	m_bhp_img[1] = LoadGraph("media\\img\\boss_hp2.jpg");
+	m_bhp_img[0] = LoadGraph("media\\img\\boss_hp_back.png");
+	m_bhp_img[1] = LoadGraph("media\\img\\boss_hp.png");
+	m_bhp_img[2] = LoadGraph("media\\img\\boss_hp_bar.png");
+	m_bhp_img[3] = LoadGraph("media\\img\\boss_hp_bar2.png");
 	m_stan_timer_img = LoadGraph("media\\img\\enemy_stan_timer.jpg");
 }
 
@@ -198,6 +200,15 @@ void CCharaData::Update(){
 				continue;
 			}		//HP‚ª0‚È‚ç¶‚«‚Ä‚¢‚È‚¢
 		}
+		//’Ç‰Á«
+		if (!(*it1)->m_kill_flag && (*it1)->m_type == BOSS){
+			if ((*it1)->m_hp < 61){
+				(*it1)->m_kill_flag = true;
+				(*it1)->m_amine_rate = 0;
+				continue;
+			}
+		}
+		//’Ç‰Áª
 		for (auto it2 = m_chara_data.begin(); it2 != m_chara_data.end(); it2++){
 			if ((*it1)->m_pos != (*it2)->m_pos){
 				if (IsHitCircle((*it1)->m_collision, (*it2)->m_collision, (*it1)->m_pos, (*it2)->m_pos)){
@@ -378,13 +389,20 @@ void CCharaData::Draw(){
 			if ((*it)->m_damage > 0)
 				DrawRectGraph((*it)->m_pos.getX() - 32 + (*it)->m_hp, (*it)->m_pos.getY() - 47, 0, 0, (*it)->m_damage, 8, m_hhp_img[1], FALSE, FALSE);
 		}
+		//’Ç‰Á«
 		if ((*it)->m_type == BOSS){
 			if ((*it)->m_invincible == 0){
-				DrawRectGraph((*it)->m_pos.getX() - 382, 0, 0, 0, (*it)->m_hp, 8, m_bhp_img[0], FALSE, FALSE);
-				if ((*it)->m_damage > 0)
-					DrawRectGraph((*it)->m_pos.getX() - 382 + (*it)->m_hp, 0, 0, 0, (*it)->m_damage, 8, m_bhp_img[1], FALSE, FALSE);
+				DrawGraph(390, 0, m_bhp_img[0], TRUE);
+				DrawGraph(390, 0, m_bhp_img[1], TRUE);
+				DrawRectGraph(390, 0, 0, 0, (*it)->m_hp, 64, m_bhp_img[2], TRUE, FALSE);
+				if ((*it)->m_damage > 0){
+					if ((*it)->m_hp >= 60)
+						DrawRectGraph(390 + (*it)->m_hp, 26, 0, 0, (*it)->m_damage / 2, 12, m_bhp_img[3], FALSE, FALSE);
+					DrawGraph(390, 0, m_bhp_img[1], TRUE);
+				}
 			}
 		}
+		//’Ç‰Áª
 		if ((*it)->m_damage > 0){
 			(*it)->m_damage--;
 		}

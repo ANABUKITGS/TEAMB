@@ -78,7 +78,7 @@ void CTaskManager::NoUpdate(int _type){
 			}
 		}
 		else{
-			if ((*it)->m_priority == eDWP_ENEMY){
+			if ((*it)->m_priority == eDWP_ENEMY && (*it)->m_priority == eDWP_BOSS){
 				(*it)->m_update = false;
 			}
 			else{
