@@ -157,8 +157,8 @@ void CGameScreen::Draw()
 	DrawString(870, 110, "Change Control Hit Spase key(keyboard or pad)", GetColor
 		(255, 255, 255));
 		*/
-#if defined(_DEBUG) | defined(DEBUG)
 	Fps();
+#if defined(_DEBUG) | defined(DEBUG)
 #endif
 }
 

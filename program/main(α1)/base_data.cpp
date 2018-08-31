@@ -135,9 +135,9 @@ void CCharaData::KillAll(){
 	}
 }
 
-void CCharaData::AssignmentDelete(){
+void CCharaData::AssignmentDelete(int _type){
 	for (auto it = m_chara_data.begin(); it != m_chara_data.end();){
-		if ((*it)->m_type != PLAYER){
+		if ((*it)->m_type != _type){
 			it = m_chara_data.erase(it);
 			continue;
 		}
@@ -280,7 +280,6 @@ void CCharaData::LieOnTopProtect(CBaseData* cd1, CBaseData* cd2){
 }
 
 void CCharaData::CBank(CBaseData* cd1, CBaseData* cd2){
-
 	/*if (cd1->m_knock_stan == true){
 		cd1->m_timer += BANK_STAN;
 		cd2->m_timer += BANK_STAN;
@@ -343,7 +342,6 @@ void CCharaData::CBank(CBaseData* cd1, CBaseData* cd2){
 		float _rad2 = cd1->m_rad - _rad1;	//角度の差
 		float _rad3 = cd1->m_rad + _rad2;	//衝突後自分の角度
 
-
 		if (_rad2 < 0)_rad2 = _rad2 + 2 * PI;
 		if (_rad3 < 0)_rad3 = _rad3 + 2 * PI;
 
@@ -362,7 +360,36 @@ void CCharaData::CBank(CBaseData* cd1, CBaseData* cd2){
 		cd2->m_rad = _rad1;
 		cd1->m_rad = _rad3;
 	}
-
+	//プレイヤーのマップ外移動防止  少し面倒だがこうしないとあらぬ方向に飛んでしまう　改良の余地はある
+	if (cd1->m_type == PLAYER){
+		if (cd1->m_pos.getY() < 83){
+			cd1->m_pos.setY(82);
+		}
+		else if (cd1->m_pos.getY() > 615){
+			cd1->m_pos.setY(614);
+		}
+		if (cd1->m_pos.getX() < 64){
+			cd1->m_pos.setX(63);
+		}
+		else if (cd1->m_pos.getX() > 1216){
+			cd1->m_pos.setY(1215);
+		}
+	}
+	else if (cd2->m_type == PLAYER){
+		//プレイヤーのマップ外移動防止
+		if (cd2->m_pos.getY() < 83){
+			cd2->m_pos.setY(82);
+		}
+		else if (cd2->m_pos.getY() > 615){
+			cd2->m_pos.setY(614);
+		}
+		if (cd2->m_pos.getX() < 64){
+			cd2->m_pos.setX(63);
+		}
+		else if (cd2->m_pos.getX() > 1216){
+			cd2->m_pos.setY(1215);
+		}
+	}
 }
 
 void CCharaData::Draw(){

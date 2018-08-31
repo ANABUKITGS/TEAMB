@@ -109,6 +109,7 @@ private:
 
 	float m_timer;
 	bool m_teleport_flag;
+	bool m_t_cont;
 public:
 	CPlayer();
 	~CPlayer(){};

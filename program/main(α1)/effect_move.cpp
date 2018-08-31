@@ -62,19 +62,12 @@ void CEffectMovePattern2::Move(CEffectData *cd){
 							(*it1)->m_damage = (int)PLAYER_ATTACK_BOMB * cd->m_mass / 3;
 						}
 						//追加↓
-						else if ((*it1)->m_type == ENEMY){
-							(*it1)->m_damage = (int)PLAYER_ATTACK_BOMB * cd->m_mass;
-							(*it1)->m_hp -= (*it1)->m_damage;
-						}
-						//追加↓
 						else if ((*it1)->m_type == BOSS){
-							(*it1)->m_damage = (int)PLAYER_ATTACK_BOMB * cd->m_mass;
-							(*it1)->m_hp -= (*it1)->m_damage / 2;
+							(*it1)->m_damage = (int)PLAYER_ATTACK_BOMB * cd->m_mass / 2;
 						}
-						//追加↑
-						//else
-						//	(*it1)->m_damage = (int)PLAYER_ATTACK_BOMB * cd->m_mass;
-						//(*it1)->m_hp -= (*it1)->m_damage;
+						else {
+							(*it1)->m_damage = (int)PLAYER_ATTACK_BOMB * cd->m_mass;
+						}
 					}
 					if (cd->m_friction == 1){//ボム敵のダメージ
 						(*it1)->m_damage = (int)PLAYER_ATTACK_BOMB * cd->m_mass;
@@ -134,15 +127,23 @@ void CEffectMovePattern4::Move(CEffectData *cd){
 void CEffectMovePattern5::Move(CEffectData *cd){
 	for (auto it1 = CCharaData::GetInstance()->GetCharaData()->begin();
 		it1 != CCharaData::GetInstance()->GetCharaData()->end(); it1++){
-		if (!(*it1)->m_control){
+		if ((*it1)->m_type != PLAYER){
+			//if (!(*it1)->m_control){
 			if ((*it1)->m_invincible == 0){
 				if (IsHitCircle(cd->m_collision, (*it1)->m_collision, CVector2D(cd->m_pos.getX(),
 					cd->m_pos.getY()), (*it1)->m_pos)){
-					(*it1)->m_rad = PosRad( (*it1)->m_pos,cd->m_pos);
-					(*it1)->m_velocity = cd->m_velocity;
-					(*it1)->m_bank_flag = false;
+					if (!(*it1)->m_control){
+						(*it1)->m_rad = PosRad((*it1)->m_pos, cd->m_pos);
+						float _vx = cd->m_pos.getX() - (*it1)->m_pos.getX();
+						float _vy = cd->m_pos.getY() - (*it1)->m_pos.getY();
+						float _len = sqrt(_vx * _vx + _vy * _vy);
+						(*it1)->m_velocity = cd->m_velocity * ((_len / cd->m_collision) + 0.1f);
+						
+						(*it1)->m_bank_flag = false;
+					}
 				}
 			}
+			//}
 		}
 	}
 }
@@ -201,48 +202,36 @@ void CEffectMovePattern9::Move(CEffectData *cd){
 
 //アイテム出現処理３（☆）
 void CEffectMovePattern10::Move(CEffectData *cd){
-	//static float _amo;
-	if (cd->m_timer < 50)
+	if (cd->m_timer < 65)
 		cd->m_timer += 1;
 	else
 		cd->m_living = false;
 	
+	if (cd->m_alpha > 0 && cd->m_timer > 50)
+		cd->m_alpha -= 20;
+		
+
 	if (degree(cd->m_speed) < 89){
-		cd->m_speed += 0.04f;
+		cd->m_speed += 0.04f;		//移動値 移動量 * 1~0まで			
 	}
 
-	cd->m_mass += 0.1f;
+	if (cd->m_exrate < cd->m_collision){
+		cd->m_exrate += 0.006f;			//大きさ
+	}
+
+	cd->m_mass += 0.09f;//☆の画像の回転
 
 	cd->m_pos += CVector2D((cos(cd->m_speed)*cd->m_velocity) * cos(cd->m_rad), (cos(cd->m_speed)*cd->m_velocity) * sin(cd->m_rad));
-	
-	/*if (cd->m_pos.getY() > 690){
-		cd->m_rad = cd->m_rad*(-1);
-		//cd->m_pos.setY();
-	}
-	if (cd->m_pos.getY() < 30){
-		cd->m_rad = cd->m_rad*(-1);
-	}
-	if (cd->m_pos.getX() > 1250){
-		cd->m_rad = PI - cd->m_rad;
-	}
-	if (cd->m_pos.getX() < 30){
-		cd->m_rad = PI - cd->m_rad;
-	}*/
-
 	//cd->m_pos.addY(0.35f*cd->m_timer);
 }
 
 //敵爆破処理
 void CEffectMovePattern11::Move(CEffectData *cd){
-	if (cd->m_amine_rate / cd->m_rate % cd->m_animtype == 7){
-		for (int i = 0; i < 2; i++){
-			CEffectData *_temp2 = new CEffectData(cd->m_pos, true, rand() % 360, (rand() % 10) * 0.01f + 0.12f, 0, 8.0f, 0, 0, 0, 0, STAR, 1, &EMP10);
+	int _num = CEnemyManager::GetInstance()->GetEnemyAdress()->GetKillCount() / 5;
+	if (cd->m_amine_rate == 14){
+		for (int i = 0; i < _num; i++){
+			CEffectData *_temp2 = new CEffectData(cd->m_pos, true, rand() % 360, 0.06f, 0, ((rand() % 4) + 5) * 1.0f /*8.0f*/, 0, 0, 0, (rand() % 10) * 0.01f + 0.12f, STAR, 1, &EMP10);
 			CEffectManager::GetInstance()->GetEffectAdress()->GetEffectData()->push_back(_temp2);
 		}
 	}
 }
-/*
-for (int i = 0; i < 4; i++){
-	CEffectData *_temp2 = new CEffectData((*it)->m_pos, true, rand() % 360, (rand() % 15) * 0.01f + 0.13f, 0, 8.0f, 0, 0, 0, 0, STAR, 1, &EMP10);
-	CEffectManager::GetInstance()->GetEffectAdress()->GetEffectData()->push_back(_temp2);
-}*/

@@ -42,7 +42,7 @@ void CKnockBack::Type(CPlayerData *cd){
 
 void CHurricane::Type(CPlayerData *cd){
 	PlaySoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(S_ATTACK_WIND), DX_PLAYTYPE_BACK);
-	CEffectData *temp = new CEffectData(CVector2D(cd->m_attack_range.m_pos.getX(), cd->m_attack_range.m_pos.getY()), true, cd->m_rad + radian(90), 0.8f * (1 + (int)cd->m_chage_count * 0.1f) * cd->m_knock_back, KNOCK_BACK_NUM, PLAYER_HURRICANE_KNOCK_BACK + 0.8f /* cd->m_knock_back*1.9f*/, 10, 99, 0, PLAYER_HURRICANE_COLLISION * cd->m_knock_back, KNOCK_BACK, 3, &EMP5);
+	CEffectData *temp = new CEffectData(CVector2D(cd->m_attack_range.m_pos.getX(), cd->m_attack_range.m_pos.getY()), true, cd->m_rad + radian(90), 1.0f * (1 + (int)cd->m_chage_count * 0.1f) * cd->m_knock_back, KNOCK_BACK_NUM, PLAYER_HURRICANE_KNOCK_BACK + 3.5f * cd->m_knock_back, 10, 99, 0, PLAYER_HURRICANE_COLLISION * cd->m_knock_back, KNOCK_BACK, 3, &EMP5);
 	CEffectManager::GetInstance()->GetEffectAdress()->GetEffectData()->push_back(temp);
 }
 

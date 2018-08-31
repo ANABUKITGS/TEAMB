@@ -62,7 +62,7 @@ CPlayerData::CPlayerData(CVector2D _pos, bool _living, float _alpha, float _rad,
 , m_chage_count(0)
 , m_attack_type(0)
 , m_stan(1)
-, m_knock_back(1)
+, m_knock_back(2)
 , m_bomb(1)
 , m_attack_anim(0)
 {
@@ -107,6 +107,7 @@ CPlayer::CPlayer()
 
 	m_timer = 0.0f;
 	m_teleport_flag = false;
+	m_t_cont = false;
 	m_priority = eDWP_PLAYER;
 	m_update_priority = 2;
 	m_draw_priority = 2;
@@ -124,14 +125,16 @@ void CPlayer::Update(){
 			CEffectManager::GetInstance()->GetEffectAdress()->GetEffectData()->push_back(_temp2);
 		}
 	}*/
-
-	Attack(key);
-
+	if (!m_t_cont)
+		Attack(key);
+	
 	Move(key);
 
-	Change(key);
+	if (!m_t_cont)
+		Change(key);
 
-	Avoid(key);
+	if (!m_t_cont)
+		Avoid(key);
 
 	ItemGet();
 
@@ -221,9 +224,10 @@ void CPlayer::Move(int key){
 		}
 		else{
 
-			//m_player->m_temporary_rad = m_player->m_rad;
+			m_player->m_temporary_rad = m_player->m_rad;
 
-			m_player->Control(key, _fx, _fy);
+			if (!m_t_cont)
+				m_player->Control(key, _fx, _fy);
 
 			_hx += _fx; _hy += _fy;
 
@@ -346,6 +350,7 @@ void CPlayer::Attack(int key){
 		m_player->m_anim_division = 8;
 		m_player->m_amine_rate = 0;
 		m_player->Action();
+		PlaySoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(rand() % 3 + 15), DX_PLAYTYPE_BACK);
 	}
 	else if (_type == PRESSING){
 		m_player->m_chage_count += 0.019;
@@ -366,7 +371,7 @@ void CPlayer::Attack(int key){
 			break;
 		case 1:
 			m_player->m_attack_range.m_move_pos = CVector2D(m_player->m_pos.getX() + PLAYER_HURRICANE_RANGE * cos(m_player->m_rad), m_player->m_pos.getY() + PLAYER_HURRICANE_RANGE * sin(m_player->m_rad));
-			m_player->m_attack_range.m_exrate = 0.65f * (1 + (int)m_player->m_chage_count * 0.1f) * m_player->m_knock_back;
+			m_player->m_attack_range.m_exrate = 0.85f * (1 + (int)m_player->m_chage_count * 0.1f) * m_player->m_knock_back;
 			m_player->m_attack_range.m_animtype = 1;
 			break;
 		case 2:
@@ -397,15 +402,20 @@ bool CPlayer::Teleport(int key){
 		m_timer += 0.019;
 		m_player->m_gate_effect.m_living = true;
 		m_player->m_gate_effect.m_pos = m_player->m_pos;
+		m_player->m_motion_type = 35;
+		m_player->m_amine_rate = 0;
 		if (m_timer > 3.0f){
 			m_timer = 0.0f;
 			m_player->m_gate_effect.m_living = false;
 			return true;
 		}
+		m_t_cont = true;
 	}
 	else if (_type == SEPARATE){
 		m_timer = 0.0f;
 		m_player->m_gate_effect.m_living = false;
+		m_t_cont = false;
+		m_player->m_motion_type = 32;
 		return false;
 	}
 	return false;
@@ -420,6 +430,7 @@ void CPlayer::Avoid(int key){
 				m_player->m_timer = 10;
 				m_player->m_avoid_effect.m_living = true;
 				m_player->m_avoid_effect.m_pos = m_player->m_pos;
+				PlaySoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(rand() % 2+20), DX_PLAYTYPE_BACK);
 				PlaySoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(S_P_AVOID), DX_PLAYTYPE_BACK);
 			}
 		}
@@ -483,6 +494,7 @@ void CPlayer::ItemGet(){
 					m_player->ItemType = item_type.ItemType;
 					CEffectData *temp = new CEffectData(m_player->m_pos, true, 0, 1.9f, item_type.m_num, 0, 0, 0, 0, 0, item_type.m_type, 2, NULL);
 					CEffectManager::GetInstance()->GetEffectAdress()->GetEffectData()->push_back(temp);
+					PlaySoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(22), DX_PLAYTYPE_BACK);
 					if ((*it)->m_animtype != HEEL_ITEM){
 						PlaySoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(S_ITEM_GET), DX_PLAYTYPE_BACK);
 					}

@@ -80,8 +80,8 @@ public:
 	//削除
 	void Delete();
 
-	//敵の当たり判定の有無
-	void AssignmentDelete();
+	//指定のデータの削除
+	void AssignmentDelete(int _type);
 
 	void AssignmentInvincible(int _type);
 

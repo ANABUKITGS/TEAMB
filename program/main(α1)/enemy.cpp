@@ -57,6 +57,7 @@ CEnemyData::CEnemyData(CVector2D _pos, bool _living, float _alpha, float _rad, f
 , m_item_flag(false)
 , m_escape_flag(false)
 , m_move_pos(0, 0)
+, m_save_speed(_velocity)
 {
 }
 
@@ -71,6 +72,7 @@ CEnemyData::CEnemyData(CBaseData _temp, CVector2D _move_pos, int _invincible, CB
 , m_item_flag(false)
 , m_escape_flag(false)
 , m_move_pos(_move_pos)
+, m_save_speed(_temp.m_velocity)
 {
 	m_invincible = _invincible;
 }
@@ -184,10 +186,17 @@ void CEnemy::Update(){
 	m_enemy_num.m_bomb_num = 0;
 
 	for (auto it = m_enemys.begin(); it != m_enemys.end(); it++, _num++){
+		//printfDx("  rad / %f\n", degree((*it)->m_rad));
+		//printfDx("r / %f\n", degree((*it)->m_rad));
+		//printfDx("  v / %f", (*it)->m_velocity);
+		//printfDx("  save / %f\n", (*it)->m_save_speed);
 
 		EnemyNum(*(*it),1);
 
-		_pos = (*it)->m_pos;
+		//角度修正
+		if ((*it)->m_rad < 0)(*it)->m_rad = (*it)->m_rad + 2 * PI;
+
+		_pos = (*it)->m_pos;	//_pos = 移動先
 
 		if ((*it)->m_invincible == 0){
 
@@ -209,7 +218,7 @@ void CEnemy::Update(){
 				}
 
 				//意識が無ければ以下の処理(吹き飛ばし時に通る)
-				{
+
 				//意識なし
 				if (!(*it)->m_control){
 					_pos += CVector2D((*it)->m_velocity * cos((*it)->m_rad), (*it)->m_velocity * sin((*it)->m_rad));
@@ -230,28 +239,24 @@ void CEnemy::Update(){
 				}
 				//意識あり
 				else{
-
 					//攻撃処理
 					(*it)->Attacker();
 				}
-			}
 
 				//角度によっての向き
-				{
-					for (auto& rt : e_rad_table){
-						//右のアニメーションは分解して最大値と最小値を別々でとること
-						if (degree((*it)->m_rad) > 337.5f){
-							(*it)->m_direction_type = rt.m_type;
-							break;
-						}
-						if (degree((*it)->m_rad) < 22.5f){
-							(*it)->m_direction_type = rt.m_type;
-							break;
-						}
-						if (degree((*it)->m_rad) > rt.m_min_rad && degree((*it)->m_rad) < rt.m_max_rad){
-							(*it)->m_direction_type = rt.m_type;
-							break;
-						}
+				for (auto& rt : e_rad_table){
+					//右のアニメーションは分解して最大値と最小値を別々でとること
+					if (degree((*it)->m_rad) > 337.5f){
+						(*it)->m_direction_type = rt.m_type;
+						break;
+					}
+					if (degree((*it)->m_rad) < 22.5f){
+						(*it)->m_direction_type = rt.m_type;
+						break;
+					}
+					if (degree((*it)->m_rad) > rt.m_min_rad && degree((*it)->m_rad) < rt.m_max_rad){
+						(*it)->m_direction_type = rt.m_type;
+						break;
 					}
 				}
 			}
@@ -308,6 +313,7 @@ void CEnemy::Update(){
 	printfDx("%d\n", m_enemy_num.m_small_num);
 	printfDx("%d\n", m_enemy_num.m_bomb_num);
 	*/
+
 	if (m_kill_count <= CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetEnemyDifficulty()->m_next_kill){
 		if (m_create_timer == 0){
 			for (int i = _num; i < CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetEneMax(); i++){
@@ -412,7 +418,7 @@ void CEnemy::Reflect(CEnemyData &cd,CVector2D &_pos){
 			cd.m_timer += BANK_STAN;
 	}
 
-	if (_pos.getY() > MAP_REFLECT_DOWN + 100){
+	/*if (_pos.getY() > MAP_REFLECT_DOWN + 100){
 		cd.m_living = false;
 	}
 	else if (_pos.getY() < MAP_REFLECT_UP - 100){
@@ -424,7 +430,7 @@ void CEnemy::Reflect(CEnemyData &cd,CVector2D &_pos){
 	}
 	else if (_pos.getX() < MAP_REFLECT_LEFT - 100){
 		cd.m_living = false;
-	}
+	}*/
 }
 
 void CEnemy::Draw(){

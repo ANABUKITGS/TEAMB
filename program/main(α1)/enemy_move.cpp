@@ -15,6 +15,7 @@ CAttackPattern3		AP3;
 	*/
 void CMovePattern1::Move(CEnemyData *cd, CVector2D &_pos){
 	CPlayerData *temp = CPlayerManager::GetInstance()->GetPlayerAdress()->GetData();
+	bool _flag = false;
 
 	//Œ©‚Â‚¯‚Ä‚¢‚é‚©‚Ç‚¤‚©//
 	{
@@ -26,9 +27,24 @@ void CMovePattern1::Move(CEnemyData *cd, CVector2D &_pos){
 			cd->m_locate = false;
 	}
 
-	//ˆÚ“®ˆ—//
-	{
-		if (cd->m_control){
+	//‹z‚¢‚İ‚ÌˆÚ“®ˆ—
+	if (cd->m_control){
+		for (auto it = CEffectManager::GetInstance()->GetEffectAdress()->GetEffectData()->begin();
+			it != CEffectManager::GetInstance()->GetEffectAdress()->GetEffectData()->end(); it++){
+			if ((*it)->m_type == KNOCK_BACK){
+				if (IsHitCircle(cd->m_collision, (*it)->m_collision, cd->m_pos, (*it)->m_pos)){
+					_flag = true;
+					cd->m_speed = cd->m_save_speed - (*it)->m_velocity * 0.4f;
+					cd->m_rad = PosRad((*it)->m_pos, cd->m_pos);
+				}
+			}
+		}
+		if (_flag){
+			_pos += CVector2D(cd->m_speed * cos(cd->m_rad), cd->m_speed * sin(cd->m_rad));
+		}
+		else{
+			//ˆÚ“®ˆ—//
+			cd->m_speed = cd->m_save_speed;
 			if (cd->m_locate){
 				cd->m_rad = PosRad(cd->m_pos, temp->m_pos);
 				_pos += CVector2D(cd->m_speed * cos(cd->m_rad), cd->m_speed * sin(cd->m_rad));
@@ -60,6 +76,7 @@ void CMovePattern1::Move(CEnemyData *cd, CVector2D &_pos){
 	*/
 void CMovePattern2::Move(CEnemyData *cd, CVector2D &_pos){
 	CPlayerData *temp = CPlayerManager::GetInstance()->GetPlayerAdress()->GetData();
+	bool _flag = false;
 	//Œ©‚Â‚¯‚Ä‚¢‚é‚©‚Ç‚¤‚©//
 	{
 		if (IsHitCircle(ENEMY_LONG_LOCATE_COLLISION, temp->m_collision, cd->m_pos, temp->m_pos)){
@@ -73,9 +90,24 @@ void CMovePattern2::Move(CEnemyData *cd, CVector2D &_pos){
 			cd->m_locate = false;
 	}
 
-	//ˆÚ“®ˆ—//
-	{
-		if (cd->m_control){
+	//‹z‚¢‚İ‚ÌˆÚ“®ˆ—
+	if (cd->m_control){
+		for (auto it = CEffectManager::GetInstance()->GetEffectAdress()->GetEffectData()->begin();
+			it != CEffectManager::GetInstance()->GetEffectAdress()->GetEffectData()->end(); it++){
+			if ((*it)->m_type == KNOCK_BACK){
+				if (IsHitCircle(cd->m_collision, (*it)->m_collision, cd->m_pos, (*it)->m_pos)){
+					_flag = true;
+					cd->m_speed = cd->m_save_speed - (*it)->m_velocity * 0.4f;
+					cd->m_rad = PosRad((*it)->m_pos, cd->m_pos);
+				}
+			}
+		}
+		if (_flag){
+			_pos += CVector2D(cd->m_speed * cos(cd->m_rad), cd->m_speed * sin(cd->m_rad));
+		}
+		else{
+			//ˆÚ“®ˆ—//
+			cd->m_speed = cd->m_save_speed;
 			//‹ß‚Ã‚¢‚½‚ç“¦‚°‚é
 			if (!cd->m_escape_flag){
 				if (IsHitCircle(ENEMY_LONG_NEAR_COLLISION, temp->m_collision, cd->m_pos, temp->m_pos)){
@@ -129,6 +161,7 @@ void CMovePattern3::Move(CEnemyData *cd, CVector2D &_pos){
 //Šî–{Œ`
 void CMovePattern4::Move(CEnemyData *cd, CVector2D &_pos){
 	CPlayerData *temp = CPlayerManager::GetInstance()->GetPlayerAdress()->GetData();
+	bool _flag = false;
 
 	//Œ©‚Â‚¯‚Ä‚¢‚é‚©‚Ç‚¤‚©//
 	{
@@ -140,9 +173,24 @@ void CMovePattern4::Move(CEnemyData *cd, CVector2D &_pos){
 			cd->m_locate = false;
 	}
 
-	//ˆÚ“®ˆ—//
-	{
-		if (cd->m_control){
+	//‹z‚¢‚İ‚ÌˆÚ“®ˆ—
+	if (cd->m_control){
+		for (auto it = CEffectManager::GetInstance()->GetEffectAdress()->GetEffectData()->begin();
+			it != CEffectManager::GetInstance()->GetEffectAdress()->GetEffectData()->end(); it++){
+			if ((*it)->m_type == KNOCK_BACK){
+				if (IsHitCircle(cd->m_collision, (*it)->m_collision, cd->m_pos, (*it)->m_pos)){
+					_flag = true;
+					cd->m_speed = cd->m_save_speed - (*it)->m_velocity * 0.4f;
+					cd->m_rad = PosRad((*it)->m_pos, cd->m_pos);
+				}
+			}
+		}
+		if (_flag){
+			_pos += CVector2D(cd->m_speed * cos(cd->m_rad), cd->m_speed * sin(cd->m_rad));
+		}
+		else{
+			//ˆÚ“®ˆ—//
+			cd->m_speed = cd->m_save_speed;
 			if (cd->m_locate){
 				cd->m_rad = PosRad(cd->m_pos, temp->m_pos);
 				_pos += CVector2D(cd->m_speed * cos(cd->m_rad), cd->m_speed * sin(cd->m_rad));
@@ -159,6 +207,7 @@ void CMovePattern4::Move(CEnemyData *cd, CVector2D &_pos){
 			}
 		}
 	}
+
 	if (cd->m_anim_division == 14){
 		if (cd->m_amine_rate > 26){
 			cd->m_motion_type = 0;
@@ -170,10 +219,26 @@ void CMovePattern4::Move(CEnemyData *cd, CVector2D &_pos){
 //Šî–{Œ` ’Êí:ŠÔŒo‰ß‚Åƒ‰ƒ“ƒ_ƒ€‚ÈŒü‚«‚É’¼i¨’â~
 void CMovePattern5::Move(CEnemyData *cd, CVector2D &_pos){
 	CPlayerData *temp = CPlayerManager::GetInstance()->GetPlayerAdress()->GetData();
+	bool _flag = false;
 
-	//ˆÚ“®ˆ—//
-	{
-		if (cd->m_control){
+	//‹z‚¢‚İ‚ÌˆÚ“®ˆ—
+	if (cd->m_control){
+		for (auto it = CEffectManager::GetInstance()->GetEffectAdress()->GetEffectData()->begin();
+			it != CEffectManager::GetInstance()->GetEffectAdress()->GetEffectData()->end(); it++){
+			if ((*it)->m_type == KNOCK_BACK){
+				if (IsHitCircle(cd->m_collision, (*it)->m_collision, cd->m_pos, (*it)->m_pos)){
+					_flag = true;
+					cd->m_speed = cd->m_save_speed - (*it)->m_velocity * 0.4f;
+					cd->m_rad = PosRad((*it)->m_pos, cd->m_pos);
+				}
+			}
+		}
+		if (_flag){
+			_pos += CVector2D(cd->m_speed * cos(cd->m_rad), cd->m_speed * sin(cd->m_rad));
+			cd->m_speed = cd->m_save_speed;
+		}
+		else{
+			//ˆÚ“®ˆ—//
 			if (cd->m_counter < ENEMY_SMALL_WAIT && cd->m_counter > ENEMY_SMALL_MOVE){
 				_pos += CVector2D(cd->m_speed * cos(cd->m_rad), cd->m_speed * sin(cd->m_rad));
 			}
@@ -195,14 +260,29 @@ void CMovePattern5::Move(CEnemyData *cd, CVector2D &_pos){
 //Šî–{Œ` ’Êí:ŠÔŒo‰ß‚Åƒ‰ƒ“ƒ_ƒ€‚ÈŒü‚«‚É’¼i¨’â~
 void CMovePattern6::Move(CEnemyData *cd, CVector2D &_pos){
 	CPlayerData *temp = CPlayerManager::GetInstance()->GetPlayerAdress()->GetData();
+	bool _flag = false;
 
-	//ˆÚ“®ˆ—//
-	{
-		if (cd->m_control){
+	//‹z‚¢‚İ‚ÌˆÚ“®ˆ—
+	if (cd->m_control){
+		for (auto it = CEffectManager::GetInstance()->GetEffectAdress()->GetEffectData()->begin();
+			it != CEffectManager::GetInstance()->GetEffectAdress()->GetEffectData()->end(); it++){
+			if ((*it)->m_type == KNOCK_BACK){
+				if (IsHitCircle(cd->m_collision, (*it)->m_collision, cd->m_pos, (*it)->m_pos)){
+					_flag = true;
+					cd->m_speed = cd->m_save_speed - (*it)->m_velocity * 0.4f;
+					cd->m_rad = PosRad((*it)->m_pos, cd->m_pos);
+				}
+			}
+		}
+		if (_flag){
+			_pos += CVector2D(cd->m_speed * cos(cd->m_rad), cd->m_speed * sin(cd->m_rad));
+		}
+		else{
+			//ˆÚ“®ˆ—//
+			cd->m_speed = cd->m_save_speed;
 			if (cd->m_counter < ENEMY_BOMB_WAIT && cd->m_counter > ENEMY_BOMB_MOVE){
 				_pos += CVector2D(cd->m_speed * cos(cd->m_rad), cd->m_speed * sin(cd->m_rad));
 			}
-
 			if (cd->m_counter % ENEMY_BOMB_WAIT == 0){
 				cd->m_rad = radian((rand() % 360));
 				cd->m_counter = 0;
