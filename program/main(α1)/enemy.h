@@ -112,6 +112,8 @@ public:
 	bool m_locate_pass;			//一度通ったか
 	CVector2D m_move_pos;		//移動先
 	float m_save_speed;			//スピードの保存
+
+	bool m_t_arrow;				//チュートリアルで使用
 };
 
 class CEneEffect{
@@ -166,6 +168,8 @@ public:
 	int GetKillCount(){ return m_kill_count; };
 	void SetKillConutData(int _num){ m_kill_count = _num; };
 	void SetCreateTimer(int _timer){ m_create_timer = _timer; };
+
+	int GetCreateTimer(){ return m_create_timer; };
 };
 
 //通常

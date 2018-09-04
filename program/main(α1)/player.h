@@ -107,6 +107,9 @@ private:
 	int m_player_gate_img[16];
 	int m_player_range_img[3][2];
 
+	int m_attack_state;		//チュートリアルで使用
+	bool m_item_get;		//チュートリアルで使用
+
 	float m_timer;
 	bool m_teleport_flag;
 	bool m_t_cont;
@@ -135,6 +138,8 @@ public:
 	void AttackRangeMove();
 
 	inline CPlayerData* GetData(){ return m_player; };
+	inline int GetAttackState(){ return m_attack_state; };
+	inline bool GetItemGet(){ return m_item_get; };
 	inline bool GetTeleportFlag(){ return m_teleport_flag; };
 	inline void SetTeleportFlag(bool _flag){ m_teleport_flag = _flag; };
 };

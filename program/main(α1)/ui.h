@@ -35,11 +35,11 @@ enum UI_ICON_TYPE{
 };
 
 enum UI_TYPE{
-	TIMER,TIMER_BACK,SECOND_HAND,KALMA
+	TIMER,TIMER_BACK,SECOND_HAND
 };
 
 enum TEXT_TYPE{
-	COMBO,ITEM_CREATE_TEXT,LEVEL_TEXT
+	COMBO,ITEM_CREATE_TEXT,LEVEL_TEXT,START_TEXT
 };
 
 class CUiData;
@@ -61,6 +61,7 @@ class CUiData : public CBaseData{
 public:
 	CUiData();
 	CUiData(CVector2D _pos, bool _living, float _rad, float _exrate, int _animtype, float _velocity, float _mass, int _hp, float _friction, float _collision, int _type, int _prio,int _r,int _g,int _b, CBaseUpdate* _BUpdate);
+	CUiData(CVector2D _pos, bool _living,float _alpha, float _rad, float _exrate, int _animtype, int _type, int _r, int _g, int _b, CBaseUpdate* _BUpdate);
 	~CUiData(){};
 
 	CBaseUpdate* BUpdate;
@@ -84,14 +85,16 @@ private:
 	CUiData m_lv_ui[3];
 	int m_icon_img[3][2];			//攻撃アイコン
 	int m_ui_img[4];				//
-	int m_text_img[3];				//文字系
+	int m_text_img[4];				//文字系
 	int m_num_img[10];				//数字
+	int m_combo_num_img[10];		//コンボ数画像
 	int m_combo_gage_img;
 
 	int m_comb;						//コンボ数
 	float m_comb_timer;				//コンボタイマー
 	bool m_change_flag;				//切り替えを行ったか？
 	bool m_endflag;					//タイムリミットに達したか？
+	int m_pass_flag;				//一度通ったか？
 
 	CBaseRotation* BRotation;
 	void Rotation(){ if (BRotation != NULL)BRotation->rotation(m_icon_ui); };
@@ -104,6 +107,7 @@ public:
 	void Draw();
 	
 	void KillAll();
+	void Delete();
 
 	void ChengeIcon(int _direction);
 
@@ -115,11 +119,13 @@ public:
 	inline CUiData* GetComboUiData(int _num){ return &m_combo_ui[_num]; };
 	inline CUiData* GetItemUiData(int _num){ return &m_item_ui[_num]; };
 	inline CUiData* GetLvUiData(int _num){ return &m_lv_ui[_num]; };
+	inline int GetPass(){ return m_pass_flag; };
 
 	inline void AddComb(){ m_comb++; };
 	inline void SetComb(int _num){ m_comb = _num; };
 	inline int GatComb(){ return m_comb; };
 	inline void SetCombTimer(int _time){ m_comb_timer = _time; };
+	inline void SetPass(int _flag){ m_pass_flag = _flag; };
 };
 
 
@@ -157,6 +163,10 @@ class CItemText : public CBaseUpdate{
 };
 
 class CLvNum : public CBaseUpdate{
+	void Update(CUiData *cd);
+};
+
+class CStartText : public CBaseUpdate{
 	void Update(CUiData *cd);
 };
 

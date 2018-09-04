@@ -58,6 +58,7 @@ CEnemyData::CEnemyData(CVector2D _pos, bool _living, float _alpha, float _rad, f
 , m_escape_flag(false)
 , m_move_pos(0, 0)
 , m_save_speed(_velocity)
+, m_t_arrow(false)
 {
 }
 
@@ -73,6 +74,7 @@ CEnemyData::CEnemyData(CBaseData _temp, CVector2D _move_pos, int _invincible, CB
 , m_escape_flag(false)
 , m_move_pos(_move_pos)
 , m_save_speed(_temp.m_velocity)
+, m_t_arrow(false)
 {
 	m_invincible = _invincible;
 }
@@ -313,7 +315,6 @@ void CEnemy::Update(){
 	printfDx("%d\n", m_enemy_num.m_small_num);
 	printfDx("%d\n", m_enemy_num.m_bomb_num);
 	*/
-
 	if (m_kill_count <= CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetEnemyDifficulty()->m_next_kill){
 		if (m_create_timer == 0){
 			for (int i = _num; i < CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetEneMax(); i++){
@@ -333,7 +334,6 @@ void CEnemy::Update(){
 				}
 				//追加↑
 				else{
-
 					if (m_enemy_num.m_normal_num < CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetEnemyDifficulty()->m_nomal_num){
 						_type = 0;
 						m_enemy_num.m_normal_num++;
@@ -357,9 +357,18 @@ void CEnemy::Update(){
 				}
 				for (auto &ect : e_c_table){
 					if (ect.m_num == _type){
-						CBaseData *_temp = new CBaseData(_pos2, true, radian((rand() % 360)), ect.m_exrate, ect.m_type, ect.m_speed, ect.m_mass, ect.m_hp, ENEMY_FRICTION, ect.m_collision, ENEMY);
-						CEnemyManager::GetInstance()->GetEnemyAdress()->GetEnemyData()->push_back(new CEnemyData(*_temp, _pos1, 2, ect.m_BEMove, ect.m_BEAttack));
-						break;
+						if (CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetEnemyDifficulty()->m_enemy_level != 0){
+							CBaseData *_temp = new CBaseData(_pos2, true, radian((rand() % 360)), ect.m_exrate, ect.m_type, ect.m_speed, ect.m_mass, ect.m_hp, ENEMY_FRICTION, ect.m_collision, ENEMY);
+							CEnemyManager::GetInstance()->GetEnemyAdress()->GetEnemyData()->push_back(new CEnemyData(*_temp, _pos1, 2, ect.m_BEMove, ect.m_BEAttack));
+							break;
+						}
+						else{	//チュートリアルのみ以下の処理
+							CVector2D _pos1 = CVector2D(rand() % 400 + 700, rand() % 300 + 200);
+							CVector2D _pos2 = CVector2D(_pos1.getX(), _pos1.getY() - 820);
+							CBaseData *_temp = new CBaseData(_pos2, true, radian((rand() % 360)), ect.m_exrate, ect.m_type, ect.m_speed, ect.m_mass, ect.m_hp, ENEMY_FRICTION, ect.m_collision, ENEMY);
+							CEnemyManager::GetInstance()->GetEnemyAdress()->GetEnemyData()->push_back(new CEnemyData(*_temp, _pos1, 2, NULL, NULL));
+							break;
+						}
 					}
 				}
 			}

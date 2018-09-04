@@ -21,6 +21,7 @@ public:
 	void AssignmentDelete();//指定のものを削除
 
 	void NoUpdate(int _type);
+	void SerectUpdate(int _type,bool _live);
 
 	//タスクマネージャーのデータの取得
 	//これを使うとマネージャーのデータを使うことが出来る

@@ -26,6 +26,7 @@ public:
 	CItemData(CBaseData _temp);
 	~CItemData(){};
 	int m_y_up;
+	int m_t_create;		//チュートリアルで使用
 };
 
 class CItem : public CTask{

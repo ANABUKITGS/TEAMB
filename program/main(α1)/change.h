@@ -25,6 +25,7 @@ public:
 	void Draw();
 	void Kill(){ delete m_blackback; };
 	bool GetOut(){ return m_out_flag; };
+	bool GetChangeFlag(){ return m_change_flag; };
 	void SetOut(bool _flag){ m_out_flag = _flag; };
 	void SetChange(bool _flag){ m_change_flag = _flag; };
 	void SetCData( float _alpha,int _add);

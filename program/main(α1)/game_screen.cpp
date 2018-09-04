@@ -14,6 +14,8 @@
 #include "difficulty_level_manager.h"
 #include "sounddata_manager.h"		//new
 
+CStartText Start;
+
 //コンストラクタ
 CGameScreen::CGameScreen()
 {
@@ -54,11 +56,14 @@ void CGameScreen::Init(){
 	CTaskManager::GetInstance()->Add(new CEnemy);
 	CTaskManager::GetInstance()->Add(new CEffect);
 	CTaskManager::GetInstance()->Add(new CItem);
-	PlaySoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(GAME_BGM1), DX_PLAYTYPE_LOOP);	//New
+	//PlaySoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(GAME_BGM1), DX_PLAYTYPE_LOOP);	//New
 	//if(CFieldManager::GetInstance()->GetFrameAdress()->GetFieldType() != M_BOSS)
 	CTaskManager::GetInstance()->NoUpdate(CFieldManager::GetInstance()->GetFrameAdress()->GetFieldType());
 	CCharaData::GetInstance()->AssignmentInvincible(CFieldManager::GetInstance()->GetFrameAdress()->GetFieldType());
-	new CChange(0,2);
+	new CChange(255,-2);
+	CChangeManager::GetInstance()->GetChangeAdress()->SetChange(true);
+
+	CTaskManager::GetInstance()->SerectUpdate(eDWP_ENEMY,false);
 }
 
 //実行処理
@@ -66,6 +71,8 @@ void CGameScreen::Update()
 {
 	bool _ef = false;	//終了フラグ
 	bool _eff = false;	//終了フラグ
+	static bool _stop_flag;		//一時停止用
+	//static bool _tutorial_flag;			//
 	static bool _pass;
 
 	if (CPlayerManager::GetInstance()->GetPlayerAdress()->GetData()->m_hp < 1){
@@ -102,7 +109,7 @@ void CGameScreen::Update()
 				if (CFieldManager::GetInstance()->GetFrameAdress()->GetFieldType() != M_BOSS){
 					CFieldManager::GetInstance()->GetFrameAdress()->SetFieldType(M_BOSS);
 					CEnemyManager::GetInstance()->GetEnemyAdress()->KillAll();
-					CPlayerManager::GetInstance()->GetPlayerAdress()->GetData()->m_pos = CVector2D(640,580);
+					CPlayerManager::GetInstance()->GetPlayerAdress()->GetData()->m_pos = CVector2D(640, 580);
 					StopSoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(GAME_BGM1));	//New
 					PlaySoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(GAME_BGM2), DX_PLAYTYPE_LOOP);	//New
 				}
@@ -126,9 +133,29 @@ void CGameScreen::Update()
 		if (CChangeManager::GetInstance()->GetChangeAdress()->GetOut())m_state = GAMECLEAR_SCREEN;
 	}
 
-	CCharaData::GetInstance()->Update();
-	
-	CTaskManager::GetInstance()->UpdateAll();
+	//最初のフェイドインから
+	if (!CChangeManager::GetInstance()->GetChangeAdress()->GetChangeFlag()){
+		if (!CUiManager::GetInstance()->GetUiAdress()->GetPass()){
+			CUiManager::GetInstance()->GetUiAdress()->SetPass(true);
+			CUiManager::GetInstance()->GetUiAdress()->GetUiData()->push_back(new CUiData(CVector2D(920, 360), true, 0, 0, UI_SELECT_EXRATE, 3, TIMER, 0, 0, 0, &Start));
+		}
+		else if (CUiManager::GetInstance()->GetUiAdress()->GetPass() == 2){
+				CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->SetInvincible(1);
+			CUiManager::GetInstance()->GetUiAdress()->SetPass(3);
+			CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->SetInvincible(1);
+			//CTaskManager::GetInstance()->SerectUpdate(eDWP_ENEMY, true);
+		}
+	}
+	if (CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->TutorialState() == 0){
+		CCharaData::GetInstance()->Update();
+		CTaskManager::GetInstance()->UpdateAll();
+	}
+
+	if (CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetTutorialFlag()){
+		CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetTutorialData()->Update();
+	}
+	else
+		CTaskManager::GetInstance()->SerectUpdate(eDWP_ENEMY, true);
 
 	CCharaData::GetInstance()->Delete();
 
@@ -152,6 +179,8 @@ void CGameScreen::Draw()
 
 	CChangeManager::GetInstance()->GetChangeAdress()->Draw();
 
+	if (CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetTutorialFlag())
+	CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetTutorialData()->Draw();
 	/*DrawString(930, 90, "Game Screen Hit E key to Title Screen", GetColor
 		(255, 255, 255));
 	DrawString(870, 110, "Change Control Hit Spase key(keyboard or pad)", GetColor

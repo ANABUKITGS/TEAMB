@@ -14,12 +14,14 @@ CItemData::CItemData()
 CItemData::CItemData(CVector2D _pos, bool _living, float _rad, float _exrate, int _animtype, float _velocity, float _mass, int _hp, float _friction, float _collision, float _type, int _y_up)
 : CBaseData(_pos, _living, _rad, _exrate, _animtype, _velocity, _mass, _hp, _friction, _collision, _type)
 , m_y_up(_y_up)
+, m_t_create(false)
 {
 }
 
 CItemData::CItemData(CBaseData _temp)
 : CBaseData(_temp.m_pos, _temp.m_living, _temp.m_alpha, _temp.m_rad, _temp.m_exrate, _temp.m_animtype, _temp.m_velocity, _temp.m_mass, _temp.m_hp, _temp.m_friction, _temp.m_collision, _temp.m_type)
 , m_y_up(0)
+, m_t_create(false)
 {
 	//CItemManager::GetInstance()->GetItemAdress()->GetItemData()->push_back(this);
 }

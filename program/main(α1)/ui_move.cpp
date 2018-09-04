@@ -1,5 +1,5 @@
 #include "ui_manager.h"
-#include "ui.h"
+#include "difficulty_level_manager.h"
 
 void CRightRotation::rotation(CUiData *cd){
 	for (int i = 2; i > -1; i--){
@@ -48,12 +48,14 @@ void CLeftIcon::IconDraw(CUiData *cd){
 }
 
 void CTimer::Update(CUiData *cd){
+	if (CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetEnemyDifficulty()->m_enemy_level != 0)
 	if (cd->m_timer < TIME_LIMIT)
 		cd->m_timer++;
 	cd->m_rad = cd->m_timer / TIME_SPLIT / TIME_CIRCLE_SPLIT;
 }
 
 void CSecondHand::Update(CUiData *cd){
+	if (CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetEnemyDifficulty()->m_enemy_level != 0)
 	if (cd->m_timer < TIME_LIMIT)
 		cd->m_timer++;
 	else
@@ -109,5 +111,27 @@ void CItemText::Update(CUiData *cd){
 void CLvNum::Update(CUiData *cd){
 	if (cd->m_exrate > 0.4f){
 		cd->m_exrate -= 0.03f;
+	}
+}
+
+void CStartText::Update(CUiData *cd){
+	if (cd->m_pos.getX() >  730){
+		cd->m_pos.addX(-7);
+		if (cd->m_alpha < 256)
+			cd->m_alpha += 10;
+		else
+			cd->m_alpha = 255;
+	}
+	else if (cd->m_pos.getX() > 520){
+		cd->m_pos.addX(-1);
+	}
+	else{
+		cd->m_pos.addX(-7);
+		if (cd->m_alpha > 0)
+			cd->m_alpha -= 10;
+		else{
+			CUiManager::GetInstance()->GetUiAdress()->SetPass(2);
+			cd->m_living = false;
+		}
 	}
 }

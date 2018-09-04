@@ -88,6 +88,14 @@ void CTaskManager::NoUpdate(int _type){
 	}
 }
 
+void CTaskManager::SerectUpdate(int _type,bool _live){
+	for (auto it = m_TaskList.begin(); it != m_TaskList.end(); it++){
+		if (_type == (*it)->m_priority){
+			(*it)->m_update = _live;
+		}
+	}
+}
+
 void CTaskManager::UpdateAll(){
 	for (auto it = m_TaskList.begin(); it != m_TaskList.end(); it++){
 		if ((*it)->m_update)

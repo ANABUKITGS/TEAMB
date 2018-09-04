@@ -5,6 +5,7 @@
 #include "item_manager.h"
 #include "change_manager.h"
 #include "sounddata_manager.h"
+#include "difficulty_level_manager.h"
 
 CStan		stan;
 CKnockBack	knock_back;
@@ -62,7 +63,7 @@ CPlayerData::CPlayerData(CVector2D _pos, bool _living, float _alpha, float _rad,
 , m_chage_count(0)
 , m_attack_type(0)
 , m_stan(1)
-, m_knock_back(2)
+, m_knock_back(1)
 , m_bomb(1)
 , m_attack_anim(0)
 {
@@ -108,6 +109,8 @@ CPlayer::CPlayer()
 	m_timer = 0.0f;
 	m_teleport_flag = false;
 	m_t_cont = false;
+	m_attack_state = 2;
+	m_item_get = false;
 	m_priority = eDWP_PLAYER;
 	m_update_priority = 2;
 	m_draw_priority = 2;
@@ -120,10 +123,7 @@ void CPlayer::Update(){
 	int key = GetJoypadInputState(DX_INPUT_KEY_PAD1);
 
 	/*if (CKeyData::GetInstance()->IsKeyTrigger(key, PAD_INPUT_3, KEY_PAD_INPUT_3)){
-		for (int i = 0; i < 10; i++){
-			CEffectData *_temp2 = new CEffectData(CVector2D(640, 360), true, rand() % 360, (rand() % 20) * 0.01f + 0.15f, 0, 10.0f, 0, 0, 0, 0, STAR, 1, &EMP10);
-			CEffectManager::GetInstance()->GetEffectAdress()->GetEffectData()->push_back(_temp2);
-		}
+		//CUiManager::GetInstance()->GetUiAdress()->AddComb();
 	}*/
 	if (!m_t_cont)
 		Attack(key);
@@ -339,20 +339,20 @@ void CPlayer::Change(int key){
 }
 
 void CPlayer::Attack(int key){
-	int _type = 2;
+	m_attack_state = 2;
 	static int _temp;
 
 	if (m_player->m_control){
-		_type = CKeyData::GetInstance()->LongPress(key, PAD_INPUT_2, KEY_Z_PAD_INPUT_2);
+		m_attack_state = CKeyData::GetInstance()->LongPress(key, PAD_INPUT_2, KEY_Z_PAD_INPUT_2);
 	}
 
-	if (_type == RELEASE){
+	if (m_attack_state == RELEASE){
 		m_player->m_anim_division = 8;
 		m_player->m_amine_rate = 0;
 		m_player->Action();
 		PlaySoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(rand() % 3 + 15), DX_PLAYTYPE_BACK);
 	}
-	else if (_type == PRESSING){
+	else if (m_attack_state == PRESSING){
 		m_player->m_chage_count += 0.019;
 		//チャージ中のエフェクト
 		if ((int)m_player->m_chage_count != _temp){
@@ -386,7 +386,7 @@ void CPlayer::Attack(int key){
 		
 		m_player->m_motion_type = 32;
 	}
-	else if (_type == SEPARATE){
+	else if (m_attack_state == SEPARATE){
 		_temp = m_player->m_chage_count;
 		m_player->m_chage_count = 1.0f;
 		m_player->m_attack_range.m_living = false;
@@ -415,7 +415,7 @@ bool CPlayer::Teleport(int key){
 		m_timer = 0.0f;
 		m_player->m_gate_effect.m_living = false;
 		m_t_cont = false;
-		m_player->m_motion_type = 32;
+		//m_player->m_motion_type = 0;
 		return false;
 	}
 	return false;
@@ -489,6 +489,7 @@ void CPlayer::ItemGet(){
 	for (auto it = CItemManager::GetInstance()->GetItemAdress()->GetItemData()->begin(); it != CItemManager::GetInstance()->GetItemAdress()->GetItemData()->end(); it++){
 		if (IsHitCircle(m_player->m_collision, (*it)->m_collision, m_player->m_pos, (*it)->m_pos)){
 			(*it)->m_living = false;
+			m_item_get = true;
 			for (auto &item_type : item_table){
 				if ((*it)->m_animtype == item_type.m_i_type){
 					m_player->ItemType = item_type.ItemType;
