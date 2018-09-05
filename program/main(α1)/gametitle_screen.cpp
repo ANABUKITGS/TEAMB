@@ -23,22 +23,25 @@ void CGameTitleScreen::Release(){}
 
 //初期化
 void CGameTitleScreen::Init(){
-	title_img[0] = LoadGraph("media\\img\\title.png");
-	title_img[1] = LoadGraph("media\\img\\titlelogo.png");
 
 	title1_img[0] = LoadGraph("media\\img\\title_back.png");
-	title1_img[2] = LoadGraph("media\\img\\title_player.png");
-	title1_img[1] = LoadGraph("media\\img\\title_boss.png");
+	title1_img[1] = LoadGraph("media\\img\\title_boss_ver2.png");
+	title1_img[2] = LoadGraph("media\\img\\title_player_ver2.png");
 	title1_img[3] = LoadGraph("media\\img\\titlelogo.png");
 
 	m_title[0].m_pos = CVector2D(0, 0);
-	m_title[1].m_pos = CVector2D(0, 0);
-	m_title[2].m_pos = CVector2D(0, 0);
+	m_title[1].m_pos = CVector2D(0, -150);
+	m_title[2].m_pos = CVector2D(-50, 0);
 	m_title[3].m_pos = CVector2D(620, 374);
 
 	for (int i = 0; i < 4; i++){
 		m_title[i].m_alpha = 0;
-		m_title[i].m_add_move = 0;
+		if (i == 1)
+			m_title[1].m_add_move = -250.0f;//y
+		else if (i == 2)
+			m_title[2].m_add_move = -200.0f;//x
+		else
+			m_title[i].m_add_move = 0;
 	}
 
 	title_text_img = LoadGraph("media\\img\\screentext.png");
@@ -56,6 +59,7 @@ void CGameTitleScreen::Update()
 {
 	int key = GetJoypadInputState(DX_INPUT_KEY_PAD1);
 	
+	//スキップ処理
 	if (CKeyData::GetInstance()->IsKeyTrigger(key, PAD_INPUT_2, KEY_Z_PAD_INPUT_2)){
 		if (m_title[3].m_alpha < 256){
 			for (int i = 0; i < 4; i++){
@@ -77,10 +81,21 @@ void CGameTitleScreen::Update()
 			m_title_num++;
 	}
 	for (int i = 0; i <= m_title_num; i++){
-		if (i >= 0)
-		if (m_title[i].m_alpha < 256)
-			m_title[i].m_alpha += 6;
+		if (i >= 0){
+			if (m_title[i].m_alpha < 256)
+				m_title[i].m_alpha += 6;
+		}
+		if (i == 1)
+		if (m_title[i].m_pos.getY() > m_title[i].m_add_move)
+			m_title[i].m_pos.addY(-3);
+
+		if (i == 2)
+		if (m_title[i].m_pos.getX() > m_title[i].m_add_move)
+			m_title[i].m_pos.addX(-3);
+
 	}
+
+
 
 	if (m_title[3].m_alpha > 255){
 		m_title[3].m_add_move -= 0.04f;
@@ -90,7 +105,6 @@ void CGameTitleScreen::Update()
 	if (CChangeManager::GetInstance()->GetChangeAdress()->GetOut())m_state = GAME_SCREEN;
 	CChangeManager::GetInstance()->GetChangeAdress()->Update();
 
-//	if (CheckHitKey(KEY_INPUT_A) == 1) m_state = GAME_SCREEN;
 }
 
 //描画

@@ -105,6 +105,8 @@ CUi::CUi()
 
 	LoadDivGraph("media\\img\\num.png", 10, 4, 3, 128, 128, m_num_img, 0);
 	LoadDivGraph("media\\img\\num_combo.png", 10, 4, 3, 128, 128, m_combo_num_img, 0);
+	LoadDivGraph("media\\img\\num_item.png", 10, 4, 3, 128, 128, m_item_num_img, 0);
+
 	m_combo_gage_img = LoadGraph("media\\img\\combo_gage.jpg");
 
 	m_priority = eDWP_UI;
@@ -260,7 +262,7 @@ void CUi::Draw(){
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, m_item_ui[0].m_alpha);
 		for (int i = 0; i < _num; i++){
 			DrawRotaGraph(m_item_ui[0].m_pos.getX() - _temp + i * 68,
-				m_item_ui[0].m_pos.getY(), m_item_ui[0].m_exrate, 0, m_num_img[(buf[i] - '0')], TRUE, FALSE);		//'0'
+				m_item_ui[0].m_pos.getY(), m_item_ui[0].m_exrate, 0, m_item_num_img[(buf[i] - '0')], TRUE, FALSE);		//'0'
 		}
 		DrawRotaGraph(m_item_ui[1].m_pos.getX(), m_item_ui[1].m_pos.getY(),
 			m_item_ui[1].m_exrate, 0, m_text_img[1], TRUE, FALSE);

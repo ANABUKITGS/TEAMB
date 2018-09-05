@@ -68,7 +68,7 @@ void CKeyData::ClearInstance(){
 }
 
 
-//ボタン入力処理
+//ボタン入力処理(長押しが効かない)
 bool CKeyData::IsKeyTrigger(int _key, int _key_type, int _num){
 	if (_key & _key_type){
 		if (key_prev[_num] == false){
@@ -80,6 +80,16 @@ bool CKeyData::IsKeyTrigger(int _key, int _key_type, int _num){
 		key_prev[_num] = false;
 	}
 	return false;
+}
+
+//ボタン入力処理
+bool CKeyData::IsKeyTrigger2(int _key, int _key_type){
+	if (_key & _key_type){
+		return true;
+	}
+	else{
+		return false;
+	}
 }
 
 //ボタン長押し処理	放出(RELEASE)、押している(PRESSING)、押していない(SEPARATE)

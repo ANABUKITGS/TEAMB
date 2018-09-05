@@ -55,7 +55,11 @@ public:
 	bool m_pass_flag;
 	bool m_attack_pass_flag;
 	bool m_icon_pass[3];		//プレイヤーの攻撃アイコンを見たか
-	int m_tutorial_img[4];
+	int m_add_alpha;			//チュートリアルの透過用
+
+	int m_select_type;
+	int m_tutorial_img[5];
+	int m_serect_text_img[2][2];
 	int m_t_range_img[3];
 };
 

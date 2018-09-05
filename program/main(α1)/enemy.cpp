@@ -149,7 +149,7 @@ void CEnemy::Delete(){
 		}
 		if ((*it)->m_living == false){
 			if ((*it)->m_animtype != E_BOMB){
-				CBaseData *_temp = new CBaseData((*it)->m_pos, true, 0, 1.0f + m_kill_count * 0.1f, ENEMY_DELETE_NUM, 0, 0, 0, 0, 0, ENEMY_DELETE);
+				CBaseData *_temp = new CBaseData((*it)->m_pos, true, 0, 0.6f + m_kill_count * 0.04f, ENEMY_DELETE_NUM, 0, 0, 0, 0, 0, ENEMY_DELETE);
 				CEffectManager::GetInstance()->GetEffectAdress()->GetEffectData()->push_back(new CEffectData(*_temp, 2, &EMP11));	
 			}
 			CUiManager::GetInstance()->GetUiAdress()->AddComb();
@@ -188,10 +188,6 @@ void CEnemy::Update(){
 	m_enemy_num.m_bomb_num = 0;
 
 	for (auto it = m_enemys.begin(); it != m_enemys.end(); it++, _num++){
-		//printfDx("  rad / %f\n", degree((*it)->m_rad));
-		//printfDx("r / %f\n", degree((*it)->m_rad));
-		//printfDx("  v / %f", (*it)->m_velocity);
-		//printfDx("  save / %f\n", (*it)->m_save_speed);
 
 		EnemyNum(*(*it),1);
 

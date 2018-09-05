@@ -88,6 +88,7 @@ private:
 	int m_text_img[4];				//文字系
 	int m_num_img[10];				//数字
 	int m_combo_num_img[10];		//コンボ数画像
+	int m_item_num_img[10];			//アイテム数画像
 	int m_combo_gage_img;
 
 	int m_comb;						//コンボ数

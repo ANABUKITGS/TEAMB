@@ -29,7 +29,6 @@ public:
 	void Update();
 	void Draw();
 private:
-	int title_img[2];
 	int title1_img[4];
 	int title_text_img;
 

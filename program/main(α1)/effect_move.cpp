@@ -39,7 +39,7 @@ void CEffectMovePattern1::Move(CEffectData *cd){
 		cd->m_animtype = BOMB_NUM;
 		cd->m_amine_rate = 1;
 		cd->m_rate = 1;
-		cd->m_exrate += 0.1;
+		cd->m_exrate += 0.4;
 		cd->BEMove = &EMP2;
 		PlaySoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(S_ATTACK_BOMB), DX_PLAYTYPE_BACK);
 	}

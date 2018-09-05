@@ -125,6 +125,7 @@ void CPlayer::Update(){
 	/*if (CKeyData::GetInstance()->IsKeyTrigger(key, PAD_INPUT_3, KEY_PAD_INPUT_3)){
 		//CUiManager::GetInstance()->GetUiAdress()->AddComb();
 	}*/
+
 	if (!m_t_cont)
 		Attack(key);
 	

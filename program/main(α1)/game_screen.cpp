@@ -71,9 +71,16 @@ void CGameScreen::Update()
 {
 	bool _ef = false;	//終了フラグ
 	bool _eff = false;	//終了フラグ
-	static bool _stop_flag;		//一時停止用
-	//static bool _tutorial_flag;			//
 	static bool _pass;
+
+	int key = GetJoypadInputState(DX_INPUT_KEY_PAD1);
+
+	//ソフトウェアリセット
+	if (CKeyData::GetInstance()->IsKeyTrigger2(key, PAD_INPUT_11) &&
+		CKeyData::GetInstance()->IsKeyTrigger2(key, PAD_INPUT_12) && 
+		CKeyData::GetInstance()->IsKeyTrigger2(key, PAD_INPUT_5) &&
+		CKeyData::GetInstance()->IsKeyTrigger2(key, PAD_INPUT_6))
+		m_state = TITLE_SCREEN;
 
 	if (CPlayerManager::GetInstance()->GetPlayerAdress()->GetData()->m_hp < 1){
 		_ef = true;
@@ -98,6 +105,8 @@ void CGameScreen::Update()
 		CChangeManager::GetInstance()->GetChangeAdress()->SetChange(true);
 		_pass = false;
 	}
+
+	//フィールドの切り替えは以下の処理
 	if (!_ef && !_eff){
 		if (CChangeManager::GetInstance()->GetChangeAdress()->GetOut()){
 			if (!_pass){
@@ -125,32 +134,33 @@ void CGameScreen::Update()
 		}
 	}
 
-	if (_ef){
+	if (_ef)
 		if (CChangeManager::GetInstance()->GetChangeAdress()->GetOut())m_state = GAMEOVER_SCREEN;
-	}
 
-	if (_eff){
+	if (_eff)
 		if (CChangeManager::GetInstance()->GetChangeAdress()->GetOut())m_state = GAMECLEAR_SCREEN;
-	}
 
 	//最初のフェイドインから
 	if (!CChangeManager::GetInstance()->GetChangeAdress()->GetChangeFlag()){
+		//スタートの処理
 		if (!CUiManager::GetInstance()->GetUiAdress()->GetPass()){
 			CUiManager::GetInstance()->GetUiAdress()->SetPass(true);
 			CUiManager::GetInstance()->GetUiAdress()->GetUiData()->push_back(new CUiData(CVector2D(920, 360), true, 0, 0, UI_SELECT_EXRATE, 3, TIMER, 0, 0, 0, &Start));
 		}
 		else if (CUiManager::GetInstance()->GetUiAdress()->GetPass() == 2){
-				CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->SetInvincible(1);
 			CUiManager::GetInstance()->GetUiAdress()->SetPass(3);
-			CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->SetInvincible(1);
-			//CTaskManager::GetInstance()->SerectUpdate(eDWP_ENEMY, true);
+			//チュートリアルをする場合以下の処理
+			if (CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetTutorialFlag())
+				CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->SetInvincible(1);
 		}
 	}
+	//チュートリアルで説明が出ていなければ以下の処理（各アップデートを行う）
 	if (CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->TutorialState() == 0){
 		CCharaData::GetInstance()->Update();
 		CTaskManager::GetInstance()->UpdateAll();
 	}
 
+	//チュートリアル処理
 	if (CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetTutorialFlag()){
 		CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetTutorialData()->Update();
 	}

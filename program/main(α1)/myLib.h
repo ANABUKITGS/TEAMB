@@ -50,7 +50,7 @@ const float PLAYER_ATTACK_KNOCK_BACK = 4.0f;		//é©ã@ÇÃçUåÇån
 const float PLAYER_ATTACK_STAN = 200.0f;
 const float PLAYER_STAN_EXRATE = 2.3f;
 const float PLAYER_ATTACK_BOMB = 20.0f;
-const float PLAYER_BOMB_EXRATE = 0.7f;
+const float PLAYER_BOMB_EXRATE = 0.4f;
 const float PLAYER_BOMB_RANGE_EXRATE = 0.33f;
 const float PLAYER_BOMB_KNOCK_BACK = 14.0f;
 const float PLAYER_HURRICANE_KNOCK_BACK = 1.2f;
@@ -139,6 +139,8 @@ public:
 	static void ClearInstance();
 
 	bool IsKeyTrigger(int _key, int _key_type, int _num);
+	bool IsKeyTrigger2(int _key, int _key_type);
+
 	int LongPress(int _key, int _key_type, int _num);
 	int LongPress2(int _key, int _key_type, int _num);
 };

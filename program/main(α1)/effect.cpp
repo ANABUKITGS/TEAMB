@@ -25,11 +25,12 @@ CEffectData::CEffectData(CBaseData _temp, int _rate, CBaseEffectMove *_BEMove)
 CEffect::CEffect(){
 	LoadDivGraph("media\\img\\kaze.png", KNOCK_BACK_NUM, 4, 4, 512, 512, m_effect_img[KNOCK_BACK], 0);
 	LoadDivGraph("media\\img\\stn.png", STAN_NUM, 2, 12, 128, 128, m_effect_img[STAN], 0);
-	LoadDivGraph("media\\img\\bomb_cha0.png", BOMB_CHARGE_NUM, 5, 3, 128, 128, m_effect_img[CHARGE_BOMB], 0);
+	LoadDivGraph("media\\img\\bomb_cha_m.png", BOMB_CHARGE_NUM, 4, 5, 256, 256, m_effect_img[CHARGE_BOMB], 0);
+	//LoadDivGraph("media\\img\\bomb_cha1.png", BOMB_CHARGE_NUM, 5, 4, 192, 192, m_effect_img[CHARGE_BOMB], 0);
 	LoadDivGraph("media\\img\\exp.png", BOMB_NUM, 2, 7, 256, 256, m_effect_img[BOMB], 0);
 	LoadDivGraph("media\\img\\e_attack.png", ENEMY_ATTACK_NUM, 2, 8, 128, 128, m_effect_img[ENEMY_ATTACK], 0);
 	LoadDivGraph("media\\img\\enemy_create.png", ENEMY_CREATE_NUM, 2, 10, 384, 384, m_effect_img[ENEMY_CREATE], 0);
-	LoadDivGraph("media\\img\\enemy_delete.png", ENEMY_DELETE_NUM, 2, 8, 128, 128, m_effect_img[ENEMY_DELETE], 0);
+	LoadDivGraph("media\\img\\enemy_delete_ver2.png", ENEMY_DELETE_NUM, 2, 8, 256, 256, m_effect_img[ENEMY_DELETE], 0);
 	LoadDivGraph("media\\img\\player_hit.png", PLAYER_HIT_NUM, 2, 4, 384, 384, m_effect_img[PLAYER_HIT], 0);
 	LoadDivGraph("media\\img\\heel_eff.png", PLAYER_HEEL_NUM, 4, 4, 64, 64, m_effect_img[P_HEEL], 0);
 	LoadDivGraph("media\\img\\stn_up.png", STN_UP_NUM, 4, 5, 64, 64, m_effect_img[STN_UP], 0);
@@ -48,7 +49,6 @@ CEffect::CEffect(){
 	m_update = true;
 
 	CEffectManager::GetInstance()->Init(this);
-
 }
 
 void CEffect::Update(){
@@ -62,7 +62,6 @@ void CEffect::Update(){
 				(*it)->m_living = false;
 		}
 	}
-
 	Delete();
 }
 

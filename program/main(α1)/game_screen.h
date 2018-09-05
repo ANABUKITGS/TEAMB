@@ -23,6 +23,7 @@ public:
 	void Draw();
 private:
 	SCREEN m_state;
+	//int m_text_img[2];
 };
 
 #endif GAME_SCREEN_H
