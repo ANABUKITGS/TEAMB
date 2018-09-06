@@ -137,7 +137,7 @@ void CCharaData::KillAll(){
 
 void CCharaData::AssignmentDelete(int _type){
 	for (auto it = m_chara_data.begin(); it != m_chara_data.end();){
-		if ((*it)->m_type != _type){
+		if ((*it)->m_type == _type){
 			it = m_chara_data.erase(it);
 			continue;
 		}

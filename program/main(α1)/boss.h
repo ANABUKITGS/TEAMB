@@ -11,7 +11,7 @@ const float BOSS_SPEED = 0.0f;
 
 const float BOSS_BACK = 15.0f;
 const int BOSS_HP = 450;
-const int BOSS_DAMAGE = 10;
+const int BOSS_DAMAGE = 8;
 
 using namespace std;
 
@@ -56,6 +56,7 @@ public:
 	bool m_attack_movea;
 	int m_attack_move2;
 	int m_rocket_flag;
+	bool m_cool_attacktime;
 };
 
 class CBoss : public CTask{

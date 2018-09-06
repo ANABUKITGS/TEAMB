@@ -26,6 +26,7 @@ CBossData::CBossData(CVector2D _pos, bool _living, float _alpha, float _rad, flo
 , m_attack_move2(0)
 , m_ty()
 , m_rocket_flag(0)
+, m_cool_attacktime(true)
 {
 
 }
@@ -43,6 +44,7 @@ CBossData::CBossData(CBaseData _temp)
 , m_attack_move2(0)
 , m_ty(_temp.m_type)
 , m_rocket_flag(0)
+, m_cool_attacktime(true)
 {
 
 }
@@ -153,6 +155,11 @@ void CBoss::Update(){
 	int key = GetJoypadInputState(DX_INPUT_KEY_PAD1);
 
 	for (auto it = m_boss.begin(); it != m_boss.end(); it++){
+
+		if (CFieldManager::GetInstance()->GetFrameAdress()->GetFieldType() != M_BOSS){
+			m_attack_counter = 0;
+		}
+
 		_pos_ = (*it)->m_pos;
 		if ((*it)->m_type != 0){
 			//‘Ò‹@•‚—Vƒ‚[ƒVƒ‡ƒ“//
@@ -162,13 +169,13 @@ void CBoss::Update(){
 			}
 		}
 		//bossUŒ‚ƒ‰ƒ“ƒ_ƒ€
-		if (m_count % 200 == 0){
+		if (m_count % 400 == 0){
 			m_count = 1;
 			if (m_attack_counter == 0){
-				if (randf > 0 && randf < 100){
+				if (randf > 0 && randf < 150){
 					m_attack_counter = 2;
 				}
-				if (randf > 100 && randf < 375){
+				if (randf > 150 && randf < 375){
 					m_attack_counter = 1;
 				}
 				if (randf > 375 && randf < 500){
@@ -233,7 +240,6 @@ void CBoss::Update(){
 				break;
 			}
 		}
-		//(*it)->Mover2((*it), _pos_);
 		(*it)->m_pos = _pos_;
 
 	}

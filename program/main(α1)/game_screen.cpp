@@ -117,12 +117,15 @@ void CGameScreen::Update()
 				CChangeManager::GetInstance()->GetChangeAdress()->SetCData(255, -2);
 				if (CFieldManager::GetInstance()->GetFrameAdress()->GetFieldType() != M_BOSS){
 					CFieldManager::GetInstance()->GetFrameAdress()->SetFieldType(M_BOSS);
+					CCharaData::GetInstance()->AssignmentDelete(ENEMY);
 					CEnemyManager::GetInstance()->GetEnemyAdress()->KillAll();
 					CPlayerManager::GetInstance()->GetPlayerAdress()->GetData()->m_pos = CVector2D(640, 580);
 					StopSoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(GAME_BGM1));	//New
 					PlaySoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(GAME_BGM2), DX_PLAYTYPE_LOOP);	//New
 				}
 				else{
+					CCharaData::GetInstance()->AssignmentDelete(ENEMY);
+					CEnemyManager::GetInstance()->GetEnemyAdress()->KillAll();
 					CFieldManager::GetInstance()->GetFrameAdress()->SetFieldType(M_NORMAL);
 					StopSoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(GAME_BGM2));	//New
 					PlaySoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(GAME_BGM1), DX_PLAYTYPE_LOOP);	//New

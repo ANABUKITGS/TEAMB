@@ -3,6 +3,7 @@
 #include "item_manager.h"
 #include "enemy_manager.h"
 #include "difficulty_level_manager.h"
+#include "field_manager.h"
 
 CRightRotation RRotation;
 CLeftRotation LRotation;
@@ -253,6 +254,7 @@ void CUi::Draw(){
 	}
 
 	//出現アイテム数
+	if (CFieldManager::GetInstance()->GetFrameAdress()->GetFieldType() != M_BOSS)
 	if (m_item_ui[0].m_living == true){
 		_num = sprintf_s(buf, 100, "%d", m_item_ui[0].m_hp);
 		if (_num > 1)

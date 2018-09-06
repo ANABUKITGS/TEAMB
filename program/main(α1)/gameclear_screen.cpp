@@ -23,35 +23,31 @@ void CGameClearScreen::Release(){}
 void CGameClearScreen::Init(){
 	m_ac = 0;
 	m_animcounter = 0;
-	gameclear_img[0] = LoadGraph("media\\img\\gameclear\\clear00.png");
-	gameclear_img[1] = LoadGraph("media\\img\\gameclear\\clear01.png");
-	gameclear_img[2] = LoadGraph("media\\img\\gameclear\\clear02.png");
-	gameclear_img[3] = LoadGraph("media\\img\\gameclear\\clear03.png");
-	gameclear_img[4] = LoadGraph("media\\img\\gameclear\\clear04.png");
-	gameclear_img[5] = LoadGraph("media\\img\\gameclear\\clear05.png");
-	gameclear_img[6] = LoadGraph("media\\img\\gameclear\\clear06.png");
-	gameclear_img[7] = LoadGraph("media\\img\\gameclear\\clear07.png");
-	gameclear_img[8] = LoadGraph("media\\img\\gameclear\\clear08.png");
-	gameclear_img[9] = LoadGraph("media\\img\\gameclear\\clear09.png");
-	gameclear_img[10] = LoadGraph("media\\img\\gameclear\\clear10.png");
-	gameclear_img[11] = LoadGraph("media\\img\\gameclear\\clear11.png");
-	gameclear_img[12] = LoadGraph("media\\img\\gameclear\\clear12.png");
-	gameclear_img[13] = LoadGraph("media\\img\\gameclear\\clear13.png");
-	gameclear_img[14] = LoadGraph("media\\img\\gameclear\\clear14.png");
-	gameclear_img[15] = LoadGraph("media\\img\\gameclear\\clear15.png");
-	gameclear_img[16] = LoadGraph("media\\img\\gameclear\\clear16.png");
-	gameclear_img[17] = LoadGraph("media\\img\\gameclear\\clear17.png");
-	gameclear_img[18] = LoadGraph("media\\img\\gameclear\\clear18.png");
-	gameclear_img[19] = LoadGraph("media\\img\\gameclear\\clear19.png");
-	gameclear_img[20] = LoadGraph("media\\img\\gameclear\\clear20.png");
-	gameclear_img[21] = LoadGraph("media\\img\\gameclear\\clear21.png");
-	gameclear_img[22] = LoadGraph("media\\img\\gameclear\\clear22.png");
-	gameclear_img[23] = LoadGraph("media\\img\\gameclear\\clear23.png");
-	gameclear_img[24] = LoadGraph("media\\img\\gameclear\\clear24.png");
-	gameclear_img[25] = LoadGraph("media\\img\\gameclear\\clear25.png");
-	gameclear_img[26] = LoadGraph("media\\img\\gameclear\\clear26.png");
+
+	gameclear_chara_img[0] = LoadGraph("media\\img\\clearchara1.png");
+	gameclear_chara_img[1] = LoadGraph("media\\img\\clearchara2.png");
+	gameclear_chara_img[2] = LoadGraph("media\\img\\clearchara3.png");
+	gameclear_chara_img[3] = LoadGraph("media\\img\\clearchara4.png");
+	gameclear_chara_img[4] = LoadGraph("media\\img\\clearchara5.png");
 
 	gameclear_text_img = LoadGraph("media\\img\\screentext.png");
+
+	LoadDivGraph("media\\img\\enemy_n_m.png", 88, 4, 22, 64, 64, m_enemy_img[0]);
+	LoadDivGraph("media\\img\\enemy_l_m.png", 88, 4, 22, 48, 48, m_enemy_img[1]);
+	LoadDivGraph("media\\img\\enemy_s_m.png", 88, 4, 22, 64, 64, m_enemy_img[2]);
+	LoadDivGraph("media\\img\\enemy_b_m.png", 88, 4, 22, 128, 128, m_enemy_img[3]);
+	LoadDivGraph("media\\img\\enemy_bom_m.png", 88, 4, 22, 64, 64, m_enemy_img[4]);
+
+	m_clear[0].m_pos = CVector2D(-400, 590);
+	m_clear[1].m_pos = CVector2D(-230, 615);
+	m_clear[2].m_pos = CVector2D(-50, 595);
+	m_clear[3].m_pos = CVector2D(1290, 530);
+	m_clear[4].m_pos = CVector2D(1530, 592);
+
+	gameclear_t_img = LoadGraph("media\\img\\gameclear.png");
+
+	m_timer = 0;
+	m_title_num = 2;
 
 	PlaySoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(GAMECLEAR_BGM), DX_PLAYTYPE_BACK);	//New
 }
@@ -61,22 +57,73 @@ void CGameClearScreen::Update()
 {
 	m_animcounter++;
 	m_animcounter %= MAXINT;
-	m_ac = m_animcounter / 8;
+	m_ac = m_animcounter / 14;
 	int key = GetJoypadInputState(DX_INPUT_KEY_PAD1);
 
-	if (CKeyData::GetInstance()->IsKeyTrigger(key, PAD_INPUT_2, KEY_Z_PAD_INPUT_2))m_state = TITLE_SCREEN;
+	//ŽG‹›ƒLƒƒƒ‰‚ÌˆÚ“®
+	for (int i = 0; i < 5; i++){
+		if (i >= 0)
+			switch (i){
+			case 0:
+				if (m_clear[i].m_pos.getX() < 60){
+					m_clear[i].m_animtype = 8;
+					m_clear[i].m_pos += CVector2D(ENEMY, 0);
+				}
+				else
+					m_clear[i].m_animtype = 0;
+				break;
+			case 1:
+				if (m_clear[i].m_pos.getX() < 230){
+					m_clear[i].m_animtype = 8;
+					m_clear[i].m_pos += CVector2D(ENEMY, 0);
+				}
+				else
+					m_clear[i].m_animtype = 0;
+				break;
+			case 2:
+				if (m_clear[i].m_pos.getX() < 410){
+					m_clear[i].m_animtype = 8;
+					m_clear[i].m_pos += CVector2D(ENEMY, 0);
+				}
+				else
+					m_clear[i].m_animtype = 0;
+				break;
+			case 3:
+				if (m_clear[i].m_pos.getX() > 830){
+					m_clear[i].m_animtype = 4;
+					m_clear[i].m_pos -= CVector2D(ENEMY, 0);
+				}
+				else
+					m_clear[i].m_animtype = 0;
+				break;
+			case 4:
+				if (m_clear[i].m_pos.getX() > 1070){
+					m_clear[i].m_animtype = 4;
+					m_clear[i].m_pos -= CVector2D(ENEMY, 0);
+				}
+				else
+					m_clear[i].m_animtype = 0;
+				break;
+			default:
+				break;
+		}
 
-//	if (CheckHitKey(KEY_INPUT_A) == 1) m_state = TITLE_SCREEN;
+		if (CKeyData::GetInstance()->IsKeyTrigger(key, PAD_INPUT_2, KEY_Z_PAD_INPUT_2))m_state = TITLE_SCREEN;
+
+		//	if (CheckHitKey(KEY_INPUT_A) == 1) m_state = TITLE_SCREEN;
+	}
+
 }
-
 //•`‰æ
 void CGameClearScreen::Draw()
 {
 	ClearDrawScreen();
-	DrawGraph(0, 0, gameclear_img[(int)m_ac % 26], TRUE);
-	DrawGraph(0, 640, gameclear_text_img, TRUE);
+	DrawGraph(0, 0, gameclear_t_img, TRUE);
+	DrawRotaGraph(620, 600, 0.3f, 0, gameclear_chara_img[(int)m_ac % 5], TRUE, FALSE);
 
-
+	for (int i = 0; i < 5; i++){
+		DrawGraph(m_clear[i].m_pos.getX(), m_clear[i].m_pos.getY(), m_enemy_img[i][m_clear[i].m_animtype + (int)m_ac % 2], TRUE);
+	}
 #if defined(_DEBUG) | defined(DEBUG)
 	//DrawString(10, 100, "GAMECLEAR Screen Hit A key to Next Screen", GetColor(255, 255, 255));
 #endif
