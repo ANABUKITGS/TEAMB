@@ -23,6 +23,8 @@ public:
 	void Draw();
 private:
 	SCREEN m_state;
+	bool m_clear_flag;
+	bool m_over_flag;
 	//int m_text_img[2];
 };
 

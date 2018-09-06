@@ -86,7 +86,7 @@ private:
 	int m_icon_img[3][2];			//攻撃アイコン
 	int m_ui_img[4];				//
 	int m_text_img[4];				//文字系
-	int m_num_img[10];				//数字
+	int m_lv_num_img[11];				//数字
 	int m_combo_num_img[10];		//コンボ数画像
 	int m_item_num_img[10];			//アイテム数画像
 	int m_combo_gage_img;
@@ -119,7 +119,7 @@ public:
 	inline list<CUiData*> *GetUiData(){ return &m_list_ui; };
 	inline CUiData* GetComboUiData(int _num){ return &m_combo_ui[_num]; };
 	inline CUiData* GetItemUiData(int _num){ return &m_item_ui[_num]; };
-	inline CUiData* GetLvUiData(int _num){ return &m_lv_ui[_num]; };
+	inline CUiData* GetLvUiData(int _num){ return &m_lv_ui[_num]; };	//プレイヤーで使用
 	inline int GetPass(){ return m_pass_flag; };
 
 	inline void AddComb(){ m_comb++; };

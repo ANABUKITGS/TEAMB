@@ -14,6 +14,7 @@ public:
 	CVector2D m_pos;
 	int m_alpha;
 	float m_add_move;
+	int m_type;
 };
 
 //タイトルスクリーンクラス
@@ -30,11 +31,14 @@ public:
 	void Draw();
 private:
 	int title1_img[4];
+	int title2_text_img[2][2];
 	int title_text_img;
 
 	int m_timer;
 	int m_title_num;
+	bool m_control_flag;
 	CTitleData m_title[4];
+	CTitleData m_title_text[2];
 	
 	SCREEN m_state;
 };

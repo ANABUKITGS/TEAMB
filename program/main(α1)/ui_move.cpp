@@ -109,7 +109,7 @@ void CItemText::Update(CUiData *cd){
 }
 
 void CLvNum::Update(CUiData *cd){
-	if (cd->m_exrate > 0.4f){
+	if (cd->m_exrate > 1.0f){
 		cd->m_exrate -= 0.03f;
 	}
 }

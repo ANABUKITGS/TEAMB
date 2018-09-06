@@ -87,19 +87,19 @@ void CKeyBoard::Type(CPlayerData *cd, int key, float &_fx, float &_fy){
 void CStanUp::Type(CPlayerData *cd){
 	cd->m_stan += ITEM_STAN_UP;
 	CUiManager::GetInstance()->GetUiAdress()->GetLvUiData(0)->m_hp++;
-	CUiManager::GetInstance()->GetUiAdress()->GetLvUiData(0)->m_exrate = 0.7f;
+	CUiManager::GetInstance()->GetUiAdress()->GetLvUiData(0)->m_exrate = 1.3f;
 }
 
 void CKnockBackUp::Type(CPlayerData *cd){
 	cd->m_knock_back += ITEM_KNOCK_BACK_UP;
 	CUiManager::GetInstance()->GetUiAdress()->GetLvUiData(1)->m_hp++;
-	CUiManager::GetInstance()->GetUiAdress()->GetLvUiData(1)->m_exrate = 0.7f;
+	CUiManager::GetInstance()->GetUiAdress()->GetLvUiData(1)->m_exrate = 1.3f;
 }
 
 void CBombUp::Type(CPlayerData *cd){
 	cd->m_bomb += ITEM_BOMB_UP;
 	CUiManager::GetInstance()->GetUiAdress()->GetLvUiData(2)->m_hp++;
-	CUiManager::GetInstance()->GetUiAdress()->GetLvUiData(2)->m_exrate = 0.7f;
+	CUiManager::GetInstance()->GetUiAdress()->GetLvUiData(2)->m_exrate = 1.3f;
 }
 
 void CHeelUp::Type(CPlayerData *cd){

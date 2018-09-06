@@ -4,6 +4,7 @@
 #include "gametitle_screen.h"
 #include "gameover_screen.h"
 #include "gameclear_screen.h"
+#include "credit_screen.h"
 #include "game.h"
 
 #include "sounddata_manager.h"
@@ -62,6 +63,9 @@ void CGame::Update()
 			break;
 		case GAMECLEAR_SCREEN:
 			m_pScreen = new CGameClearScreen();
+			break;
+		case CREDIT_SCREEN:
+			m_pScreen = new CCreditScreen();
 			break;
 		default:
 			assert(0);

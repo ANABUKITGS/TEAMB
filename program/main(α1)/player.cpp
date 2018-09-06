@@ -139,7 +139,8 @@ void CPlayer::Update(){
 
 	ItemGet();
 
-	m_teleport_flag = Teleport(key);
+	if (!CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetTutorialFlag())
+		m_teleport_flag = Teleport(key);
 
 	AttackRangeMove();
 

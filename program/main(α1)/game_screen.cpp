@@ -46,7 +46,8 @@ void CGameScreen::Load(){
 void CGameScreen::Release(){}
 
 //初期化
-void CGameScreen::Init(){
+void CGameScreen::Init()
+{
 	//ここでタスク生成
 	CTaskManager::GetInstance()->Add(new CDifficultyLevel);
 	CTaskManager::GetInstance()->Add(new CUi);
@@ -63,39 +64,40 @@ void CGameScreen::Init(){
 	new CChange(255,-2);
 	CChangeManager::GetInstance()->GetChangeAdress()->SetChange(true);
 
+	m_clear_flag = false;
+	m_over_flag = false;
+
 	CTaskManager::GetInstance()->SerectUpdate(eDWP_ENEMY,false);
 }
 
 //実行処理
 void CGameScreen::Update()
 {
-	bool _ef = false;	//終了フラグ
-	bool _eff = false;	//終了フラグ
 	static bool _pass;
 
 	int key = GetJoypadInputState(DX_INPUT_KEY_PAD1);
 
 	//ソフトウェアリセット
 	if (CKeyData::GetInstance()->IsKeyTrigger2(key, PAD_INPUT_11) &&
-		CKeyData::GetInstance()->IsKeyTrigger2(key, PAD_INPUT_12) && 
+		CKeyData::GetInstance()->IsKeyTrigger2(key, PAD_INPUT_12) &&
 		CKeyData::GetInstance()->IsKeyTrigger2(key, PAD_INPUT_5) &&
 		CKeyData::GetInstance()->IsKeyTrigger2(key, PAD_INPUT_6))
 		m_state = TITLE_SCREEN;
 
 	if (CPlayerManager::GetInstance()->GetPlayerAdress()->GetData()->m_hp < 1){
-		_ef = true;
+		m_over_flag = true;
 		_pass = false;
 		CChangeManager::GetInstance()->GetChangeAdress()->SetChange(true);
 	}
 
 	if (CUiManager::GetInstance()->GetUiAdress()->GetTimeFlag()){
-		_ef = true;
+		m_over_flag = true;
 		_pass = false;
 		CChangeManager::GetInstance()->GetChangeAdress()->SetChange(true);
 	}
 
 	if (CBossManager::GetInstance()->GetBossAdress()->Hp() < 61){
-		_eff = true;
+		m_clear_flag = true;
 		_pass = false;
 		CChangeManager::GetInstance()->GetChangeAdress()->SetChange(true);
 	}
@@ -107,7 +109,7 @@ void CGameScreen::Update()
 	}
 
 	//フィールドの切り替えは以下の処理
-	if (!_ef && !_eff){
+	if (!m_over_flag && !m_clear_flag){
 		if (CChangeManager::GetInstance()->GetChangeAdress()->GetOut()){
 			if (!_pass){
 				CItemManager::GetInstance()->GetItemAdress()->KillAll();
@@ -137,11 +139,11 @@ void CGameScreen::Update()
 		}
 	}
 
-	if (_ef)
-		if (CChangeManager::GetInstance()->GetChangeAdress()->GetOut())m_state = GAMEOVER_SCREEN;
+	if (m_over_flag)
+	if (CChangeManager::GetInstance()->GetChangeAdress()->GetOut())m_state = GAMEOVER_SCREEN;
 
-	if (_eff)
-		if (CChangeManager::GetInstance()->GetChangeAdress()->GetOut())m_state = GAMECLEAR_SCREEN;
+	if (m_clear_flag)
+	if (CChangeManager::GetInstance()->GetChangeAdress()->GetOut())m_state = GAMECLEAR_SCREEN;
 
 	//最初のフェイドインから
 	if (!CChangeManager::GetInstance()->GetChangeAdress()->GetChangeFlag()){

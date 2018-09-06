@@ -24,15 +24,23 @@ void CGameTitleScreen::Release(){}
 //初期化
 void CGameTitleScreen::Init(){
 
-	title1_img[0] = LoadGraph("media\\img\\title_back.png");
-	title1_img[1] = LoadGraph("media\\img\\title_boss_ver2.png");
-	title1_img[2] = LoadGraph("media\\img\\title_player_ver2.png");
-	title1_img[3] = LoadGraph("media\\img\\titlelogo.png");
+	title1_img[0] = LoadGraph("media\\img\\title\\title_back.png");
+	title1_img[1] = LoadGraph("media\\img\\title\\title_boss_ver2.png");
+	title1_img[2] = LoadGraph("media\\img\\title\\title_player_ver2.png");
+	title1_img[3] = LoadGraph("media\\img\\title\\titlelogo.png");
+
+	LoadDivGraph("media\\img\\title\\title_start.png", 2, 1, 2, 512, 64, title2_text_img[0], 0);
+	LoadDivGraph("media\\img\\title\\title_credit.png", 2, 1, 2, 512, 64, title2_text_img[1], 0);
 
 	m_title[0].m_pos = CVector2D(0, 0);
 	m_title[1].m_pos = CVector2D(0, -150);
 	m_title[2].m_pos = CVector2D(-50, 0);
 	m_title[3].m_pos = CVector2D(620, 374);
+
+	m_title_text[0].m_pos = CVector2D(173, 600);
+	m_title_text[0].m_type = 1;
+	m_title_text[1].m_pos = CVector2D(128, 660);
+	m_title_text[1].m_type = 0;
 
 	for (int i = 0; i < 4; i++){
 		m_title[i].m_alpha = 0;
@@ -49,6 +57,7 @@ void CGameTitleScreen::Init(){
 	
 	m_timer = 0;
 	m_title_num = 0;
+	m_control_flag = false;
 
 	new CChange(0, 2);
 
@@ -58,7 +67,6 @@ void CGameTitleScreen::Init(){
 void CGameTitleScreen::Update()
 {
 	int key = GetJoypadInputState(DX_INPUT_KEY_PAD1);
-	
 	//スキップ処理
 	if (CKeyData::GetInstance()->IsKeyTrigger(key, PAD_INPUT_2, KEY_Z_PAD_INPUT_2)){
 		if (m_title[3].m_alpha < 256){
@@ -68,7 +76,10 @@ void CGameTitleScreen::Update()
 			m_title_num = 3;
 		}
 		else{
-			CChangeManager::GetInstance()->GetChangeAdress()->SetChange(true);
+			if (!m_control_flag){
+				CChangeManager::GetInstance()->GetChangeAdress()->SetChange(true);
+				m_control_flag = true;
+			}
 		}
 	}
 
@@ -92,9 +103,19 @@ void CGameTitleScreen::Update()
 		if (i == 2)
 		if (m_title[i].m_pos.getX() > m_title[i].m_add_move)
 			m_title[i].m_pos.addX(-3);
-
 	}
 
+	//テキストの選択処理
+	if (!m_control_flag){
+		if (CKeyData::GetInstance()->IsKeyTrigger(key, PAD_INPUT_UP, KEY_UP)){
+			m_title_text[0].m_type = 1;
+			m_title_text[1].m_type = 0;
+		}
+		if (CKeyData::GetInstance()->IsKeyTrigger(key, PAD_INPUT_DOWN, KEY_DOWN)){
+			m_title_text[1].m_type = 1;
+			m_title_text[0].m_type = 0;
+		}
+	}
 
 
 	if (m_title[3].m_alpha > 255){
@@ -102,9 +123,13 @@ void CGameTitleScreen::Update()
 		if (m_title[3].m_add_move < -6.3f)
 			m_title[3].m_add_move = 0;
 	}
-	if (CChangeManager::GetInstance()->GetChangeAdress()->GetOut())m_state = GAME_SCREEN;
+	if (CChangeManager::GetInstance()->GetChangeAdress()->GetOut()){
+		if (m_title_text[0].m_type == 1)
+			m_state = GAME_SCREEN;
+		else if (m_title_text[1].m_type == 1)
+			m_state = CREDIT_SCREEN;
+	}
 	CChangeManager::GetInstance()->GetChangeAdress()->Update();
-
 }
 
 //描画
@@ -117,8 +142,11 @@ void CGameTitleScreen::Draw()
 		DrawGraph(m_title[i].m_pos.getX(), m_title[i].m_pos.getY() + 15 * sin(m_title[i].m_add_move), title1_img[i], TRUE);
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 	}
-	if (m_title[3].m_alpha > 255)
-		DrawGraph(0, 640, title_text_img, TRUE);
+	if (m_title[3].m_alpha > 255){
+		DrawRotaGraph(m_title_text[0].m_pos.getX(), m_title_text[0].m_pos.getY(), 1, 0, title2_text_img[0][m_title_text[0].m_type], TRUE, FALSE);
+		DrawRotaGraph(m_title_text[1].m_pos.getX(), m_title_text[1].m_pos.getY(), 1, 0, title2_text_img[1][m_title_text[1].m_type], TRUE, FALSE);
+	}	
+	//DrawGraph(0, 640, title_text_img, TRUE);
 
 	CChangeManager::GetInstance()->GetChangeAdress()->Draw();
 

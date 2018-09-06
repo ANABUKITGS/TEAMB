@@ -189,10 +189,9 @@ void CCharaData::Delete(){
 }
 
 void CCharaData::Update(){
-	int _suu = 0;
 	bool _f = false;
 
-	for (auto it1 = m_chara_data.begin(); it1 != m_chara_data.end(); it1++,_suu++){
+	for (auto it1 = m_chara_data.begin(); it1 != m_chara_data.end(); it1++){
 		if (!(*it1)->m_kill_flag){
 			if ((*it1)->m_hp < 1){
 				(*it1)->m_kill_flag = true;
@@ -280,17 +279,6 @@ void CCharaData::LieOnTopProtect(CBaseData* cd1, CBaseData* cd2){
 }
 
 void CCharaData::CBank(CBaseData* cd1, CBaseData* cd2){
-	/*if (cd1->m_knock_stan == true){
-		cd1->m_timer += BANK_STAN;
-		cd2->m_timer += BANK_STAN;
-		cd2->m_knock_stan = true;
-
-		}
-	if (cd2->m_knock_stan == true){
-		cd1->m_timer += BANK_STAN;
-		cd2->m_timer += BANK_STAN;
-		cd1->m_knock_stan = true;
-	}*/
 
 	if (cd1->m_control){
 		if (cd1->m_type == PLAYER)
@@ -324,8 +312,8 @@ void CCharaData::CBank(CBaseData* cd1, CBaseData* cd2){
 
 	_dist /= 2.0f;
 
-	cd1->m_pos += CVector2D(_vx * _dist * 1.1f, _vy*_dist * 1.1f);
-	cd2->m_pos -= CVector2D(_vx * _dist * 1.1f, _vy*_dist * 1.1f);
+	cd1->m_pos += CVector2D(_vx * _dist * 1.1f, _vy * _dist * 1.1f);
+	cd2->m_pos -= CVector2D(_vx * _dist * 1.1f, _vy * _dist * 1.1f);
 	///////////////////////
 	if (cd1->m_bank_flag){
 		//”½”­ŒW”

@@ -22,7 +22,7 @@ CUiData::CUiData(){
 }
 
 CUiData::CUiData(CVector2D _pos, bool _living, float _rad, float _exrate, int _animtype, float _velocity, float _mass, int _hp, float _friction, float _collision, int _type, int _prio, int _r, int _g, int _b, CBaseUpdate* _BUpdate)
-:CBaseData(_pos,_living,_rad,_exrate,_animtype,_velocity,_mass,_hp,_friction,_collision,_type)
+:CBaseData(_pos, _living, _rad, _exrate, _animtype, _velocity, _mass, _hp, _friction, _collision, _type)
 , m_move_pos(_pos)
 , m_move_exrate(0)
 , m_move_count(0)
@@ -34,8 +34,8 @@ CUiData::CUiData(CVector2D _pos, bool _living, float _rad, float _exrate, int _a
 {
 }
 
-CUiData::CUiData(CVector2D _pos, bool _living, float _alpha,float _rad, float _exrate, int _animtype, int _type, int _r, int _g, int _b, CBaseUpdate* _BUpdate)
-:CBaseData(_pos, _living,_alpha, _rad, _exrate, _animtype, _type)
+CUiData::CUiData(CVector2D _pos, bool _living, float _alpha, float _rad, float _exrate, int _animtype, int _type, int _r, int _g, int _b, CBaseUpdate* _BUpdate)
+:CBaseData(_pos, _living, _alpha, _rad, _exrate, _animtype, _type)
 , m_move_pos(_pos)
 , m_move_exrate(0)
 , m_move_count(0)
@@ -78,16 +78,16 @@ CUi::CUi()
 		}
 	}
 
-	m_combo_ui[0] = CUiData(CVector2D(1150, 64), false, 0, 1.0f, 1, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, 0, 0,0,0,0, &Combo);
+	m_combo_ui[0] = CUiData(CVector2D(1150, 64), false, 0, 1.0f, 1, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, 0, 0, 0, 0, 0, &Combo);
 	m_combo_ui[1] = CUiData(CVector2D(1150, 118), false, 0, 1.0f, 2, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, 0, 0, 0, 0, 0, NULL);
 	m_combo_ui[2] = CUiData(CVector2D(1150, 64), false, 0, 1.0f, 1, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, 0, 0, 0, 0, 0, NULL);
 
 	m_item_ui[0] = CUiData(CVector2D(430, 64), false, 0, 1.0f, 1, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, 0, 0, 0, 0, 0, &ItemText);
 	m_item_ui[1] = CUiData(CVector2D(720, 81), false, 0, 1.0f, 2, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, 0, 0, 0, 0, 0, &ItemText);
 
-	m_lv_ui[0] = CUiData(CVector2D(950, 670), true, 0, 0.4f, 3, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, 0, 0,255,255,120, &LvNum);
-	m_lv_ui[1] = CUiData(CVector2D(1050, 670), true, 0, 0.4f, 3, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, 0, 0,120,255,120, &LvNum);
-	m_lv_ui[2] = CUiData(CVector2D(1150, 670), true, 0, 0.4f, 3, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, 0, 0,255,120,120, &LvNum);
+	m_lv_ui[0] = CUiData(CVector2D(950, 670), true, 0, 1.0f, 3, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, 0, 0, 255, 255, 120, &LvNum);
+	m_lv_ui[1] = CUiData(CVector2D(1050, 670), true, 0, 1.0f, 3, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, 0, 0, 120, 255, 120, &LvNum);
+	m_lv_ui[2] = CUiData(CVector2D(1150, 670), true, 0, 1.0f, 3, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, 0, 0, 255, 120, 120, &LvNum);
 
 	LoadDivGraph("media\\img\\stn_book.png", 2, 2, 1, 128, 128, m_icon_img[1], 0);
 	LoadDivGraph("media\\img\\wind_book.png", 2, 2, 1, 128, 128, m_icon_img[0], 0);
@@ -104,8 +104,9 @@ CUi::CUi()
 	m_text_img[LEVEL_TEXT] = LoadGraph("media\\img\\lv.png");
 	m_text_img[START_TEXT] = LoadGraph("media\\img\\start.png");
 
-	LoadDivGraph("media\\img\\num.png", 10, 4, 3, 128, 128, m_num_img, 0);
+	LoadDivGraph("media\\img\\num_lv.png", 11, 4, 3, 64, 64, m_lv_num_img, 0);
 	LoadDivGraph("media\\img\\num_combo.png", 10, 4, 3, 128, 128, m_combo_num_img, 0);
+	LoadDivGraph("media\\img\\num_item.png", 10, 4, 3, 128, 128, m_item_num_img, 0);
 	LoadDivGraph("media\\img\\num_item.png", 10, 4, 3, 128, 128, m_item_num_img, 0);
 
 	m_combo_gage_img = LoadGraph("media\\img\\combo_gage.jpg");
@@ -130,7 +131,7 @@ void CUi::Update(){
 			static float _mv = 0.0f;
 			_mv = m_icon_ui[i].m_pos.getX() - m_icon_ui[i].m_move_pos.getX();
 			m_icon_ui[i].m_pos.setX(m_icon_ui[i].m_pos.getX() - sin(radian(m_icon_ui[i].m_move_count)) * _mv);
-			
+
 			if (m_icon_ui[i].m_exrate != m_icon_ui[i].m_move_exrate){
 				static float _mv_e = 0.0f;
 				_mv_e = m_icon_ui[i].m_exrate - m_icon_ui[i].m_move_exrate;
@@ -152,7 +153,7 @@ void CUi::Update(){
 		m_comb_timer = 0;
 	}
 	else if (m_comb_timer > 0){
-		m_comb_timer-=0.8533333f;
+		m_comb_timer -= 0.8533333f;
 	}
 
 	for (int i = 0; i < 2; i++){
@@ -277,9 +278,9 @@ void CUi::Draw(){
 		SetDrawBright(m_lv_ui[i].m_red, m_lv_ui[i].m_green, m_lv_ui[i].m_blue);
 		for (int j = 0; j < _num; j++){
 			DrawRotaGraph(m_lv_ui[i].m_pos.getX() + 30 + j * 32,
-				m_lv_ui[i].m_pos.getY() - 8, m_lv_ui[i].m_exrate, 0, m_num_img[(buf[j] - '0')], TRUE, FALSE);		//'0'
+				m_lv_ui[i].m_pos.getY() - 8, m_lv_ui[i].m_exrate, 0, m_lv_num_img[(buf[j] - '0')], TRUE, FALSE);		//'0'
 		}
-		DrawRotaGraph(m_lv_ui[i].m_pos.getX(), m_lv_ui[i].m_pos.getY(), /*m_lv_ui[i].m_exrate*/0.4f, 0, m_text_img[2], TRUE, FALSE);		//'0'
+		DrawRotaGraph(m_lv_ui[i].m_pos.getX() - 20, m_lv_ui[i].m_pos.getY(), m_lv_ui[i].m_exrate, 0, m_lv_num_img[10], TRUE, FALSE);		//'0'
 		SetDrawBright(255, 255, 255);
 	}
 
