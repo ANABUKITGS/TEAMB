@@ -22,8 +22,8 @@ const int KEY_DATA = 10;				//KeyNumÇÃå¬êîï™
 const float PLAYER_COLLISION = 23.0f;				//ìñÇΩÇËîªíËÇÃëÂÇ´Ç≥
 const float PLAYER_KNOCK_BACK_COLLISION = 80.0f;	
 const float PLAYER_STAN_COLLISION = 137.0f;
-const float PLAYER_BOMB_COLLISION = 80.0f;
-const float PLAYER_HURRICANE_COLLISION = 288.0f;
+const float PLAYER_BOMB_COLLISION = 60.0f;
+const float PLAYER_HURRICANE_COLLISION = 230.0f;
 
 const float ENEMY_COLLISION = 19.0f;
 const float ENEMY_LONG_COLLISION = 19.0f;
@@ -50,8 +50,8 @@ const float PLAYER_ATTACK_KNOCK_BACK = 4.0f;		//é©ã@ÇÃçUåÇån
 const float PLAYER_ATTACK_STAN = 200.0f;
 const float PLAYER_STAN_EXRATE = 2.3f;
 const float PLAYER_ATTACK_BOMB = 20.0f;
-const float PLAYER_BOMB_EXRATE = 0.4f;
-const float PLAYER_BOMB_RANGE_EXRATE = 0.33f;
+const float PLAYER_BOMB_EXRATE = 0.26f;
+const float PLAYER_BOMB_RANGE_EXRATE = 0.23f;
 const float PLAYER_BOMB_KNOCK_BACK = 14.0f;
 const float PLAYER_HURRICANE_KNOCK_BACK = 1.2f;
 
@@ -84,9 +84,9 @@ const int ENEMY_BOMB_DAMAGE = 50;
 const float ENEMY_BOMB_EXRATE = 1.6;
 
 const int ITEM_CREATE_NUM = 4;						//ÉAÉCÉeÉÄån
-const float ITEM_STAN_UP = 0.1f;
-const float ITEM_KNOCK_BACK_UP = 0.1f;
-const float ITEM_BOMB_UP = 0.2f;
+const float ITEM_STAN_UP = 0.045f;
+const float ITEM_KNOCK_BACK_UP = 0.05f;
+const float ITEM_BOMB_UP = 0.09f;
 const int ITEM_HEEL_UP = 30;
 
 const int TIME_LIMIT = 18000;	//5ï™				//UIån

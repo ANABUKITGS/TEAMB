@@ -116,15 +116,19 @@ CPlayer::CPlayer()
 	m_draw_priority = 2;
 	m_update = true;
 
+	i = 0;
+
 	CPlayerManager::GetInstance()->Init(this);
 }
 
 void CPlayer::Update(){
 	int key = GetJoypadInputState(DX_INPUT_KEY_PAD1);
-
-	/*if (CKeyData::GetInstance()->IsKeyTrigger(key, PAD_INPUT_3, KEY_PAD_INPUT_3)){
-		//CUiManager::GetInstance()->GetUiAdress()->AddComb();
-	}*/
+	
+	if (CKeyData::GetInstance()->IsKeyTrigger(key, PAD_INPUT_3, KEY_PAD_INPUT_3)){
+		m_player->m_stan += ITEM_STAN_UP;
+		CUiManager::GetInstance()->GetUiAdress()->GetLvUiData(0)->m_hp++;
+		CUiManager::GetInstance()->GetUiAdress()->GetLvUiData(0)->m_exrate = 1.3f;
+	}
 
 	if (!m_t_cont)
 		Attack(key);
@@ -368,17 +372,26 @@ void CPlayer::Attack(int key){
 		{
 		case 0:
 			m_player->m_attack_range.m_move_pos = m_player->m_pos;
-			m_player->m_attack_range.m_exrate = 0.45f * (1 + (int)m_player->m_chage_count * 0.1f) * m_player->m_stan;
+			if (m_player->m_stan - 1.0f > ITEM_STAN_UP * 9.0f)
+				m_player->m_attack_range.m_exrate = 0.45f * (1 + (int)m_player->m_chage_count * 0.1f) * (1.0f + ITEM_STAN_UP * 9.0f);
+			else
+				m_player->m_attack_range.m_exrate = 0.45f * (1 + (int)m_player->m_chage_count * 0.1f) * m_player->m_stan;
 			m_player->m_attack_range.m_animtype = 0;
 			break;
 		case 1:
 			m_player->m_attack_range.m_move_pos = CVector2D(m_player->m_pos.getX() + PLAYER_HURRICANE_RANGE * cos(m_player->m_rad), m_player->m_pos.getY() + PLAYER_HURRICANE_RANGE * sin(m_player->m_rad));
-			m_player->m_attack_range.m_exrate = 0.85f * (1 + (int)m_player->m_chage_count * 0.1f) * m_player->m_knock_back;
+			if (m_player->m_knock_back - 1.0f > ITEM_KNOCK_BACK_UP * 9.0f)
+				m_player->m_attack_range.m_exrate = 0.60f * (1 + (int)m_player->m_chage_count * 0.1f) * (1.0f + ITEM_KNOCK_BACK_UP * 9.0f);
+			else
+				m_player->m_attack_range.m_exrate = 0.60f * (1 + (int)m_player->m_chage_count * 0.1f) * m_player->m_knock_back;
 			m_player->m_attack_range.m_animtype = 1;
 			break;
 		case 2:
 			m_player->m_attack_range.m_move_pos = CVector2D(m_player->m_pos.getX() + PLAYER_BOMB_RANGE * cos(m_player->m_rad), m_player->m_pos.getY() + PLAYER_BOMB_RANGE * sin(m_player->m_rad));
-			m_player->m_attack_range.m_exrate = PLAYER_BOMB_RANGE_EXRATE * (1 + (int)m_player->m_chage_count * 0.1f) * m_player->m_bomb;
+			if (m_player->m_bomb - 1.0f > ITEM_BOMB_UP * 9.0f)
+				m_player->m_attack_range.m_exrate = PLAYER_BOMB_RANGE_EXRATE * (1 + (int)m_player->m_chage_count * 0.1f) * (1.0f+ITEM_BOMB_UP * 9.0f);
+			else
+				m_player->m_attack_range.m_exrate = PLAYER_BOMB_RANGE_EXRATE * (1 + (int)m_player->m_chage_count * 0.1f) * m_player->m_bomb;
 			m_player->m_attack_range.m_animtype = 2;
 			break;
 		default:

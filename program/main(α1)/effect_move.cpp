@@ -139,7 +139,6 @@ void CEffectMovePattern5::Move(CEffectData *cd){
 	for (auto it1 = CCharaData::GetInstance()->GetCharaData()->begin();
 		it1 != CCharaData::GetInstance()->GetCharaData()->end(); it1++){
 		if ((*it1)->m_type != PLAYER){
-			//if (!(*it1)->m_control){
 			if ((*it1)->m_invincible == 0){
 				if (IsHitCircle(cd->m_collision, (*it1)->m_collision, CVector2D(cd->m_pos.getX(),
 					cd->m_pos.getY()), (*it1)->m_pos)){
@@ -154,7 +153,6 @@ void CEffectMovePattern5::Move(CEffectData *cd){
 					}
 				}
 			}
-			//}
 		}
 	}
 }

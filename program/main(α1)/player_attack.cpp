@@ -8,7 +8,17 @@ CEffectMovePattern1 EMP1;
 CEffectMovePattern5 EMP5;
 
 void CStan::Type(CPlayerData *cd){
-	CEffectData *temp = new CEffectData(CVector2D(cd->m_pos.getX(), cd->m_pos.getY()), true, 0, PLAYER_STAN_EXRATE * (1 + (int)cd->m_chage_count * 0.1f) * cd->m_stan, STAN_NUM, 0, 10, 99, 0, PLAYER_STAN_COLLISION * (1 + (int)cd->m_chage_count * 0.1f) * cd->m_stan, STAN, 1, NULL);
+	float _stan_collision = 0;
+	float _stan_exrate = 0;
+	if (cd->m_stan - 1.0f > ITEM_STAN_UP * 9.0f){
+		_stan_collision = PLAYER_STAN_COLLISION * (1 + (int)cd->m_chage_count * 0.1f) * (1.0f + ITEM_STAN_UP * 9.0f);
+		_stan_exrate = PLAYER_STAN_EXRATE * (1 + (int)cd->m_chage_count * 0.1f) * (1.0f + ITEM_STAN_UP * 9.0f);
+	}
+	else{
+		_stan_collision = PLAYER_STAN_COLLISION * (1 + (int)cd->m_chage_count * 0.1f) * cd->m_stan;
+		_stan_exrate = PLAYER_STAN_EXRATE * (1 + (int)cd->m_chage_count * 0.1f) * cd->m_stan;
+	}
+	CEffectData *temp = new CEffectData(CVector2D(cd->m_pos.getX(), cd->m_pos.getY()), true, 0, _stan_exrate, STAN_NUM, 0, 10, 99, 0, _stan_collision, STAN, 1, NULL);
 	for (auto it = CCharaData::GetInstance()->GetCharaData()->begin();
 		it != CCharaData::GetInstance()->GetCharaData()->end(); it++){
 		if (cd->m_pos != (*it)->m_pos){
@@ -41,18 +51,39 @@ void CKnockBack::Type(CPlayerData *cd){
 }
 
 void CHurricane::Type(CPlayerData *cd){
+	float _cyclone_collision = 0;
+	float _cyclone_exrate = 0;
+	if (cd->m_knock_back - 1.0f > ITEM_KNOCK_BACK_UP * 9.0f){
+		_cyclone_collision = PLAYER_HURRICANE_COLLISION * (1 + ITEM_KNOCK_BACK_UP * 9.0f);
+		_cyclone_exrate = 0.8f * (1 + (int)cd->m_chage_count * 0.1f) * (1 + ITEM_KNOCK_BACK_UP * 9.0f);
+	}
+	else{
+		_cyclone_collision = PLAYER_HURRICANE_COLLISION * cd->m_knock_back;
+		_cyclone_exrate = 0.8f * (1 + (int)cd->m_chage_count * 0.1f) * cd->m_knock_back;
+	}
 	PlaySoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(S_ATTACK_WIND), DX_PLAYTYPE_BACK);
-	CEffectData *temp = new CEffectData(CVector2D(cd->m_attack_range.m_pos.getX(), cd->m_attack_range.m_pos.getY()), true, cd->m_rad + radian(90), 1.0f * (1 + (int)cd->m_chage_count * 0.1f) * cd->m_knock_back, KNOCK_BACK_NUM, PLAYER_HURRICANE_KNOCK_BACK + 3.5f * cd->m_knock_back, 10, 99, 0, PLAYER_HURRICANE_COLLISION * cd->m_knock_back, KNOCK_BACK, 3, &EMP5);
+	CEffectData *temp = new CEffectData(CVector2D(cd->m_attack_range.m_pos.getX(), cd->m_attack_range.m_pos.getY()), true, cd->m_rad + radian(90), _cyclone_exrate, KNOCK_BACK_NUM, PLAYER_HURRICANE_KNOCK_BACK + 3.5f * cd->m_knock_back, 10, 99, 0, _cyclone_collision, KNOCK_BACK, 3, &EMP5);
 	CEffectManager::GetInstance()->GetEffectAdress()->GetEffectData()->push_back(temp);
 }
 
 void CBomb::Type(CPlayerData *cd){
-	CEffectData *temp = new CEffectData(CVector2D(cd->m_attack_range.m_pos.getX(), cd->m_attack_range.m_pos.getY()), true, cd->m_rad + radian(90), PLAYER_BOMB_EXRATE * (1 + (int)cd->m_chage_count * 0.1f) * cd->m_bomb, BOMB_CHARGE_NUM, 0, (int)cd->m_chage_count * cd->m_bomb, 0, 0, PLAYER_BOMB_COLLISION * (1 + (int)cd->m_chage_count * 0.1f) * cd->m_bomb, CHARGE_BOMB, 4, &EMP1);
+	float _bomb_collision = 0;
+	float _bomb_exrate = 0;
+	if (cd->m_bomb - 1.0f > ITEM_BOMB_UP * 9.0f){
+		_bomb_collision = PLAYER_BOMB_COLLISION * (1 + (int)cd->m_chage_count * 0.1f) * (1.0f + ITEM_BOMB_UP * 9.0f);
+		_bomb_exrate = (PLAYER_BOMB_EXRATE+0.1) * (1 + (int)cd->m_chage_count * 0.1f) * (1.0f + ITEM_BOMB_UP * 9.0f);
+	}
+	else{
+		_bomb_collision = PLAYER_BOMB_COLLISION * (1 + (int)cd->m_chage_count * 0.1f) * cd->m_bomb;
+		_bomb_exrate = PLAYER_BOMB_EXRATE * (1 + (int)cd->m_chage_count * 0.1f) * cd->m_bomb;
+	}
+	CEffectData *temp = new CEffectData(CVector2D(cd->m_attack_range.m_pos.getX(), cd->m_attack_range.m_pos.getY()), true, cd->m_rad + radian(90), _bomb_exrate, BOMB_CHARGE_NUM, 0, (int)cd->m_chage_count * cd->m_bomb, 0, 0, _bomb_collision, CHARGE_BOMB, 4, &EMP1);
 	CEffectManager::GetInstance()->GetEffectAdress()->GetEffectData()->push_back(temp);
 }
 
 
 void CPad::Type(CPlayerData *cd, int key, float &_fx, float &_fy){
+	
 	////スティックの座標受け取り用////
 	int _sx = 0, _sy = 0;
 	GetJoypadAnalogInput(&_sx, &_sy, DX_INPUT_PAD1);
