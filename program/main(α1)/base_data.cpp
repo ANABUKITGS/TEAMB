@@ -298,6 +298,7 @@ void CCharaData::CBank(CBaseData* cd1, CBaseData* cd2){
 	cd2->m_control = false;
 
 	/////‚ß‚èž‚Ý–hŽ~/////
+
 	float _vx = cd1->m_pos.getX() - cd2->m_pos.getX();
 	float _vy = cd1->m_pos.getY() - cd2->m_pos.getY();
 
@@ -312,8 +313,8 @@ void CCharaData::CBank(CBaseData* cd1, CBaseData* cd2){
 
 	_dist /= 2.0f;
 
-	cd1->m_pos += CVector2D(_vx * _dist * 1.1f, _vy * _dist * 1.1f);
-	cd2->m_pos -= CVector2D(_vx * _dist * 1.1f, _vy * _dist * 1.1f);
+	cd1->m_pos += CVector2D(_vx * _dist * 1.3f, _vy * _dist * 1.3f);
+	cd2->m_pos -= CVector2D(_vx * _dist * 1.3f, _vy * _dist * 1.3f);
 	///////////////////////
 	if (cd1->m_bank_flag){
 		//”½”­ŒW”
@@ -378,6 +379,13 @@ void CCharaData::CBank(CBaseData* cd1, CBaseData* cd2){
 			cd2->m_pos.setY(1215);
 		}
 	}
+	if (cd2->m_rad < -10000 || cd2->m_rad > 10000){
+		cd2->m_rad = 0;
+	}
+	if (cd1->m_rad < -10000 || cd1->m_rad > 10000){
+		cd1->m_rad = 0;
+	}
+
 }
 
 void CCharaData::Draw(){
