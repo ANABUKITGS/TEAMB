@@ -15,6 +15,7 @@ class CClearData{
 public:
 	CVector2D m_pos;
 	int m_animtype;
+	int m_type;
 };
 
 //タイトルスクリーンクラス
@@ -30,22 +31,15 @@ public:
 	void Update();
 	void Draw();
 private:
-	int gameclear_text_img;
-	int gameclear_img[27];
 	int m_enemy_img[5][88];
-
 	int gameclear_chara_img[5];
-	int gameclear_t_img;
+	int gameclear_text_img;
 
-
-	int m_timer;
-	int m_title_num;
-
+	int m_x, m_xx;
 	float m_ac;
 	int m_animcounter;
 
-	CClearData m_clear[5];
-
+	CClearData m_clear[6];
 	SCREEN m_state;
 };
 

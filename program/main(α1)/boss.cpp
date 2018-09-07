@@ -178,7 +178,7 @@ void CBoss::Update(){
 				if (randf > 150 && randf < 375){
 					m_attack_counter = 1;
 				}
-				if (randf > 375 && randf < 500){
+				if (randf > 375){
 					m_attack_counter = 3;
 				}
 			}

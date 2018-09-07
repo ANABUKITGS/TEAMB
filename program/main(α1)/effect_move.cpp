@@ -63,12 +63,13 @@ void CEffectMovePattern2::Move(CEffectData *cd){
 						}
 						//’Ç‰Á«
 						else if ((*it1)->m_type == BOSS){
+							(*it1)->m_damage = (int)10 * cd->m_mass / 2;
 							for (auto it2 = CEnemyManager::GetInstance()->GetEnemyAdress()->GetEnemyData()->begin();
 								it2 != CEnemyManager::GetInstance()->GetEnemyAdress()->GetEnemyData()->end(); it2++){
 								if ((*it2)->m_control == false){
 									if (IsHitCircle(cd->m_collision, (*it2)->m_collision, CVector2D(cd->m_pos.getX(),
 										cd->m_pos.getY()), (*it2)->m_pos)){
-										(*it1)->m_damage = (int)PLAYER_ATTACK_BOMB * cd->m_mass / 5;
+										(*it1)->m_damage = (int)PLAYER_ATTACK_BOMB * cd->m_mass;
 										(*it2)->m_control = true;
 									}
 								}
