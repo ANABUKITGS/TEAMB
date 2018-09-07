@@ -72,7 +72,7 @@ CTutorialData::CTutorialData(CVector2D _pos, bool _living, float _alpha, float _
 
 	m_t_range_img[0] = LoadGraph("media\\img\\arrow_head.png");
 	m_t_range_img[1] = LoadGraph("media\\img\\range_exp_o_ma.png");
-	m_t_range_img[2] = LoadGraph("media\\img\\great.png");
+	m_t_range_img[2] = LoadGraph("media\\img\\tutorial\\great.png");
 	
 	LoadDivGraph("media\\img\\tutorial\\yes.png", 2, 1, 2, 256, 64, m_serect_text_img[0], 0);
 	LoadDivGraph("media\\img\\tutorial\\no.png", 2, 1, 2, 256, 64, m_serect_text_img[1], 0);

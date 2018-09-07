@@ -81,7 +81,9 @@ CPlayer::CPlayer()
 	LoadDivGraph("media\\img\\hero_m.png", 64, 4, 16, 64, 64, m_player_img, 0);
 	LoadDivGraph("media\\img\\charge.png", 10, 2, 5, 384, 384, m_player_charge_img, 0);
 	LoadDivGraph("media\\img\\avoid_aria.png", 20, 2, 10, 256, 256, m_player_avoid_img, 0);
-	LoadDivGraph("media\\img\\gate.png", 16, 4, 4, 256, 256, m_player_gate_img, 0);
+	
+	m_player_gate_img[0] = LoadGraph("media\\img\\gate_ver2.png");
+	m_player_gate_img[1] = LoadGraph("media\\img\\gate_o_ver2.png");
 	
 	m_player_range_img[0][0] = LoadGraph("media\\img\\range_stn_i_ma.png");
 	m_player_range_img[0][1] = LoadGraph("media\\img\\range_stn_o_ma.png");
@@ -109,6 +111,8 @@ CPlayer::CPlayer()
 	m_timer = 0.0f;
 	m_teleport_flag = false;
 	m_t_cont = false;
+	m_t_cont2 = false;
+	m_anim_pass = false;
 	m_attack_state = 2;
 	m_item_get = false;
 	m_priority = eDWP_PLAYER;
@@ -116,7 +120,6 @@ CPlayer::CPlayer()
 	m_draw_priority = 2;
 	m_update = true;
 
-	i = 0;
 
 	CPlayerManager::GetInstance()->Init(this);
 }
@@ -138,6 +141,7 @@ void CPlayer::Update(){
 	ItemGet();
 
 	if (!CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetTutorialFlag())
+	if (m_t_cont2 == false)
 		m_teleport_flag = Teleport(key);
 
 	AttackRangeMove();
@@ -160,10 +164,8 @@ void CPlayer::Update(){
 
 	//ゲートエフェクト
 	if (m_player->m_gate_effect.m_living == true)
-		m_player->m_gate_effect.m_amine_rate++;
-	if (m_player->m_gate_effect.m_amine_rate == 80){
-		m_player->m_gate_effect.m_amine_rate = 0;
-	}
+		m_player->m_gate_effect.m_rad += 0.007;
+	
 
 	//攻撃時の範囲エフェクト
 	if (m_player->m_attack_range.m_living == true){
@@ -393,12 +395,14 @@ void CPlayer::Attack(int key){
 		}
 		m_player->m_attack_range.m_living = true;
 		
+		m_t_cont2 = true;
 		m_player->m_motion_type = 32;
 	}
 	else if (m_attack_state == SEPARATE){
 		_temp = m_player->m_chage_count;
 		m_player->m_chage_count = 1.0f;
 		m_player->m_attack_range.m_living = false;
+		m_t_cont2 = false;
 	}
 }
 
@@ -408,6 +412,7 @@ bool CPlayer::Teleport(int key){
 		_type = CKeyData::GetInstance()->LongPress2(key, PAD_INPUT_1, KEY_PAD_INPUT_1);
 	}
 	if (_type == PRESSING){
+		m_anim_pass = false;
 		m_timer += 0.019;
 		m_player->m_gate_effect.m_living = true;
 		m_player->m_gate_effect.m_pos = m_player->m_pos;
@@ -421,10 +426,13 @@ bool CPlayer::Teleport(int key){
 		m_t_cont = true;
 	}
 	else if (_type == SEPARATE){
+		if (m_anim_pass == false){
+			m_anim_pass = true;
+			m_player->m_motion_type = 0;
+		}
 		m_timer = 0.0f;
 		m_player->m_gate_effect.m_living = false;
 		m_t_cont = false;
-		//m_player->m_motion_type = 0;
 		return false;
 	}
 	return false;
@@ -532,9 +540,12 @@ void CPlayer::Draw(){
 		0, m_player_avoid_img[m_player->m_avoid_effect.m_amine_rate], TRUE, FALSE);
 
 	//ゲートエフェクト
-	if (m_player->m_gate_effect.m_living)
-		DrawRotaGraph(m_player->m_gate_effect.m_pos.getX(), m_player->m_gate_effect.m_pos.getY() - 29, m_player->m_gate_effect.m_exrate,
-		0, m_player_gate_img[m_player->m_gate_effect.m_amine_rate / 5], TRUE, FALSE);
+	if (m_player->m_gate_effect.m_living){
+		DrawRotaGraph(m_player->m_gate_effect.m_pos.getX(), m_player->m_gate_effect.m_pos.getY() + 15, m_player->m_gate_effect.m_exrate,
+			m_player->m_gate_effect.m_rad, m_player_gate_img[0], TRUE, FALSE);
+		DrawRotaGraph(m_player->m_gate_effect.m_pos.getX(), m_player->m_gate_effect.m_pos.getY() + 15, m_player->m_gate_effect.m_exrate,
+			-m_player->m_gate_effect.m_rad, m_player_gate_img[1], TRUE, FALSE);
+	}
 
 	//攻撃範囲のエフェクト
 	if (m_player->m_attack_range.m_living){

@@ -104,7 +104,7 @@ private:
 	int m_player_img[64];
 	int m_player_charge_img[10];
 	int m_player_avoid_img[20];
-	int m_player_gate_img[16];
+	int m_player_gate_img[2];
 	int m_player_range_img[3][2];
 
 	int m_attack_state;		//チュートリアルで使用
@@ -112,8 +112,9 @@ private:
 
 	float m_timer;
 	bool m_teleport_flag;
-	bool m_t_cont;
-	int i;
+	bool m_t_cont;			//テレポート時の行動制限
+	bool m_t_cont2;			//攻撃時のテレポートの制限
+	bool m_anim_pass;		//テレポートのアニメーション用　無くすといろんな方向に向く
 public:
 	CPlayer();
 	~CPlayer(){};

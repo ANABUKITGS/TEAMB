@@ -86,7 +86,7 @@ const float ENEMY_BOMB_EXRATE = 1.6;
 const int ITEM_CREATE_NUM = 4;						//ƒAƒCƒeƒ€Œn
 const float ITEM_STAN_UP = 0.045f;
 const float ITEM_KNOCK_BACK_UP = 0.06f;
-const float ITEM_BOMB_UP = 0.1f;
+const float ITEM_BOMB_UP = 0.15f;
 const int ITEM_HEEL_UP = 30;
 
 const int TIME_LIMIT = 18000;	//5•ª				//UIŒn
