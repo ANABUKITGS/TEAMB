@@ -124,12 +124,6 @@ CPlayer::CPlayer()
 void CPlayer::Update(){
 	int key = GetJoypadInputState(DX_INPUT_KEY_PAD1);
 	
-	/*if (CKeyData::GetInstance()->IsKeyTrigger(key, PAD_INPUT_3, KEY_PAD_INPUT_3)){
-		m_player->m_stan += ITEM_STAN_UP;
-		CUiManager::GetInstance()->GetUiAdress()->GetLvUiData(0)->m_hp++;
-		CUiManager::GetInstance()->GetUiAdress()->GetLvUiData(0)->m_exrate = 1.3f;
-	}*/
-
 	if (!m_t_cont)
 		Attack(key);
 	

@@ -62,27 +62,24 @@ void CEffectMovePattern2::Move(CEffectData *cd){
 							(*it1)->m_damage = (int)PLAYER_ATTACK_BOMB * cd->m_mass / 3;
 						}
 						//追加↓
-						else if ((*it1)->m_type == ENEMY){
-							(*it1)->m_damage = (int)PLAYER_ATTACK_BOMB * cd->m_mass;
-							(*it1)->m_hp -= (*it1)->m_damage;
-						}
 						else if ((*it1)->m_type == BOSS){
 							for (auto it2 = CEnemyManager::GetInstance()->GetEnemyAdress()->GetEnemyData()->begin();
 								it2 != CEnemyManager::GetInstance()->GetEnemyAdress()->GetEnemyData()->end(); it2++){
 								if ((*it2)->m_control == false){
 									if (IsHitCircle(cd->m_collision, (*it2)->m_collision, CVector2D(cd->m_pos.getX(),
 										cd->m_pos.getY()), (*it2)->m_pos)){
-										(*it1)->m_damage = (int)PLAYER_ATTACK_BOMB * cd->m_mass;
-										(*it1)->m_hp -= (*it1)->m_damage / 5;
+										(*it1)->m_damage = (int)PLAYER_ATTACK_BOMB * cd->m_mass / 5;
 										(*it2)->m_control = true;
 									}
 								}
 							}
 						}
+						else{
+							(*it1)->m_damage = (int)PLAYER_ATTACK_BOMB * cd->m_mass;
+						}
 					}
 					if (cd->m_friction == 1){//ボム敵のダメージ
 						(*it1)->m_damage = (int)PLAYER_ATTACK_BOMB * cd->m_mass;
-						//(*it1)->m_hp -= (*it1)->m_damage;
 					}
 					(*it1)->m_hp -= (*it1)->m_damage;
 					if ((*it1)->m_hp < 0)
