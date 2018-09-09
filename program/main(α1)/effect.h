@@ -40,7 +40,10 @@ public:
 class CEffectData : public CBaseData{
 public:
 	CEffectData();
+	//Šî–{Œ`
 	CEffectData(CVector2D _pos, bool _living, float _rad, float _exrate, int _animtype, float _velocity, float _mass, int _hp, float _friction, float _collision, float _type, int _rate, CBaseEffectMove *_BEMove);
+	//‰æ‘œ‚ÌF‚ð•Ï‚¦‚½‚¢‚È‚ç‚±‚ê
+	CEffectData(CVector2D _pos, bool _living, float _rad, float _exrate, int _animtype, float _velocity, float _mass, int _hp, float _friction, float _collision, float _type, int _rate, CBaseEffectMove *_BEMove,int _red,int _green,int _blue);
 	CEffectData(CBaseData _temp, int _rate, CBaseEffectMove *_BEMove);
 	~CEffectData(){};
 	
@@ -48,6 +51,9 @@ public:
 	void Mover(){ if (BEMove != NULL)BEMove->Move(this); };
 
 	int m_rate;
+	int m_red;
+	int m_green;
+	int m_blue;
 };
 
 class CEffect : public CTask{

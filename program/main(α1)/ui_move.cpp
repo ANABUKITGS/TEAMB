@@ -115,23 +115,26 @@ void CLvNum::Update(CUiData *cd){
 }
 
 void CStartText::Update(CUiData *cd){
-	if (cd->m_pos.getX() >  730){
-		cd->m_pos.addX(-7);
-		if (cd->m_alpha < 256)
-			cd->m_alpha += 10;
-		else
-			cd->m_alpha = 255;
-	}
-	else if (cd->m_pos.getX() > 520){
-		cd->m_pos.addX(-1);
-	}
-	else{
-		cd->m_pos.addX(-7);
-		if (cd->m_alpha > 0)
-			cd->m_alpha -= 10;
+	if (CUiManager::GetInstance()->GetUiAdress()->GetPass() == 1){
+		if (cd->m_pos.getX() > 730){
+			cd->m_pos.addX(-7);
+			if (cd->m_alpha < 256)
+				cd->m_alpha += 10;
+			else
+				cd->m_alpha = 255;
+		}
+		else if (cd->m_pos.getX() > 520){
+			cd->m_pos.addX(-1);
+		}
 		else{
-			CUiManager::GetInstance()->GetUiAdress()->SetPass(2);
-			cd->m_living = false;
+			cd->m_pos.addX(-7);
+			if (cd->m_alpha > 0)
+				cd->m_alpha -= 10;
+			else{
+				CUiManager::GetInstance()->GetUiAdress()->SetPass(2);
+				//cd->m_living = false;
+				CUiManager::GetInstance()->GetUiAdress()->StartKill();
+			}
 		}
 	}
 }

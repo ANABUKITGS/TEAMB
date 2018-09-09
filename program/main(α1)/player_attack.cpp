@@ -10,9 +10,9 @@ CEffectMovePattern5 EMP5;
 void CStan::Type(CPlayerData *cd){
 	float _stan_collision = 0;
 	float _stan_exrate = 0;
-	if (cd->m_stan - 1.0f > ITEM_STAN_UP * 9.0f){
-		_stan_collision = PLAYER_STAN_COLLISION * (1 + (int)cd->m_chage_count * 0.1f) * (1.0f + ITEM_STAN_UP * 9.0f);
-		_stan_exrate = PLAYER_STAN_EXRATE * (1 + (int)cd->m_chage_count * 0.1f) * (1.0f + ITEM_STAN_UP * 9.0f);
+	if (cd->m_stan - 1.0f > ITEM_STAN_UP * MAX_LV){
+		_stan_collision = PLAYER_STAN_COLLISION * (1 + (int)cd->m_chage_count * 0.1f) * (1.0f + ITEM_STAN_UP * MAX_LV);
+		_stan_exrate = PLAYER_STAN_EXRATE * (1 + (int)cd->m_chage_count * 0.1f) * (1.0f + ITEM_STAN_UP * MAX_LV);
 	}
 	else{
 		_stan_collision = PLAYER_STAN_COLLISION * (1 + (int)cd->m_chage_count * 0.1f) * cd->m_stan;
@@ -53,9 +53,9 @@ void CKnockBack::Type(CPlayerData *cd){
 void CHurricane::Type(CPlayerData *cd){
 	float _cyclone_collision = 0;
 	float _cyclone_exrate = 0;
-	if (cd->m_knock_back - 1.0f > ITEM_KNOCK_BACK_UP * 9.0f){
-		_cyclone_collision = PLAYER_HURRICANE_COLLISION * (1 + ITEM_KNOCK_BACK_UP * 9.0f);
-		_cyclone_exrate = 0.8f * (1 + (int)cd->m_chage_count * 0.1f) * (1 + ITEM_KNOCK_BACK_UP * 9.0f);
+	if (cd->m_knock_back - 1.0f > ITEM_KNOCK_BACK_UP * MAX_LV){
+		_cyclone_collision = PLAYER_HURRICANE_COLLISION * (1 + ITEM_KNOCK_BACK_UP * MAX_LV);
+		_cyclone_exrate = 0.8f * (1 + (int)cd->m_chage_count * 0.1f) * (1 + ITEM_KNOCK_BACK_UP * MAX_LV);
 	}
 	else{
 		_cyclone_collision = PLAYER_HURRICANE_COLLISION * cd->m_knock_back;
@@ -69,9 +69,9 @@ void CHurricane::Type(CPlayerData *cd){
 void CBomb::Type(CPlayerData *cd){
 	float _bomb_collision = 0;
 	float _bomb_exrate = 0;
-	if (cd->m_bomb - 1.0f > ITEM_BOMB_UP * 9.0f){
-		_bomb_collision = PLAYER_BOMB_COLLISION * (1 + (int)cd->m_chage_count * 0.1f) * (1.0f + ITEM_BOMB_UP * 9.0f);
-		_bomb_exrate = (PLAYER_BOMB_EXRATE+0.1) * (1 + (int)cd->m_chage_count * 0.1f) * (1.0f + ITEM_BOMB_UP * 9.0f);
+	if (cd->m_bomb - 1.0f > ITEM_BOMB_UP * MAX_LV){
+		_bomb_collision = PLAYER_BOMB_COLLISION * (1 + (int)cd->m_chage_count * 0.1f) * (1.0f + ITEM_BOMB_UP * MAX_LV);
+		_bomb_exrate = (PLAYER_BOMB_EXRATE + 0.1) * (1 + (int)cd->m_chage_count * 0.1f) * (1.0f + ITEM_BOMB_UP * MAX_LV);
 	}
 	else{
 		_bomb_collision = PLAYER_BOMB_COLLISION * (1 + (int)cd->m_chage_count * 0.1f) * cd->m_bomb;
@@ -117,21 +117,21 @@ void CKeyBoard::Type(CPlayerData *cd, int key, float &_fx, float &_fy){
 
 void CStanUp::Type(CPlayerData *cd){
 	cd->m_stan += ITEM_STAN_UP;
-	if (CUiManager::GetInstance()->GetUiAdress()->GetLvUiData(0)->m_hp < 9)
+	if (CUiManager::GetInstance()->GetUiAdress()->GetLvUiData(0)->m_hp < (int)MAX_LV)
 		CUiManager::GetInstance()->GetUiAdress()->GetLvUiData(0)->m_hp++;
 	CUiManager::GetInstance()->GetUiAdress()->GetLvUiData(0)->m_exrate = 1.3f;
 }
 
 void CKnockBackUp::Type(CPlayerData *cd){
 	cd->m_knock_back += ITEM_KNOCK_BACK_UP;
-	if (CUiManager::GetInstance()->GetUiAdress()->GetLvUiData(1)->m_hp < 9)
+	if (CUiManager::GetInstance()->GetUiAdress()->GetLvUiData(1)->m_hp < (int)MAX_LV)
 		CUiManager::GetInstance()->GetUiAdress()->GetLvUiData(1)->m_hp++;
 	CUiManager::GetInstance()->GetUiAdress()->GetLvUiData(1)->m_exrate = 1.3f;
 }
 
 void CBombUp::Type(CPlayerData *cd){
 	cd->m_bomb += ITEM_BOMB_UP;
-	if (CUiManager::GetInstance()->GetUiAdress()->GetLvUiData(2)->m_hp < 9)
+	if (CUiManager::GetInstance()->GetUiAdress()->GetLvUiData(2)->m_hp < (int)MAX_LV)
 		CUiManager::GetInstance()->GetUiAdress()->GetLvUiData(2)->m_hp++;
 	CUiManager::GetInstance()->GetUiAdress()->GetLvUiData(2)->m_exrate = 1.3f;
 }

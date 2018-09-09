@@ -62,10 +62,12 @@ public:
 	CUiData();
 	CUiData(CVector2D _pos, bool _living, float _rad, float _exrate, int _animtype, float _velocity, float _mass, int _hp, float _friction, float _collision, int _type, int _prio,int _r,int _g,int _b, CBaseUpdate* _BUpdate);
 	CUiData(CVector2D _pos, bool _living,float _alpha, float _rad, float _exrate, int _animtype, int _type, int _r, int _g, int _b, CBaseUpdate* _BUpdate);
+	CUiData(CVector2D _pos, bool _living, float _alpha, float _rad, float _exrate, int _animtype, int _type, CBaseUpdate* _BUpdate);	//start用
 	~CUiData(){};
 
 	CBaseUpdate* BUpdate;
 	void Update(){ if (BUpdate != NULL)BUpdate->Update(this); };
+	void Draw();
 
 	CVector2D m_move_pos;		//移動先
 	float m_move_exrate;		//大きさの変更値
@@ -74,6 +76,7 @@ public:
 	int m_red;
 	int m_green;
 	int m_blue;
+	int m_img;
 };
 
 class CUi : public CTask{
@@ -83,10 +86,11 @@ private:
 	CUiData m_combo_ui[3];
 	CUiData m_item_ui[3];
 	CUiData m_lv_ui[3];
+	CUiData *m_start;
 	int m_icon_img[3][2];			//攻撃アイコン
 	int m_ui_img[4];				//
 	int m_text_img[4];				//文字系
-	int m_lv_num_img[11];				//数字
+	int m_lv_num_img[12];			//数字
 	int m_combo_num_img[10];		//コンボ数画像
 	int m_item_num_img[10];			//アイテム数画像
 	int m_combo_gage_img;
@@ -109,6 +113,9 @@ public:
 	
 	void KillAll();
 	void Delete();
+
+	void StartDraw(){ if (m_start != NULL)m_start->Draw(); };
+	void StartKill(){ if (m_start != NULL){ delete m_start; m_start = 0; } };
 
 	void ChengeIcon(int _direction);
 

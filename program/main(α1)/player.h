@@ -11,6 +11,7 @@ const float PLAYER_SPEED = 5.0f;
 const float PLAYER_FRICTION = 0.3f;
 const int PLAYER_HP = 64;
 const float PLAYER_MASS = 1.0f;
+const float MAX_LV = 10.0f;
 
 enum PlayerDirection{
 	PLAYER_DOWN, PLAYER_DL = 16, PLAYER_LEFT = 4, PLAYER_DR = 20, 
@@ -102,10 +103,10 @@ private:
 	CPlayerData *m_player;
 	CPlayerData m_p_avatar[4];
 	int m_player_img[64];
-	int m_player_charge_img[10];
+	int m_player_charge_img;
 	int m_player_avoid_img[20];
 	int m_player_gate_img[2];
-	int m_player_range_img[3][2];
+	int m_player_range_img[3][2];		//魔法の範囲
 
 	int m_attack_state;		//チュートリアルで使用
 	bool m_item_get;		//チュートリアルで使用

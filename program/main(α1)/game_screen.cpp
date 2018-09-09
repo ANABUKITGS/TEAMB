@@ -14,7 +14,7 @@
 #include "difficulty_level_manager.h"
 #include "sounddata_manager.h"		//new
 
-CStartText Start;
+//CStartText Start;
 
 //コンストラクタ
 CGameScreen::CGameScreen()
@@ -147,18 +147,12 @@ void CGameScreen::Update()
 
 	//最初のフェイドインから
 	if (!CChangeManager::GetInstance()->GetChangeAdress()->GetChangeFlag()){
-		//スタートの処理
-		if (!CUiManager::GetInstance()->GetUiAdress()->GetPass()){
-			CUiManager::GetInstance()->GetUiAdress()->SetPass(true);
-			CUiManager::GetInstance()->GetUiAdress()->GetUiData()->push_back(new CUiData(CVector2D(920, 360), true, 0, 0, UI_SELECT_EXRATE, 3, TIMER, 0, 0, 0, &Start));
+		//チュートリアルをする場合以下の処理
+		if (CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetTutorialFlag()&&
+			CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetTutorialData()->m_animtype == 5 &&
+			CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetInvincible() == 0)
+			CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->SetInvincible(1);
 		}
-		else if (CUiManager::GetInstance()->GetUiAdress()->GetPass() == 2){
-			CUiManager::GetInstance()->GetUiAdress()->SetPass(3);
-			//チュートリアルをする場合以下の処理
-			if (CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetTutorialFlag())
-				CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->SetInvincible(1);
-		}
-	}
 	//チュートリアルで説明が出ていなければ以下の処理（各アップデートを行う）
 	if (CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->TutorialState() == 0){
 		CCharaData::GetInstance()->Update();
@@ -169,8 +163,16 @@ void CGameScreen::Update()
 	if (CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetTutorialFlag()){
 		CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetTutorialData()->Update();
 	}
-	else
-		CTaskManager::GetInstance()->SerectUpdate(eDWP_ENEMY, true);
+	else{
+		//スタートの処理
+		if (!CUiManager::GetInstance()->GetUiAdress()->GetPass()){
+			CUiManager::GetInstance()->GetUiAdress()->SetPass(true);
+		}
+		else if (CUiManager::GetInstance()->GetUiAdress()->GetPass() == 2){
+			CUiManager::GetInstance()->GetUiAdress()->SetPass(3);
+			CTaskManager::GetInstance()->SerectUpdate(eDWP_ENEMY, true);
+		}
+	}
 
 	CCharaData::GetInstance()->Delete();
 
@@ -192,6 +194,9 @@ void CGameScreen::Draw()
 	CTaskManager::GetInstance()->DrawAll();
 	CCharaData::GetInstance()->Draw();
 
+	//スタート用
+	CUiManager::GetInstance()->GetUiAdress()->StartDraw();
+
 	CChangeManager::GetInstance()->GetChangeAdress()->Draw();
 
 	if (CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetTutorialFlag())
@@ -201,7 +206,7 @@ void CGameScreen::Draw()
 	DrawString(870, 110, "Change Control Hit Spase key(keyboard or pad)", GetColor
 		(255, 255, 255));
 		*/
-	Fps();
+	//Fps();
 #if defined(_DEBUG) | defined(DEBUG)
 #endif
 }

@@ -79,7 +79,7 @@ CPlayer::CPlayer()
 	m_player->m_motion_type = 0;
 
 	LoadDivGraph("media\\img\\hero_m.png", 64, 4, 16, 64, 64, m_player_img, 0);
-	LoadDivGraph("media\\img\\charge.png", 10, 2, 5, 384, 384, m_player_charge_img, 0);
+	//LoadDivGraph("media\\img\\charge.png", 10, 2, 5, 384, 384, m_player_charge_img, 0);
 	LoadDivGraph("media\\img\\avoid_aria.png", 20, 2, 10, 256, 256, m_player_avoid_img, 0);
 	
 	m_player_gate_img[0] = LoadGraph("media\\img\\gate_ver2.png");
@@ -531,9 +531,9 @@ void CPlayer::ItemGet(){
 void CPlayer::Draw(){
 
 	//チャージエフェクト
-	if(m_player->m_charge_effect.m_living)
-		DrawRotaGraph(m_player->m_pos.getX()-2, m_player->m_pos.getY()+27, m_player->m_charge_effect.m_exrate,
-		0, m_player_charge_img[m_player->m_charge_effect.m_amine_rate], TRUE, FALSE);
+	//if(m_player->m_charge_effect.m_living)
+		//DrawRotaGraph(m_player->m_pos.getX()-2, m_player->m_pos.getY()+27, m_player->m_charge_effect.m_exrate,
+		//0, m_player_charge_img[m_player->m_charge_effect.m_amine_rate], TRUE, FALSE);
 	
 	//回避エフェクト
 	if (m_player->m_avoid_effect.m_living)

@@ -229,7 +229,6 @@ void CEffectMovePattern10::Move(CEffectData *cd){
 	cd->m_mass += 0.09f;//™‚Ì‰æ‘œ‚Ì‰ñ“]
 
 	cd->m_pos += CVector2D((cos(cd->m_speed)*cd->m_velocity) * cos(cd->m_rad), (cos(cd->m_speed)*cd->m_velocity) * sin(cd->m_rad));
-	//cd->m_pos.addY(0.35f*cd->m_timer);
 }
 
 //“G”š”jˆ—
@@ -237,7 +236,7 @@ void CEffectMovePattern11::Move(CEffectData *cd){
 	int _num = CEnemyManager::GetInstance()->GetEnemyAdress()->GetKillCount() / 5;
 	if (cd->m_amine_rate == 14){
 		for (int i = 0; i < _num; i++){
-			CEffectData *_temp2 = new CEffectData(cd->m_pos, true, rand() % 360, 0.06f, 0, ((rand() % 4) + 5) * 1.0f /*8.0f*/, 0, 0, 0, (rand() % 10) * 0.01f + 0.12f, STAR, 1, &EMP10);
+			CEffectData *_temp2 = new CEffectData(cd->m_pos, true, rand() % 360, 0.1f, 0, ((rand() % 4) + 5) * 1.0f /*8.0f*/, 0, 0, 0, (rand() % 30) * 0.01f + 0.12f, STAR, 1, &EMP10);
 			CEffectManager::GetInstance()->GetEffectAdress()->GetEffectData()->push_back(_temp2);
 		}
 	}

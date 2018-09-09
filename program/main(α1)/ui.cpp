@@ -17,6 +17,8 @@ CComb			Combo;
 CItemText		ItemText;
 CLvNum			LvNum;
 
+CStartText		Start;//
+
 CUiData::CUiData(){
 
 }
@@ -47,6 +49,20 @@ CUiData::CUiData(CVector2D _pos, bool _living, float _alpha, float _rad, float _
 {
 }
 
+CUiData::CUiData(CVector2D _pos, bool _living, float _alpha, float _rad, float _exrate, int _animtype, int _type, CBaseUpdate* _BUpdate)
+:CBaseData(_pos, _living, _alpha, _rad, _exrate, _animtype, _type)
+, m_move_pos(_pos)
+, m_move_exrate(0)
+, m_move_count(0)
+, m_priority(0)
+, BUpdate(_BUpdate)
+, m_red(0)
+, m_green(0)
+, m_blue(0)
+, m_img(LoadGraph("media\\img\\start.png"))
+{
+	m_img = LoadGraph("media\\img\\start.png");
+}
 
 CUi::CUi()
 : m_comb(0)
@@ -78,6 +94,8 @@ CUi::CUi()
 		}
 	}
 
+	m_start = new CUiData(CVector2D(920, 360), true, 0, 0, UI_SELECT_EXRATE, 3, TIMER, &Start);
+
 	m_combo_ui[0] = CUiData(CVector2D(1150, 64), false, 0, 1.0f, 1, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, 0, 0, 0, 0, 0, &Combo);
 	m_combo_ui[1] = CUiData(CVector2D(1150, 118), false, 0, 1.0f, 2, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, 0, 0, 0, 0, 0, NULL);
 	m_combo_ui[2] = CUiData(CVector2D(1150, 64), false, 0, 1.0f, 1, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, 0, 0, 0, 0, 0, NULL);
@@ -85,9 +103,9 @@ CUi::CUi()
 	m_item_ui[0] = CUiData(CVector2D(430, 64), false, 0, 1.0f, 1, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, 0, 0, 0, 0, 0, &ItemText);
 	m_item_ui[1] = CUiData(CVector2D(720, 81), false, 0, 1.0f, 2, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, 0, 0, 0, 0, 0, &ItemText);
 
-	m_lv_ui[0] = CUiData(CVector2D(950, 670), true, 0, 1.0f, 3, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, 0, 0, 255, 255, 120, &LvNum);
-	m_lv_ui[1] = CUiData(CVector2D(1060, 670), true, 0, 1.0f, 3, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, 0, 0, 120, 255, 120, &LvNum);
-	m_lv_ui[2] = CUiData(CVector2D(1170, 670), true, 0, 1.0f, 3, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, 0, 0, 255, 120, 120, &LvNum);
+	m_lv_ui[0] = CUiData(CVector2D(930, 675), true, 0, 1.0f, 3, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, 0, 0, 255, 255, 120, &LvNum);
+	m_lv_ui[1] = CUiData(CVector2D(1060, 675), true, 0, 1.0f, 3, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, 0, 0, 120, 255, 120, &LvNum);
+	m_lv_ui[2] = CUiData(CVector2D(1190, 675), true, 0, 1.0f, 3, UI_VELOCITY, UI_MASS, UI_HP, 0, 0, 0, 0, 255, 120, 120, &LvNum);
 
 	LoadDivGraph("media\\img\\stn_book.png", 2, 2, 1, 128, 128, m_icon_img[1], 0);
 	LoadDivGraph("media\\img\\wind_book.png", 2, 2, 1, 128, 128, m_icon_img[0], 0);
@@ -104,7 +122,7 @@ CUi::CUi()
 	m_text_img[LEVEL_TEXT] = LoadGraph("media\\img\\lv.png");
 	m_text_img[START_TEXT] = LoadGraph("media\\img\\start.png");
 
-	LoadDivGraph("media\\img\\num_lv.png", 11, 4, 3, 64, 64, m_lv_num_img, 0);
+	LoadDivGraph("media\\img\\num_lv_ver2.png", 12, 4, 3, 64, 64, m_lv_num_img, 0);
 	LoadDivGraph("media\\img\\num_combo.png", 10, 4, 3, 128, 128, m_combo_num_img, 0);
 	LoadDivGraph("media\\img\\num_item.png", 10, 4, 3, 128, 128, m_item_num_img, 0);
 
@@ -116,7 +134,6 @@ CUi::CUi()
 	m_update = true;
 
 	BIconDraw = &RIcon;
-
 
 	CUiManager::GetInstance()->Init(this);
 }
@@ -166,6 +183,8 @@ void CUi::Update(){
 	for (int i = 0; i < 3; i++){
 		m_lv_ui[i].Update();
 	}
+
+	if (m_start != NULL)m_start->Update();
 
 	Delete();
 }
@@ -273,12 +292,17 @@ void CUi::Draw(){
 
 	//ƒŒƒxƒ‹
 	for (int i = 0; i < 3; i++){
-		_num = sprintf_s(buf, 100, "%d", m_lv_ui[i].m_hp);
 		SetDrawBright(m_lv_ui[i].m_red, m_lv_ui[i].m_green, m_lv_ui[i].m_blue);
-		for (int j = 0; j < _num; j++){
-			DrawRotaGraph(m_lv_ui[i].m_pos.getX() + 30 + j * 32,
-				m_lv_ui[i].m_pos.getY(), m_lv_ui[i].m_exrate, 0, m_lv_num_img[(buf[j] - '0')], TRUE, FALSE);		//'0'
+		if (m_lv_ui[i].m_hp != (int)MAX_LV){
+			_num = sprintf_s(buf, 100, "%d", m_lv_ui[i].m_hp);
+			for (int j = 0; j < _num; j++){
+				DrawRotaGraph(m_lv_ui[i].m_pos.getX() + 35 + j * 32,
+					m_lv_ui[i].m_pos.getY(), m_lv_ui[i].m_exrate, 0, m_lv_num_img[(buf[j] - '0')], TRUE, FALSE);		//'0'
+			}
 		}
+		else
+			DrawRotaGraph(m_lv_ui[i].m_pos.getX() + 30,
+				m_lv_ui[i].m_pos.getY(), m_lv_ui[i].m_exrate, 0, m_lv_num_img[11], TRUE, FALSE);
 		DrawRotaGraph(m_lv_ui[i].m_pos.getX() - 20, m_lv_ui[i].m_pos.getY(), m_lv_ui[i].m_exrate, 0, m_lv_num_img[10], TRUE, FALSE);		//'0'
 		SetDrawBright(255, 255, 255);
 	}
@@ -302,4 +326,10 @@ void CUi::KillAll(){
 		continue;
 		it++;
 	}
+}
+
+void CUiData::Draw(){
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, m_alpha);
+	DrawRotaGraph(m_pos.getX() + 15, m_pos.getY() - 20, m_exrate, m_rad, m_img, TRUE, FALSE);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 }

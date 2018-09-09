@@ -70,8 +70,8 @@ CTutorialData::CTutorialData(CVector2D _pos, bool _living, float _alpha, float _
 	m_tutorial_img[3] = LoadGraph("media\\img\\tutorial\\tutorial_3.jpg");
 	m_tutorial_img[4] = LoadGraph("media\\img\\tutorial\\tutorial_select.jpg");
 
-	m_t_range_img[0] = LoadGraph("media\\img\\arrow_head.png");
-	m_t_range_img[1] = LoadGraph("media\\img\\range_exp_o_ma.png");
+	m_t_range_img[0] = LoadGraph("media\\img\\arrow_head_ver2.png");
+	m_t_range_img[1] = LoadGraph("media\\img\\range_wind_o_ma.png");
 	m_t_range_img[2] = LoadGraph("media\\img\\tutorial\\great.png");
 	
 	LoadDivGraph("media\\img\\tutorial\\yes.png", 2, 1, 2, 256, 64, m_serect_text_img[0], 0);

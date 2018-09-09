@@ -7,10 +7,24 @@ CEffectData::CEffectData()
 :CBaseData()
 {}
 
-CEffectData::CEffectData(CVector2D _pos, bool _living, float _rad, float _exrate, int _animtype, float _velocity, float _mass, int _hp, float _friction, float _collision, float _type, int _rate,CBaseEffectMove *_BEMove)
+CEffectData::CEffectData(CVector2D _pos, bool _living, float _rad, float _exrate, int _animtype, float _velocity, float _mass, int _hp, float _friction, float _collision, float _type, int _rate, CBaseEffectMove *_BEMove, int _red, int _green, int _blue)
 : CBaseData(_pos, _living, _rad, _exrate, _animtype, _velocity, _mass,_hp, _friction,_collision,_type)
 , m_rate(_rate)
 , BEMove(_BEMove)
+, m_red(_red)
+, m_green(_green)
+, m_blue(_blue)
+{
+	m_speed = 0;
+}
+
+CEffectData::CEffectData(CVector2D _pos, bool _living, float _rad, float _exrate, int _animtype, float _velocity, float _mass, int _hp, float _friction, float _collision, float _type, int _rate, CBaseEffectMove *_BEMove)
+: CBaseData(_pos, _living, _rad, _exrate, _animtype, _velocity, _mass, _hp, _friction, _collision, _type)
+, m_rate(_rate)
+, BEMove(_BEMove)
+, m_red(0)
+, m_green(0)
+, m_blue(0)
 {
 	m_speed = 0;
 }
@@ -19,6 +33,9 @@ CEffectData::CEffectData(CBaseData _temp, int _rate, CBaseEffectMove *_BEMove)
 : CBaseData(_temp.m_pos, _temp.m_living, _temp.m_rad, _temp.m_exrate, _temp.m_animtype, _temp.m_velocity, _temp.m_mass, _temp.m_hp, _temp.m_friction, _temp.m_collision, _temp.m_type)
 , m_rate(_rate)
 , BEMove(_BEMove)
+, m_red(0)
+, m_green(0)
+, m_blue(0)
 {
 }
 
@@ -76,6 +93,11 @@ void CEffect::Draw(){
 			SetDrawBlendMode(DX_BLENDMODE_ALPHA, (*it)->m_alpha);
 			DrawRotaGraph((*it)->m_pos.getX(), (*it)->m_pos.getY(), (*it)->m_exrate, (*it)->m_rad + (*it)->m_mass, m_effect_img[(*it)->m_type][0], TRUE, FALSE);
 			SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+		}
+		else if ((*it)->m_type == ITEM_CREATE){
+			//SetDrawBright((*it)->m_red, (*it)->m_green, (*it)->m_blue);
+			DrawRotaGraph((*it)->m_pos.getX(), (*it)->m_pos.getY(), (*it)->m_exrate, (*it)->m_rad, m_effect_img[(*it)->m_type][(*it)->m_amine_rate / (*it)->m_rate % (*it)->m_animtype], TRUE, FALSE);
+			//SetDrawBright(255, 255, 255);
 		}
 		else if ((*it)->m_type != 99){
 			DrawRotaGraph((*it)->m_pos.getX(), (*it)->m_pos.getY(), (*it)->m_exrate, (*it)->m_rad, m_effect_img[(*it)->m_type][(*it)->m_amine_rate / (*it)->m_rate % (*it)->m_animtype], TRUE, FALSE);
