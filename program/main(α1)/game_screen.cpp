@@ -57,7 +57,7 @@ void CGameScreen::Init()
 	CTaskManager::GetInstance()->Add(new CEnemy);
 	CTaskManager::GetInstance()->Add(new CEffect);
 	CTaskManager::GetInstance()->Add(new CItem);
-	//PlaySoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(GAME_BGM1), DX_PLAYTYPE_LOOP);	//New
+	PlaySoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(GAME_BGM1), DX_PLAYTYPE_LOOP);	//New
 	//if(CFieldManager::GetInstance()->GetFrameAdress()->GetFieldType() != M_BOSS)
 	CTaskManager::GetInstance()->NoUpdate(CFieldManager::GetInstance()->GetFrameAdress()->GetFieldType());
 	CCharaData::GetInstance()->AssignmentInvincible(CFieldManager::GetInstance()->GetFrameAdress()->GetFieldType());

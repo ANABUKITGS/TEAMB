@@ -2,6 +2,7 @@
 #include "player_manager.h"
 #include "effect_manager.h"
 #include "ui_manager.h"
+#include "sounddata_manager.h"
 
 CEffectMovePattern1 EMP1_a;
 CEffectMovePattern3 EMP3;
@@ -314,6 +315,7 @@ void CAttackPattern1::Attack(CEnemyData *cd){
 	}
 	else{
 		if (cd->m_amine_rate == 8){
+			PlaySoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(S_E_NORMAL), DX_PLAYTYPE_BACK);
 			CEffectData *_temp2 = new CEffectData(CVector2D(cd->m_pos.getX() + ENEMY_RANGE * cos(cd->m_rad), cd->m_pos.getY() + ENEMY_RANGE * sin(cd->m_rad)), true, cd->m_rad + radian(180), ENEMY_ATTACK_EXRATE, ENEMY_ATTACK_NUM, 0, 1.0f, 0, 0, ENEMY_ATTACK_COLLISION, ENEMY_ATTACK, 1, &EMP3);
 			CEffectManager::GetInstance()->GetEffectAdress()->GetEffectData()->push_back(_temp2);
 		}
@@ -343,6 +345,7 @@ void CAttackPattern2::Attack(CEnemyData *cd){
 			cd->m_amine_rate = 0;
 			cd->m_motion_type = 16;
 			cd->m_anim_division = 14;
+			PlaySoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(S_E_RANGE), DX_PLAYTYPE_BACK);
 		}
 	}
 }
@@ -359,6 +362,7 @@ void CAttackPattern3::Attack(CEnemyData *cd){
 			_temp->m_damage = ENEMY_BULLET_ATTACK_DAMAGE;
 			_temp->m_hp -= _temp->m_damage;
 			cd->m_living = false;
+			PlaySoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(S_E_BULLET), DX_PLAYTYPE_BACK);
 		}
 	}
 }
@@ -379,6 +383,7 @@ void CAttackPattern4::Attack(CEnemyData *cd){
 							(*it)->m_timer = ENEMY_BIG_ATTACK_STAN;
 							(*it)->m_velocity = ENEMY_BIG_ATTACK_KNOCK_BACK / (*it)->m_mass;
 							(*it)->m_rad = PosRad(cd->m_pos, (*it)->m_pos);
+							PlaySoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(S_E_BIG), DX_PLAYTYPE_BACK);
 							if ((*it)->m_type == PLAYER){
 								(*it)->m_damage = ENEMY_BIG_ATTACK_DAMAGE;
 								CUiManager::GetInstance()->GetUiAdress()->SetComb(0);
@@ -414,6 +419,7 @@ void CAttackPattern5::Attack(CEnemyData *cd){
 		if (IsHitCircle(ENEMY_SMALL_COLLISION + 6, _temp->m_collision,
 			cd->m_pos, _temp->m_pos)){
 			if (_temp->m_invincible == 0){
+				PlaySoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(S_E_SMALL), DX_PLAYTYPE_BACK);
 				_temp->m_control = false;
 				_temp->m_rad = PosRad(cd->m_pos, _temp->m_pos);
 				_temp->m_velocity = 7.0f / _temp->m_mass;
@@ -449,6 +455,7 @@ void CAttackPattern6::Attack(CEnemyData *cd){
 				cd->m_kill_flag = true;
 				cd->m_attack_flag = true;
 				cd->m_attack_cool_time = 40;
+				PlaySoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(S_E_BOMB), DX_PLAYTYPE_BACK);
 			}
 		}
 	}

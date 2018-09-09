@@ -1,13 +1,6 @@
 #include "player_manager.h"
 #include "boss.h"
-
-/*
-//本体(660, 160);
-//右腕(553, 200);
-//右手(547, 270);
-//左腕(745, 200);
-//左手(747, 270);
-*/
+#include "sounddata_manager.h"
 
 //右腕
 void CMoveboss::Move(CBossData *cd, CVector2D &_pos, int m_c){
@@ -143,6 +136,7 @@ void CMoveboss_bbbb::Move(CBossData *cd, CVector2D &_pos, int m_c){
 		_temp->m_damage = BOSS_DAMAGE;
 		_temp->m_hp -= _temp->m_damage;
 		cd->m_cool_attacktime = false;
+		PlaySoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(S_B_ATTACK), DX_PLAYTYPE_BACK);
 	}
 
 	//近接攻撃モーション終わりに入る
@@ -264,6 +258,7 @@ void CMoveboss_cccc::Move(CBossData *cd, CVector2D &_pos, int m_c){
 		_temp->m_damage = BOSS_DAMAGE;
 		_temp->m_hp -= _temp->m_damage;
 		cd->m_cool_attacktime = false;
+		PlaySoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(S_B_ATTACK), DX_PLAYTYPE_BACK);
 	}
 
 	//近接攻撃モーション終わりに入る

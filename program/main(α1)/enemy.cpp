@@ -288,6 +288,7 @@ void CEnemy::Update(){
 			else{
 				(*it)->m_pos.setY((*it)->m_move_pos.getY());
 				(*it)->m_invincible = 0;
+				PlaySoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(S_E_DROP), DX_PLAYTYPE_BACK);
 			}
 		}
 	}

@@ -5,6 +5,7 @@
 #include "ui_manager.h"
 #include "effect_manager.h"
 #include "field_manager.h"
+#include "sounddata_manager.h"
 
 CEffectMovePattern8 EMP8;
 
@@ -97,6 +98,7 @@ void CItem::Create(){
 			}
 
 			for (int i = 0; i < _item_num; i++){
+				PlaySoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(S_ITEM_DROP), DX_PLAYTYPE_BACK);
 				CEffectData *temp = new CEffectData(CVector2D(rand() % MAP_RANGE_X + 64, rand() % MAP_RANGE_Y + 73), true, 0, 0.7f, E_ITEM_CREATE_NUM, 0, 0, 0, 0, 0, ITEM_CREATE, 2, &EMP8);
 				CEffectManager::GetInstance()->GetEffectAdress()->GetEffectData()->push_back(temp);
 			}

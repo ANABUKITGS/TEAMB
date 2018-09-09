@@ -419,6 +419,7 @@ bool CPlayer::Teleport(int key){
 		m_player->m_motion_type = 35;
 		m_player->m_amine_rate = 0;
 		if (m_timer > 3.0f){
+			PlaySoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(S_P_TELEPORT), DX_PLAYTYPE_BACK);
 			m_timer = 0.0f;
 			m_player->m_gate_effect.m_living = false;
 			return true;
