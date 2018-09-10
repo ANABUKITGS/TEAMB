@@ -359,6 +359,11 @@ void CEnemy::Update(){
 							CEnemyManager::GetInstance()->GetEnemyAdress()->GetEnemyData()->push_back(new CEnemyData(*_temp, _pos1, 2, ect.m_BEMove, ect.m_BEAttack));
 							break;
 						}
+						else if (CFieldManager::GetInstance()->GetFrameAdress()->GetFieldType() == M_BOSS){
+							CBaseData *_temp = new CBaseData(_pos2, true, radian((rand() % 360)), ect.m_exrate, ect.m_type, ect.m_speed, ect.m_mass, ect.m_hp, ENEMY_FRICTION, ect.m_collision, ENEMY);
+							CEnemyManager::GetInstance()->GetEnemyAdress()->GetEnemyData()->push_back(new CEnemyData(*_temp, _pos1, 2, ect.m_BEMove, ect.m_BEAttack));
+							break;
+						}
 						else{	//チュートリアルのみ以下の処理
 							CVector2D _pos1 = CVector2D(rand() % 400 + 700, rand() % 300 + 200);
 							CVector2D _pos2 = CVector2D(_pos1.getX(), _pos1.getY() - 820);

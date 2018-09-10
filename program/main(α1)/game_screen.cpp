@@ -121,6 +121,7 @@ void CGameScreen::Update()
 					CFieldManager::GetInstance()->GetFrameAdress()->SetFieldType(M_BOSS);
 					CCharaData::GetInstance()->AssignmentDelete(ENEMY);
 					CEnemyManager::GetInstance()->GetEnemyAdress()->KillAll();
+					CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->SetFieldEnemy();
 					CPlayerManager::GetInstance()->GetPlayerAdress()->GetData()->m_pos = CVector2D(640, 580);
 					StopSoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(GAME_BGM1));	//New
 					PlaySoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(GAME_BGM2), DX_PLAYTYPE_LOOP);	//New
@@ -129,6 +130,7 @@ void CGameScreen::Update()
 					CCharaData::GetInstance()->AssignmentDelete(ENEMY);
 					CEnemyManager::GetInstance()->GetEnemyAdress()->KillAll();
 					CFieldManager::GetInstance()->GetFrameAdress()->SetFieldType(M_NORMAL);
+					CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->SetFieldEnemy();
 					StopSoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(GAME_BGM2));	//New
 					PlaySoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(GAME_BGM1), DX_PLAYTYPE_LOOP);	//New
 				}
