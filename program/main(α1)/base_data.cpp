@@ -1,6 +1,7 @@
 #include "base_data.h"
 #include "field_manager.h"
 #include "enemy_manager.h"
+#include "player_manager.h"
 
 CCharaData* CCharaData::m_pInstance = nullptr;
 
@@ -109,6 +110,8 @@ CCharaData::CCharaData(){
 	m_bhp_img[2] = LoadGraph("media\\img\\boss_hp_bar.png");
 	m_bhp_img[3] = LoadGraph("media\\img\\boss_hp_bar2.png");
 	m_stan_timer_img = LoadGraph("media\\img\\enemy_stan_timer.jpg");
+
+	LoadDivGraph("media\\img\\player_timer_ver2.png",4,1,4,64,4, m_player_timer_img,false);
 }
 
 void CCharaData::AddTaskInner(CBaseData* task){
@@ -411,6 +414,8 @@ void CCharaData::Draw(){
 			DrawRectGraph((*it)->m_pos.getX() - 32, (*it)->m_pos.getY() - 47, 0, 0, (*it)->m_hp, 8, m_hhp_img[0], FALSE, FALSE);
 			if ((*it)->m_damage > 0)
 				DrawRectGraph((*it)->m_pos.getX() - 32 + (*it)->m_hp, (*it)->m_pos.getY() - 47, 0, 0, (*it)->m_damage, 8, m_hhp_img[1], FALSE, FALSE);
+			if (CPlayerManager::GetInstance()->GetPlayerAdress()->GetData()->m_chage_count > 1)
+				DrawRectGraph((*it)->m_pos.getX() - 32, (*it)->m_pos.getY() - 39, 0, 0, (CPlayerManager::GetInstance()->GetPlayerAdress()->GetData()->m_chage_count - 1.0f) * 21.33333f/*(*it)->m_timer * 64*/, 4, m_player_timer_img[(int)(CPlayerManager::GetInstance()->GetPlayerAdress()->GetData()->m_chage_count - 1.0f)], FALSE, FALSE);
 		}
 		//’Ç‰Á«
 		if ((*it)->m_type == BOSS){

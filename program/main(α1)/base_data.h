@@ -64,6 +64,7 @@ private:
 	int m_hhp_img[2];
 	int m_bhp_img[4];
 	int m_stan_timer_img;
+	int m_player_timer_img[4];
 public:
 	
 	CCharaData();
