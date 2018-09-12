@@ -352,7 +352,6 @@ void CPlayer::Attack(int key){
 		m_player->m_anim_division = 8;
 		m_player->m_amine_rate = 0;
 		m_player->Action();
-		PlaySoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(rand() % 3 + 15), DX_PLAYTYPE_BACK);
 	}
 	else if (m_attack_state == PRESSING){
 		m_player->m_chage_count += 0.019;
@@ -448,7 +447,6 @@ void CPlayer::Avoid(int key){
 				m_player->m_timer = 10;
 				m_player->m_avoid_effect.m_living = true;
 				m_player->m_avoid_effect.m_pos = m_player->m_pos;
-				PlaySoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(rand() % 2+20), DX_PLAYTYPE_BACK);
 				PlaySoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(S_P_AVOID), DX_PLAYTYPE_BACK);
 			}
 		}

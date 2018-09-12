@@ -32,9 +32,10 @@ public:
 	void Draw();
 private:
 	int m_enemy_img[5][88];
-	int gameclear_chara_img[5];
-	int gameclear_text_img;
+	int m_gameclear_chara_img[5];
+	int m_gameclear_text_img;
 
+	int m_timer;
 	int m_x, m_xx;
 	float m_ac;
 	int m_animcounter;

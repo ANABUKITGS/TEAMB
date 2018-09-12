@@ -21,9 +21,9 @@ void CGameOverScreen::Release(){}
 
 //‰Šú‰»
 void CGameOverScreen::Init(){
-	gameover_img = LoadGraph("media\\img\\gameover.png");
-	gameover_text_img = LoadGraph("media\\img\\screentext.png");
-
+	m_gameover_img = LoadGraph("media\\img\\gameover.png");
+	m_gameover_text_img = LoadGraph("media\\img\\screentext.png");
+	m_timer = 0;
 	PlaySoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(GAMEOVER_BGM), DX_PLAYTYPE_BACK);	//New
 }
 
@@ -31,6 +31,13 @@ void CGameOverScreen::Init(){
 void CGameOverScreen::Update()
 {
 	int key = GetJoypadInputState(DX_INPUT_KEY_PAD1);
+
+	if (m_timer < 450){
+		m_timer++;
+	}
+	else{
+		m_state = TITLE_SCREEN;
+	}
 
 	if (CKeyData::GetInstance()->IsKeyTrigger(key, PAD_INPUT_2, KEY_Z_PAD_INPUT_2))m_state = TITLE_SCREEN;
 
@@ -41,8 +48,8 @@ void CGameOverScreen::Update()
 void CGameOverScreen::Draw()
 {
 	ClearDrawScreen();
-	DrawGraph(0, 0, gameover_img, TRUE);
-	DrawGraph(0, 640, gameover_text_img, TRUE);
+	DrawGraph(0, 0, m_gameover_img, TRUE);
+	DrawGraph(0, 640, m_gameover_text_img, TRUE);
 
 
 #if defined(_DEBUG) | defined(DEBUG)
