@@ -94,24 +94,24 @@ void CPad::Type(CPlayerData *cd, int key, float &_fx, float &_fy){
 
 		MyVec2Normalize(_fx, _fy, _fx, _fy);
 
-		_fx = _fx * cd->m_velocity;
-		_fy = _fy * cd->m_velocity;
+		_fx = _fx * cd->m_speed;
+		_fy = _fy * cd->m_speed;
 	}
 }
 
 void CKeyBoard::Type(CPlayerData *cd, int key, float &_fx, float &_fy){
 	//to do Šp“x‚É‚æ‚Á‚Ä‰æ‘œ‚Ì•ÏX‚ğs‚¤
 	if (key & PAD_INPUT_DOWN){
-		_fy += cd->m_velocity;
+		_fy += cd->m_speed;
 	}
 	if (key & PAD_INPUT_LEFT){
-		_fx -= cd->m_velocity;
+		_fx -= cd->m_speed;
 	}
 	if (key & PAD_INPUT_RIGHT){
-		_fx += cd->m_velocity;
+		_fx += cd->m_speed;
 	}
 	if (key & PAD_INPUT_UP){
-		_fy -= cd->m_velocity;
+		_fy -= cd->m_speed;
 	}
 }
 

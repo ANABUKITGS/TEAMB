@@ -84,6 +84,7 @@ CPlayer::CPlayer()
 	m_player->ControlType = &pad;
 	m_player->m_anim_division = 6;
 	m_player->m_motion_type = 0;
+	m_player->m_velocity = 0;
 
 	LoadDivGraph("media\\img\\hero_m.png", 64, 4, 16, 64, 64, m_player_img, 0);
 	//LoadDivGraph("media\\img\\charge.png", 10, 2, 5, 384, 384, m_player_charge_img, 0);
@@ -148,6 +149,13 @@ void CPlayer::Update(){
 		Avoid(key);
 
 	ItemGet();
+
+	if (m_player->m_velocity > 0){
+		if (m_player->m_damage > 0)
+			m_player->m_damage_action.m_damage_flag = true;
+	}
+	else
+		m_player->m_damage_action.m_damage_flag = false;
 
 	m_player->Flash();
 
@@ -231,7 +239,7 @@ void CPlayer::Move(int key){
 			}
 			else{
 				m_player->m_control = true;
-				m_player->m_velocity = PLAYER_SPEED;
+				m_player->m_velocity = 0;
 				m_player->m_rad = m_player->m_temporary_rad;
 			}
 		}
@@ -454,7 +462,7 @@ void CPlayer::Avoid(int key){
 		if (!m_player->m_avoid_effect.m_living){
 			if (CKeyData::GetInstance()->IsKeyTrigger(key, PAD_INPUT_3, KEY_PAD_INPUT_3)){
 				m_player->m_invincible = 1;
-				m_player->m_velocity = 19.0f;
+				m_player->m_speed = 19.0f;
 				m_player->m_timer = 10;
 				m_player->m_avoid_effect.m_living = true;
 				m_player->m_avoid_effect.m_pos = m_player->m_pos;
@@ -474,10 +482,10 @@ void CPlayer::Avoid(int key){
 
 			if (m_player->m_timer > 0){
 				m_player->m_timer--;
-				m_player->m_velocity -= 0.5f;
+				m_player->m_speed -= 0.5f;
 			}
 			else{
-				m_player->m_velocity = PLAYER_SPEED;
+				m_player->m_speed = PLAYER_SPEED;
 				m_player->m_invincible = 0;
 			}
 		}
@@ -539,7 +547,7 @@ void CPlayer::ItemGet(){
 
 void CPlayerData::Flash(){
 	if (m_damage_action.m_damage_flag){
-		if (m_damage_action.m_timer < 60){
+		if (m_damage_action.m_timer < 3){
 			m_damage_action.m_timer++;
 		}
 		else{
@@ -550,12 +558,17 @@ void CPlayerData::Flash(){
 			}
 			else{
 				m_damage_action.m_switch = true;
+				m_alpha = 70;
 			}
 		}
+		m_motion_type = 3;
+		m_amine_rate = 0;
 	}
 	else{
+		m_alpha = 255;
 		m_damage_action.m_timer = 0;
 		m_damage_action.m_switch = false;
+		m_motion_type = 0;
 	}
 }
 
@@ -610,7 +623,7 @@ void CPlayer::Draw(){
 	}
 
 	//ƒvƒŒƒCƒ„[
-	SetDrawBlendMode(DX_BLENDMODE_ADD, m_player->m_alpha);
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, m_player->m_alpha);
 	DrawRotaGraph(m_player->m_pos.getX(), m_player->m_pos.getY(), m_player->m_exrate,
 		0, m_player_img[m_player->m_direction_type + m_player->m_motion_type + m_player->m_amine_rate / m_player->m_anim_division % 3], TRUE, FALSE);
 	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
