@@ -83,7 +83,7 @@ void CBomb::Type(CPlayerData *cd){
 
 
 void CPad::Type(CPlayerData *cd, int key, float &_fx, float &_fy){
-	
+
 	////スティックの座標受け取り用////
 	int _sx = 0, _sy = 0;
 	GetJoypadAnalogInput(&_sx, &_sy, DX_INPUT_PAD1);

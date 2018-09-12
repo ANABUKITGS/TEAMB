@@ -27,14 +27,14 @@ CPAtable player_attack_table[] = {
 };
 
 CRadTable rad_table[] = {
-	{ 0,22.5f,337.5f, PLAYER_RIGHT },
-	{ 45,67.5f,22.5f, PLAYER_DR },
-	{ 90,112.5f,67.5f, PLAYER_DOWN },
-	{ 135,157.5f,112.5f, PLAYER_DL },
-	{ 180,202.5f,157.5f, PLAYER_LEFT },
-	{ 225,247.5f,202.5f, PLAYER_UL },
-	{ 270,292.5f,247.5f, PLAYER_UP },
-	{ 315,337.5f,292.5f, PLAYER_UR }
+	{ 0, 22.5f, 337.5f, PLAYER_RIGHT },
+	{ 45, 67.5f, 22.5f, PLAYER_DR },
+	{ 90, 112.5f, 67.5f, PLAYER_DOWN },
+	{ 135, 157.5f, 112.5f, PLAYER_DL },
+	{ 180, 202.5f, 157.5f, PLAYER_LEFT },
+	{ 225, 247.5f, 202.5f, PLAYER_UL },
+	{ 270, 292.5f, 247.5f, PLAYER_UP },
+	{ 315, 337.5f, 292.5f, PLAYER_UR }
 };
 
 CItemTable item_table[] = {
@@ -45,7 +45,7 @@ CItemTable item_table[] = {
 };
 
 CAttackRange::CAttackRange(CVector2D _pos, bool _living, float _rad, float _exrate, int _animtype, float _velocity, float _mass, int _hp, float _friction, float _collision, int _type)
-: CBaseData(_pos,_living,_rad,_exrate,_animtype,_velocity,_mass,_hp,_friction,_collision,_type)
+: CBaseData(_pos, _living, _rad, _exrate, _animtype, _velocity, _mass, _hp, _friction, _collision, _type)
 , m_move_pos(_pos)
 , m_move_rad(0)
 {
@@ -53,7 +53,7 @@ CAttackRange::CAttackRange(CVector2D _pos, bool _living, float _rad, float _exra
 }
 
 CPlayerData::CPlayerData()
-:CBaseData(CVector2D(0,0),false,0,0,0,0,0,0,0,0,0)
+:CBaseData(CVector2D(0, 0), false, 0, 0, 0, 0, 0, 0, 0, 0, 0)
 {
 
 }
@@ -66,7 +66,7 @@ CDamageAction::CDamageAction()
 }
 
 CPlayerData::CPlayerData(CVector2D _pos, bool _living, float _alpha, float _rad, float _exrate, int _animtype, float _velocity, float _mass, int _hp, float _friction, float _collision, float _type)
-: CBaseData(_pos, _living, _alpha, _rad, _exrate, _animtype, _velocity, _mass, _hp, _friction, _collision,_type)
+: CBaseData(_pos, _living, _alpha, _rad, _exrate, _animtype, _velocity, _mass, _hp, _friction, _collision, _type)
 , m_chage_count(0)
 , m_attack_type(0)
 , m_stan(1)
@@ -89,10 +89,10 @@ CPlayer::CPlayer()
 	LoadDivGraph("media\\img\\hero_m.png", 64, 4, 16, 64, 64, m_player_img, 0);
 	//LoadDivGraph("media\\img\\charge.png", 10, 2, 5, 384, 384, m_player_charge_img, 0);
 	LoadDivGraph("media\\img\\avoid_aria.png", 20, 2, 10, 256, 256, m_player_avoid_img, 0);
-	
+
 	m_player_gate_img[0] = LoadGraph("media\\img\\gate_ver2.png");
 	m_player_gate_img[1] = LoadGraph("media\\img\\gate_o_ver2.png");
-	
+
 	m_player_range_img[0][0] = LoadGraph("media\\img\\range_stn_i_ma.png");
 	m_player_range_img[0][1] = LoadGraph("media\\img\\range_stn_o_ma.png");
 	m_player_range_img[1][0] = LoadGraph("media\\img\\range_wind_i_ma.png");
@@ -136,10 +136,10 @@ CPlayer::CPlayer()
 
 void CPlayer::Update(){
 	int key = GetJoypadInputState(DX_INPUT_KEY_PAD1);
-	
+
 	if (!m_t_cont)
 		Attack(key);
-	
+
 	Move(key);
 
 	if (!m_t_cont)
@@ -184,7 +184,7 @@ void CPlayer::Update(){
 	//ゲートエフェクト
 	if (m_player->m_gate_effect.m_living == true)
 		m_player->m_gate_effect.m_rad += 0.007;
-	
+
 
 	//攻撃時の範囲エフェクト
 	if (m_player->m_attack_range.m_living == true){
@@ -214,7 +214,7 @@ void CPlayer::Move(int key){
 	float _hx = m_player->m_pos.getX();
 	float _hy = m_player->m_pos.getY();
 
-//#if defined(_DEBUG) | defined(DEBUG)
+	//#if defined(_DEBUG) | defined(DEBUG)
 	if (CKeyData::GetInstance()->IsKeyTrigger(key, PAD_INPUT_10, KEY_PAD_INPUT_10)){
 		if (m_player->m_control_type == true){
 			m_player->ControlType = &keyboard;
@@ -225,7 +225,7 @@ void CPlayer::Move(int key){
 			m_player->m_control_type = true;
 		}
 	}
-//#endif
+	//#endif
 
 	////動いているかどうか////
 	bool _flag = false;
@@ -312,7 +312,7 @@ void CPlayer::Move(int key){
 
 	m_player->m_pos = CVector2D(_hx, _hy);
 
-	if(m_player->m_kill_flag)
+	if (m_player->m_kill_flag)
 		m_player->m_living = false;
 
 #if defined(_DEBUG) | defined(DEBUG)
@@ -403,7 +403,7 @@ void CPlayer::Attack(int key){
 		case 2:
 			m_player->m_attack_range.m_move_pos = CVector2D(m_player->m_pos.getX() + PLAYER_BOMB_RANGE * cos(m_player->m_rad), m_player->m_pos.getY() + PLAYER_BOMB_RANGE * sin(m_player->m_rad));
 			if (m_player->m_bomb - 1.0f > ITEM_BOMB_UP * 9.0f)
-				m_player->m_attack_range.m_exrate = PLAYER_BOMB_RANGE_EXRATE * (1 + (int)m_player->m_chage_count * 0.1f) * (1.0f+ITEM_BOMB_UP * 9.0f);
+				m_player->m_attack_range.m_exrate = PLAYER_BOMB_RANGE_EXRATE * (1 + (int)m_player->m_chage_count * 0.1f) * (1.0f + ITEM_BOMB_UP * 9.0f);
 			else
 				m_player->m_attack_range.m_exrate = PLAYER_BOMB_RANGE_EXRATE * (1 + (int)m_player->m_chage_count * 0.1f) * m_player->m_bomb;
 			m_player->m_attack_range.m_animtype = 2;
@@ -412,7 +412,7 @@ void CPlayer::Attack(int key){
 			break;
 		}
 		m_player->m_attack_range.m_living = true;
-		
+
 		m_t_cont2 = true;
 		m_player->m_motion_type = 32;
 	}
@@ -576,12 +576,12 @@ void CPlayer::Draw(){
 
 	//チャージエフェクト
 	//if(m_player->m_charge_effect.m_living)
-		//DrawRotaGraph(m_player->m_pos.getX()-2, m_player->m_pos.getY()+27, m_player->m_charge_effect.m_exrate,
-		//0, m_player_charge_img[m_player->m_charge_effect.m_amine_rate], TRUE, FALSE);
-	
+	//DrawRotaGraph(m_player->m_pos.getX()-2, m_player->m_pos.getY()+27, m_player->m_charge_effect.m_exrate,
+	//0, m_player_charge_img[m_player->m_charge_effect.m_amine_rate], TRUE, FALSE);
+
 	//回避エフェクト
 	if (m_player->m_avoid_effect.m_living)
-		DrawRotaGraph(m_player->m_avoid_effect.m_pos.getX() - 2, m_player->m_avoid_effect.m_pos.getY()-27, m_player->m_avoid_effect.m_exrate,
+		DrawRotaGraph(m_player->m_avoid_effect.m_pos.getX() - 2, m_player->m_avoid_effect.m_pos.getY() - 27, m_player->m_avoid_effect.m_exrate,
 		0, m_player_avoid_img[m_player->m_avoid_effect.m_amine_rate], TRUE, FALSE);
 
 	//ゲートエフェクト
