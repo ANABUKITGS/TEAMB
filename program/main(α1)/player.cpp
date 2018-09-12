@@ -58,6 +58,13 @@ CPlayerData::CPlayerData()
 
 }
 
+CDamageAction::CDamageAction()
+: m_damage_flag(false)
+, m_switch(false)
+, m_timer(0)
+{
+}
+
 CPlayerData::CPlayerData(CVector2D _pos, bool _living, float _alpha, float _rad, float _exrate, int _animtype, float _velocity, float _mass, int _hp, float _friction, float _collision, float _type)
 : CBaseData(_pos, _living, _alpha, _rad, _exrate, _animtype, _velocity, _mass, _hp, _friction, _collision,_type)
 , m_chage_count(0)
@@ -105,6 +112,8 @@ CPlayer::CPlayer()
 	m_player->m_attack_range = CAttackRange(m_player->m_pos, false, m_player->m_rad, 1.0f, 0, 0, 0, 0, 0, 0, 0);
 	m_player->m_change_effect = CBaseData(m_player->m_pos, false, m_player->m_rad, 0.3f, 0, 0, 0, 0, 0, 0, 0);
 
+	m_player->m_damage_action = CDamageAction();
+
 	for (int i = 0; i < 3; i++)
 		CUiManager::GetInstance()->GetUiAdress()->GetLvUiData(i)->m_hp = 1;
 
@@ -139,6 +148,8 @@ void CPlayer::Update(){
 		Avoid(key);
 
 	ItemGet();
+
+	m_player->Flash();
 
 	if (!CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetTutorialFlag())
 	if (m_t_cont2 == false)
@@ -528,6 +539,28 @@ void CPlayer::ItemGet(){
 	}
 }
 
+void CPlayerData::Flash(){
+	if (m_damage_action.m_damage_flag){
+		if (m_damage_action.m_timer < 60){
+			m_damage_action.m_timer++;
+		}
+		else{
+			m_damage_action.m_timer = 0;
+			if (m_damage_action.m_switch){
+				m_damage_action.m_switch = false;
+				m_alpha = 255;
+			}
+			else{
+				m_damage_action.m_switch = true;
+			}
+		}
+	}
+	else{
+		m_damage_action.m_timer = 0;
+		m_damage_action.m_switch = false;
+	}
+}
+
 void CPlayer::Draw(){
 
 	//チャージエフェクト
@@ -579,8 +612,10 @@ void CPlayer::Draw(){
 	}
 
 	//プレイヤー
+	SetDrawBlendMode(DX_BLENDMODE_ADD, m_player->m_alpha);
 	DrawRotaGraph(m_player->m_pos.getX(), m_player->m_pos.getY(), m_player->m_exrate,
 		0, m_player_img[m_player->m_direction_type + m_player->m_motion_type + m_player->m_amine_rate / m_player->m_anim_division % 3], TRUE, FALSE);
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
 
 #if defined(_DEBUG) | defined(DEBUG)
 	int color_white = GetColor(255, 255, 255);//色取得

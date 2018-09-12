@@ -247,3 +247,17 @@ int MyLibSelect(int &_number, int key, int _max, int _min){
 	return _change_num;
 }
 
+void IsFadeIn_Out(int& alpha, bool& flag, int permeability){
+	if (flag == false){
+		alpha += permeability;
+	}
+	else{
+		alpha -= permeability;
+	}
+	if (alpha >= 256){
+		flag = true;
+	}
+	else if (alpha <= 0){
+		flag = false;
+	}
+}

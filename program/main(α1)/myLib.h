@@ -38,7 +38,7 @@ const float ENEMY_BIG_ATTACK_COLLISION = 85.0f;
 const float ENEMY_IMPACK_COLLISION = 180.0f;
 
 const float ENEMY_LOCATE_COLLISION = 170.0f;
-const float ENEMY_LONG_LOCATE_COLLISION = 350.0f;
+const float ENEMY_LONG_LOCATE_COLLISION = 400.0f;
 const float ENEMY_LONG_NEAR_COLLISION = 150.0f;
 const float ENEMY_BIG_LOCATE_COLLISION = 450.0f;
 
@@ -57,7 +57,7 @@ const float PLAYER_HURRICANE_KNOCK_BACK = 1.2f;
 
 const float ENEMY_ATTACK_KNOCK_BACK = 9.0f;		//敵の攻撃系
 const int ENEMY_ATTACK_DAMAGE = 4;
-const int ENEMY_LONG_ATTACK_COOL_TIME = 200;
+const int ENEMY_LONG_ATTACK_COOL_TIME = 100;
 const float ENEMY_BULLET_ATTACK_DAMAGE = 10.0f;
 const float ENEMY_BULLET_KNOCK_BACK = 5.0f;
 const float ENEMY_BULLET_EXRATE = 0.5f;
@@ -194,6 +194,9 @@ void Fps();
 inline float radian(float _degree){ return _degree * PI / 180.0f; };
 //ラジアンから角度に
 inline float degree(float _radian){ return _radian * 180.0f / PI; };
+
+//フェイドインアウトの繰り返し処理（透過度,切り替え,どの程度透過するか）
+void IsFadeIn_Out(int& alpha, bool& flag, int permeability);
 
 
 #endif MYLIB_H

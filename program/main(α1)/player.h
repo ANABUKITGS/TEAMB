@@ -67,6 +67,15 @@ public:
 	float m_move_rad;
 };
 
+class CDamageAction{
+public:
+	CDamageAction();
+	~CDamageAction(){};
+	bool m_damage_flag;
+	bool m_switch;
+	int m_timer;
+};
+
 class CPlayerData : public CBaseData{
 public:
 	CBasePAType *AttackType;
@@ -86,15 +95,21 @@ public:
 	CAttackRange m_attack_range;		//攻撃範囲エフェクト
 	CBaseData m_change_effect;		//切り替え時のエフェクト
 
+	CDamageAction m_damage_action;	//ダメージを受けた場合の処理用
+
 	float m_chage_count;	//チャージ量
 	int m_attack_type;		//攻撃の種類
 	float m_stan;			//スタンの強化値
 	float m_knock_back;		//ノックバックの強化値
 	float m_bomb;			//ボムの強化値
 	float m_temporary_rad;	//一時的な角度保存	(ノックバック時に方向がおかしくなるための回避策)
-	bool m_attack_anim;		
+	bool m_attack_anim;
 	//#if defined(_DEBUG) | defined(DEBUG)
 	bool m_control_type;	//操作タイプ
+
+
+	void Flash();	//点滅
+
 //#endif
 };
 
