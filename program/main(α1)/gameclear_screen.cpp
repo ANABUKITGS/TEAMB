@@ -24,11 +24,11 @@ void CGameClearScreen::Init(){
 	m_ac = 0;
 	m_animcounter = 0;
 
-	gameclear_chara_img[0] = LoadGraph("media\\img\\clearchara1.png");
-	gameclear_chara_img[1] = LoadGraph("media\\img\\clearchara2.png");
-	gameclear_chara_img[2] = LoadGraph("media\\img\\clearchara3.png");
-	gameclear_chara_img[3] = LoadGraph("media\\img\\clearchara4.png");
-	gameclear_chara_img[4] = LoadGraph("media\\img\\clearchara5.png");
+	m_gameclear_chara_img[0] = LoadGraph("media\\img\\clearchara1.png");
+	m_gameclear_chara_img[1] = LoadGraph("media\\img\\clearchara2.png");
+	m_gameclear_chara_img[2] = LoadGraph("media\\img\\clearchara3.png");
+	m_gameclear_chara_img[3] = LoadGraph("media\\img\\clearchara4.png");
+	m_gameclear_chara_img[4] = LoadGraph("media\\img\\clearchara5.png");
 
 	LoadDivGraph("media\\img\\enemy_s_m.png", 88, 4, 22, 64, 64, m_enemy_img[0]);
 	LoadDivGraph("media\\img\\enemy_bom_m.png", 88, 4, 22, 64, 64, m_enemy_img[1]);
@@ -50,8 +50,9 @@ void CGameClearScreen::Init(){
 	m_clear[4].m_type = 4;
 	m_clear[5].m_type = 0;
 
-	gameclear_text_img = LoadGraph("media\\img\\gameclear.png");
+	m_gameclear_text_img = LoadGraph("media\\img\\gameclear.png");
 
+	m_timer = 0;
 	m_x = 0;
 	m_xx = 0;
 	PlaySoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(GAMECLEAR_BGM), DX_PLAYTYPE_BACK);	//New
@@ -90,6 +91,14 @@ void CGameClearScreen::Update()
 			}
 		}
 	}
+
+	if (m_timer < 550){
+		m_timer++;
+	}
+	else{
+		m_state = TITLE_SCREEN;
+	}
+
 	if (CKeyData::GetInstance()->IsKeyTrigger(key, PAD_INPUT_2, KEY_Z_PAD_INPUT_2))m_state = TITLE_SCREEN;
 
 	//	if (CheckHitKey(KEY_INPUT_A) == 1) m_state = TITLE_SCREEN;
@@ -98,8 +107,8 @@ void CGameClearScreen::Update()
 void CGameClearScreen::Draw()
 {
 	ClearDrawScreen();
-	DrawGraph(0, 0, gameclear_text_img, TRUE);
-	DrawRotaGraph(620, 600, 0.3f, 0, gameclear_chara_img[(int)m_ac % 5], TRUE, FALSE);
+	DrawGraph(0, 0, m_gameclear_text_img, TRUE);
+	DrawRotaGraph(620, 600, 0.3f, 0, m_gameclear_chara_img[(int)m_ac % 5], TRUE, FALSE);
 
 	for (int i = 0; i < 6; i++){
 		DrawGraph(m_clear[i].m_pos.getX(), m_clear[i].m_pos.getY(), m_enemy_img[m_clear[i].m_type][m_clear[i].m_animtype + (int)m_ac % 2], TRUE);

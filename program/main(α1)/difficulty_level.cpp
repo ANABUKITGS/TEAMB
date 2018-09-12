@@ -28,7 +28,7 @@ CEnemyDifficultyTable enemy_diff_table[] = {
 };
 
 CEnemyDifficultyTable boss_diff_table[] = {
-	{ 1, 0, 6, 0, 0, 8, 0 },//Œ»İ‚±‚±‚Ü‚Å
+	{ 0, 0, 6, 0, 0, 8, 0 },//Œ»İ‚±‚±‚Ü‚Å
 };
 
 CEnemyDifficulty::CEnemyDifficulty()
@@ -111,19 +111,6 @@ void CDifficultyLevel::Update(){
 					}
 				}
 			}
-			else{
-				for (auto edt : boss_diff_table){
-					if (m_enemy_difficulty->m_enemy_level == edt.m_enemy_level){
-						m_enemy_difficulty->m_next_kill = edt.m_next_kill;
-						m_enemy_difficulty->m_nomal_num = edt.m_nomal_num;
-						m_enemy_difficulty->m_long_num = edt.m_long_num;
-						m_enemy_difficulty->m_big_num = edt.m_big_num;
-						m_enemy_difficulty->m_small_num = edt.m_small_num;
-						m_enemy_difficulty->m_bomb_num = edt.m_bomb_num;
-						break;
-					}
-				}
-			}
 			AddEnemyMax();
 			_flag = true;
 		}
@@ -143,6 +130,44 @@ void CDifficultyLevel::Update(){
 			delete m_tutorial;
 			m_tutorial = 0;
 		}
+	}
+}
+
+void CDifficultyLevel::SetFieldEnemy(){
+	static bool _flag;
+	if (!_flag){
+		if (CFieldManager::GetInstance()->GetFrameAdress()->GetFieldType() == M_BOSS){
+			for (auto edt : boss_diff_table){
+				if (m_enemy_difficulty->m_enemy_level == edt.m_enemy_level){
+					m_enemy_difficulty->m_next_kill = edt.m_next_kill;
+					m_enemy_difficulty->m_nomal_num = edt.m_nomal_num;
+					m_enemy_difficulty->m_long_num = edt.m_long_num;
+					m_enemy_difficulty->m_big_num = edt.m_big_num;
+					m_enemy_difficulty->m_small_num = edt.m_small_num;
+					m_enemy_difficulty->m_bomb_num = edt.m_bomb_num;
+					break;
+				}
+			}
+		}
+		else
+		{
+			for (auto edt : enemy_diff_table){
+				if (m_enemy_difficulty->m_enemy_level == edt.m_enemy_level){
+					m_enemy_difficulty->m_next_kill = edt.m_next_kill;
+					m_enemy_difficulty->m_nomal_num = edt.m_nomal_num;
+					m_enemy_difficulty->m_long_num = edt.m_long_num;
+					m_enemy_difficulty->m_big_num = edt.m_big_num;
+					m_enemy_difficulty->m_small_num = edt.m_small_num;
+					m_enemy_difficulty->m_bomb_num = edt.m_bomb_num;
+					break;
+				}
+			}
+		}
+		AddEnemyMax();
+		_flag = true;
+	}
+	if (CEnemyManager::GetInstance()->GetEnemyAdress()->GetCreateTimer() == 0){
+		_flag = false;
 	}
 }
 

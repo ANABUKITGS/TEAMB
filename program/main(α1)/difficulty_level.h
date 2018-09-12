@@ -85,6 +85,7 @@ public:
 	void AddEnemyMax();
 	
 	int TutorialState();
+	void SetFieldEnemy();
 
 	inline void SetDifficulty(int _level){ m_difficulty_level = _level; };
 	inline void SetEnemyLevel(int _level){ m_enemy_difficulty->m_enemy_level = _level; };

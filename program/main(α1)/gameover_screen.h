@@ -22,8 +22,9 @@ public:
 	void Update();
 	void Draw();
 private:
-	int gameover_img;
-	int gameover_text_img;
+	int m_timer;
+	int m_gameover_img;
+	int m_gameover_text_img;
 	SCREEN m_state;
 };
 
