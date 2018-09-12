@@ -2,6 +2,7 @@
 #include "credit_screen.h"
 #include "sounddata_manager.h"
 #include "change_manager.h"
+#include "sounddata_manager.h"
 
 //コンストラクタ
 CCreditScreen::CCreditScreen()
@@ -34,6 +35,7 @@ void CCreditScreen::Update()
 	int key = GetJoypadInputState(DX_INPUT_KEY_PAD1);
 
 	if (CKeyData::GetInstance()->IsKeyTrigger(key, PAD_INPUT_2, KEY_Z_PAD_INPUT_2)){
+		PlaySoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(S_T_ON), DX_PLAYTYPE_BACK);
 		CChangeManager::GetInstance()->GetChangeAdress()->SetChange(true);
 	}
 	if (CChangeManager::GetInstance()->GetChangeAdress()->GetOut()){

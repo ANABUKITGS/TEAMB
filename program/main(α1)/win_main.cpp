@@ -3,7 +3,7 @@
 
 //ローカル変数
 CGame*		g_pMain = NULL;
-const bool	WINDOW_SCREEN = false;
+const bool	WINDOW_SCREEN = true;
 
 //ローカル関数
 void win_main_init();

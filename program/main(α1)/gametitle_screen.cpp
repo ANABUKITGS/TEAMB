@@ -69,6 +69,7 @@ void CGameTitleScreen::Update()
 	int key = GetJoypadInputState(DX_INPUT_KEY_PAD1);
 	//スキップ処理
 	if (CKeyData::GetInstance()->IsKeyTrigger(key, PAD_INPUT_2, KEY_Z_PAD_INPUT_2)){
+		PlaySoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(S_T_ON), DX_PLAYTYPE_BACK);
 		if (m_title[3].m_alpha < 256){
 			for (int i = 0; i < 4; i++){
 				m_title[i].m_alpha = 256;
@@ -108,10 +109,12 @@ void CGameTitleScreen::Update()
 	//テキストの選択処理
 	if (!m_control_flag){
 		if (CKeyData::GetInstance()->IsKeyTrigger(key, PAD_INPUT_UP, KEY_UP)){
+			PlaySoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(S_T_SELECT), DX_PLAYTYPE_BACK);
 			m_title_text[0].m_type = 1;
 			m_title_text[1].m_type = 0;
 		}
 		if (CKeyData::GetInstance()->IsKeyTrigger(key, PAD_INPUT_DOWN, KEY_DOWN)){
+			PlaySoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(S_T_SELECT), DX_PLAYTYPE_BACK);
 			m_title_text[1].m_type = 1;
 			m_title_text[0].m_type = 0;
 		}
