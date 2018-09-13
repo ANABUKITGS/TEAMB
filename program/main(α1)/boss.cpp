@@ -207,7 +207,7 @@ void CBoss::Update(){
 				}
 			}
 			else if (m_attack_counter == 0 && (*it)->m_type == body){
-				m_attack_interval = -20;
+				m_attack_interval = -40;
 				_pos_ = CVector2D(660, 160);
 				(*it)->m_ty = 3;
 			}

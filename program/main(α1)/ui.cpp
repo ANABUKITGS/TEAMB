@@ -164,6 +164,7 @@ void CUi::Update(){
 		CItemManager::GetInstance()->GetItemAdress()->Create();
 		CEnemyManager::GetInstance()->GetEnemyAdress()->SetCreateTimer(210);
 		if (CUiManager::GetInstance()->GetUiAdress()->GatComb() >CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetEnemyDifficulty()->m_next_kill)
+		if (CFieldManager::GetInstance()->GetFrameAdress()->GetFieldType() != M_BOSS)
 			CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetEnemyDifficulty()->m_enemy_level++;
 		m_comb = 0;
 		m_comb_timer = 0;

@@ -5,6 +5,7 @@
 #include "player_manager.h"
 #include "task_manager.h"
 #include "item_manager.h"
+#include "sounddata_manager.h"
 
 CEnemyDifficultyTable enemy_diff_table[] = {
 	{ 0, 4, 0, 0, 0, 8, 0 },		//チュートリアル
@@ -240,17 +241,20 @@ void CTutorialData::Update(){
 		if (m_animtype == 5){
 			if (CKeyData::GetInstance()->IsKeyTrigger(key, PAD_INPUT_UP, KEY_UP)){
 				m_select_type++;
+				PlaySoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(S_T_SELECT), DX_PLAYTYPE_BACK);
 				if (m_select_type > 1)
 					m_select_type = 0;
 			}
 			else if (CKeyData::GetInstance()->IsKeyTrigger(key, PAD_INPUT_DOWN, KEY_DOWN)){
 				m_select_type--;
+				PlaySoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(S_T_SELECT), DX_PLAYTYPE_BACK);
 				if (m_select_type < 0)
 					m_select_type = 1;
 			}
 
 			if (CKeyData::GetInstance()->IsKeyTrigger(key, PAD_INPUT_2, KEY_Z_PAD_INPUT_2)){
 				if (m_select_type == 0){
+					PlaySoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(S_T_ON), DX_PLAYTYPE_BACK);
 					CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->SetTutorialFlag(true);
 					m_invincible = 1;
 					m_pass_flag = true;
