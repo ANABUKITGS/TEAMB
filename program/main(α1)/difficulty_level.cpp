@@ -140,7 +140,7 @@ void CDifficultyLevel::SetFieldEnemy(){
 	if (!_flag){
 		if (CFieldManager::GetInstance()->GetFrameAdress()->GetFieldType() == M_BOSS){
 			for (auto edt : boss_diff_table){
-				if (m_enemy_difficulty->m_enemy_level == edt.m_enemy_level){
+				//if (m_enemy_difficulty->m_enemy_level == edt.m_enemy_level){
 					m_enemy_difficulty->m_next_kill = edt.m_next_kill;
 					m_enemy_difficulty->m_nomal_num = edt.m_nomal_num;
 					m_enemy_difficulty->m_long_num = edt.m_long_num;
@@ -148,7 +148,7 @@ void CDifficultyLevel::SetFieldEnemy(){
 					m_enemy_difficulty->m_small_num = edt.m_small_num;
 					m_enemy_difficulty->m_bomb_num = edt.m_bomb_num;
 					break;
-				}
+				//}
 			}
 		}
 		else
@@ -189,9 +189,6 @@ void CDifficultyLevel::AddEnemyMax(){
 void CTutorialData::Update(){
 	int key = GetJoypadInputState(DX_INPUT_KEY_PAD1);
 	float _add = 0;
-	
-	printfDx("a_%d\n", m_animtype);
-	printfDx("i_%d\n", m_invincible);
 
 	if (m_invincible == 1){
 		m_pos.addX(-10);

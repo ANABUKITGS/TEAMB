@@ -10,7 +10,7 @@ using namespace std;
 const float ITEM_EXRATE = 1.0f;
 const float ITEM_SPEED = 0.0f;
 const float ITEM_MASS = 1.0f;
-const int ITEM_HP = 50;
+const int ITEM_HP = 500;
 const float ITEM_FRICTION = 0.05f;
 const float ITEM_COLLISION = 32.0f;
 

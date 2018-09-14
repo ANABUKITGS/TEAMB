@@ -142,21 +142,34 @@ void CHeelUp::Type(CPlayerData *cd){
 }
 
 void CMystery::Type(CPlayerData *cd){
-	int _type = rand() % 14;
+	int _type = rand() % 15;
 	float _bomb_collision = 0;
 	float _bomb_exrate = 0;
+	float _stan_collision = 0;
+	float _stan_exrate = 0;
 	//int _type = 0;//rand() % 2;
 	switch (_type)
 	{
 		/*case 0:
-			float _bomb_collision = 0;
-			float _bomb_exrate = 0;
-			_bomb_collision = PLAYER_BOMB_COLLISION * (1 + (int)cd->m_chage_count * 0.1f) * (1.0f + ITEM_BOMB_UP * MAX_LV);
-			_bomb_exrate = (PLAYER_BOMB_EXRATE + 0.1) * (1 + (int)cd->m_chage_count * 0.1f) * (1.0f + ITEM_BOMB_UP * MAX_LV);
-			for (int i = 0; i < 5; i++){
-			CEffectData *temp = new CEffectData(CVector2D(rand() % MAP_RANGE_X + 64, rand() % MAP_RANGE_Y + 73), true, cd->m_rad + radian(90), _bomb_exrate, BOMB_CHARGE_NUM, 0, 256, 0, 0, _bomb_collision, CHARGE_BOMB, 4, &EMP1);
+			float _stan_collision = 0;
+			float _stan_exrate = 0;
+			_stan_collision = PLAYER_STAN_COLLISION * (1 + (int)cd->m_chage_count * 0.1f) * (1.0f + ITEM_STAN_UP * MAX_LV);
+			_stan_exrate = PLAYER_STAN_EXRATE * (1 + (int)cd->m_chage_count * 0.1f) * (1.0f + ITEM_STAN_UP * MAX_LV);
+			for (int i = 0; i < 8; i++){
+			CEffectData *temp = new CEffectData(CVector2D(rand() % MAP_RANGE_X + 64, rand() % MAP_RANGE_Y + 73), true, 0, _stan_exrate, STAN_NUM, 0, 10, 99, 0, _stan_collision, STAN, 1, NULL);
+			for (auto it = CCharaData::GetInstance()->GetCharaData()->begin();
+			it != CCharaData::GetInstance()->GetCharaData()->end(); it++){
+			if (cd->m_pos != (*it)->m_pos){
+			if (IsHitCircle(temp->m_collision, ENEMY_COLLISION, temp->m_pos, (*it)->m_pos)){
+			(*it)->m_control = false;
+			(*it)->m_timer = 1400;
+			(*it)->m_motion_type = 40;
+			}
+			}
+			}
 			CEffectManager::GetInstance()->GetEffectAdress()->GetEffectData()->push_back(temp);
 			}
+			PlaySoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(S_ATTACK_STAN), DX_PLAYTYPE_BACK);
 			break;
 
 			/*case 1:
@@ -211,12 +224,30 @@ void CMystery::Type(CPlayerData *cd){
 	case 13:
 		_bomb_collision = PLAYER_BOMB_COLLISION * (1 + (int)cd->m_chage_count * 0.1f) * (1.0f + ITEM_BOMB_UP * MAX_LV);
 		_bomb_exrate = (PLAYER_BOMB_EXRATE + 0.1) * (1 + (int)cd->m_chage_count * 0.1f) * (1.0f + ITEM_BOMB_UP * MAX_LV);
-		for (int i = 0; i < 5; i++){
+		for (int i = 0; i < 8; i++){
 			CEffectData *temp = new CEffectData(CVector2D(rand() % MAP_RANGE_X + 64, rand() % MAP_RANGE_Y + 73), true, cd->m_rad + radian(90), _bomb_exrate, BOMB_CHARGE_NUM, 0, 256, 0, 0, _bomb_collision, CHARGE_BOMB, 4, &EMP1);
 			CEffectManager::GetInstance()->GetEffectAdress()->GetEffectData()->push_back(temp);
 		}
 		break;
-
+	case 14:
+		_stan_collision = PLAYER_STAN_COLLISION * (1 + (int)cd->m_chage_count * 0.1f) * (1.0f + ITEM_STAN_UP * MAX_LV);
+		_stan_exrate = PLAYER_STAN_EXRATE * (1 + (int)cd->m_chage_count * 0.1f) * (1.0f + ITEM_STAN_UP * MAX_LV);
+		for (int i = 0; i < 8; i++){
+			CEffectData *temp = new CEffectData(CVector2D(rand() % MAP_RANGE_X + 64, rand() % MAP_RANGE_Y + 73), true, 0, _stan_exrate, STAN_NUM, 0, 10, 99, 0, _stan_collision, STAN, 1, NULL);
+			for (auto it = CCharaData::GetInstance()->GetCharaData()->begin();
+				it != CCharaData::GetInstance()->GetCharaData()->end(); it++){
+				if (cd->m_pos != (*it)->m_pos){
+					if (IsHitCircle(temp->m_collision, ENEMY_COLLISION, temp->m_pos, (*it)->m_pos)){
+						(*it)->m_control = false;
+						(*it)->m_timer = 1400;
+						(*it)->m_motion_type = 40;
+					}
+				}
+			}
+			CEffectManager::GetInstance()->GetEffectAdress()->GetEffectData()->push_back(temp);
+		}
+		PlaySoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(S_ATTACK_STAN), DX_PLAYTYPE_BACK);
+		break;
 	default:
 		break;
 	}

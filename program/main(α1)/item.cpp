@@ -74,11 +74,6 @@ void CItem::Update(){
 			(*it)->m_y_up = 0;
 		}
 
-		printfDx("kil = %d  ", (*it)->m_kill_flag);
-		printfDx("liv = %d  ", (*it)->m_living);
-		printfDx("anim = %d  ", (*it)->m_animtype);
-		printfDx("hp = %d\n", (*it)->m_hp);
-
 		if ((*it)->m_hp < 1){
 			(*it)->m_hp = 9999999;
 			(*it)->m_animtype = 4;
