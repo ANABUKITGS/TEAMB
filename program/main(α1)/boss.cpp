@@ -2,7 +2,9 @@
 #include "boss_manager.h"
 #include "player_manager.h"
 #include "field_manager.h"
+#include "effect_manager.h"
 
+CEffectMovePattern11 BMP11;
 CMoveboss aa;
 CMoveboss_aaaa bb;
 CMoveboss_bbbb cc;
@@ -132,6 +134,9 @@ CBoss::CBoss(){
 void CBoss::Delete(){
 	for (auto it = m_boss.begin(); it != m_boss.end();){
 		if ((*it)->m_living == false){
+			CBaseData *_temp = new CBaseData((*it)->m_pos, true, 0, 1.0f, ENEMY_DELETE_NUM, 0, 0, 0, 0, 0, ENEMY_DELETE);
+			CEffectManager::GetInstance()->GetEffectAdress()->GetEffectData()->push_back(new CEffectData(*_temp, 2, &BMP11));
+
 			m_dead_count++;
 			it = m_boss.erase(it);
 			continue;
@@ -237,19 +242,15 @@ void CBoss::Update(){
 			case body:
 				break;
 			case rightarm:
-				(*it)->m_hp = m_hpboss;
 				(*it)->BBMove->Move((*it), _pos_, m_attack_counter);
 				break;
 			case righand:
-				(*it)->m_hp = m_hpboss;
 				(*it)->BBMove3->Move((*it), _pos_, m_attack_counter);
 				break;
 			case leftarm:
-				(*it)->m_hp = m_hpboss;
 				(*it)->BBMove2->Move((*it), _pos_, m_attack_counter);
 				break;
 			case lefhand:
-				(*it)->m_hp = m_hpboss;
 				(*it)->BBMove4->Move((*it), _pos_, m_attack_counter);
 				break;
 			default:
