@@ -112,7 +112,7 @@ CBoss::CBoss(){
 	m_boss_img[14] = LoadGraph("media\\img\\damage_boss_arm1.png");
 	m_boss_img[15] = LoadGraph("media\\img\\damage_boss_hand1.png");
 
-	m_boss_shadow_img = LoadGraph("media\\img\\boss_shadow.png");
+	m_boss_shadow_img = LoadGraph("media\\img\\shadow.png");
 
 	LoadDivGraph("media\\img\\boss.png", 3, 3, 1, 292, 263, m_boss_body_img, 0);
 
@@ -145,6 +145,21 @@ void CBoss::KillAll(){
 		it = m_boss.erase(it);
 		continue;
 		it++;
+	}
+}
+
+void CBoss::Movestop(){
+	for (auto it = m_boss.begin(); it != m_boss.end(); it++){
+		if (CFieldManager::GetInstance()->GetFrameAdress()->GetFieldType() == M_BOSS){
+			(*it)->m_ty = (*it)->m_type;
+			(*it)->m_rad = 0;
+			(*it)->m_rocket_flag = 0;
+			m_attack_counter = 0;
+			m_attack_interval = -300;
+			(*it)->m_pos = (*it)->m_start_pos;
+			(*it)->m_attack_movea = true;
+			(*it)->m_attack_fla = false;
+		}
 	}
 }
 
@@ -207,7 +222,7 @@ void CBoss::Update(){
 				}
 			}
 			else if (m_attack_counter == 0 && (*it)->m_type == body){
-				m_attack_interval = -40;
+				m_attack_interval = -60;
 				_pos_ = CVector2D(660, 160);
 				(*it)->m_ty = 3;
 			}
@@ -215,6 +230,7 @@ void CBoss::Update(){
 		if ((*it)->m_type == body){
 			m_hpboss = (*it)->m_hp;
 		}
+		(*it)->m_hp = m_hpboss;
 
 		if (m_attack_interval > 20){
 			switch ((*it)->m_type){
@@ -275,30 +291,35 @@ void CBoss::Draw(){
 
 			if ((*it)->m_rocket_flag == 0)
 				DrawRotaGraph((int)(*it)->m_pos.getX(), (int)(*it)->m_pos.getY(), 1, 0, m_boss_img[(int)(*it)->m_ty - body], TRUE, FALSE);
+
+			DrawRotaGraph((int)(*it)->m_pos.getX() - 7, (int)(*it)->m_pos.getY() + BOSS_SHADOW_POS3, BOSS_SHADOW_ALPHA2, 0, m_boss_shadow_img, TRUE, FALSE);
 		}
 
-		//HPŒ¸­‚É‚æ‚é•`‰æ•Ï‰»
+		//HPŒ¸­‚É‚æ‚é•`‰æ•Ï‰»A‘Ò‹@Žž
 		else if (m_attack_counter == 0 && (*it)->m_type != body && (*it)->m_hp > 150){
 			DrawRotaGraph((int)(*it)->m_pos.getX(), (int)(*it)->m_pos.getY(), 1, 0, m_boss_img[(int)(*it)->m_ty - body], TRUE, FALSE);
+			DrawRotaGraph((int)(*it)->m_pos.getX() - 7, (int)(*it)->m_pos.getY() + BOSS_SHADOW_POS3, BOSS_SHADOW_ALPHA2, 0, m_boss_shadow_img, TRUE, FALSE);
+
 		}
 		else if (m_attack_counter == 0 && (*it)->m_type != body && (*it)->m_hp <= 150){
 			DrawRotaGraph((int)(*it)->m_pos.getX(), (int)(*it)->m_pos.getY(), 1, 0, m_boss_img[(int)(*it)->m_ty + 7], TRUE, FALSE);
+			DrawRotaGraph((int)(*it)->m_pos.getX() - 7, (int)(*it)->m_pos.getY() + BOSS_SHADOW_POS3, BOSS_SHADOW_ALPHA2, 0, m_boss_shadow_img, TRUE, FALSE);
 		}
 
 		//ƒ{ƒX–{‘Ì‚Æ‰e‚Ì•`‰æAHPŒ¸­‚É‚æ‚é•`‰æ•Ï‰»
 		if (m_attack_counter > 0 && (*it)->m_type == body){
 			DrawRotaGraph((int)(*it)->m_pos.getX(), (int)(*it)->m_pos.getY(), 1, 0, m_boss_body_img[2], TRUE, FALSE);
-			DrawRotaGraph((int)(*it)->m_pos.getX() - 13, (int)(*it)->m_pos.getY() + 140, 1, 0, m_boss_shadow_img, TRUE, FALSE);
+			DrawRotaGraph((int)(*it)->m_pos.getX() - 7, (int)(*it)->m_pos.getY() + BOSS_SHADOW_POS1, BOSS_SHADOW_ALPHA1, 0, m_boss_shadow_img, TRUE, FALSE);
 		}
 		else if (m_attack_counter == 0 && (*it)->m_type == body && (*it)->m_hp > 150)
 		{
 			DrawRotaGraph((int)(*it)->m_pos.getX(), (int)(*it)->m_pos.getY(), 1, 0, m_boss_body_img[0], TRUE, FALSE);
-			DrawRotaGraph((int)(*it)->m_pos.getX() - 13, (int)(*it)->m_pos.getY() + 150, 1, 0, m_boss_shadow_img, TRUE, FALSE);
+			DrawRotaGraph((int)(*it)->m_pos.getX() - 7, (int)(*it)->m_pos.getY() + BOSS_SHADOW_POS2, BOSS_SHADOW_ALPHA1, 0, m_boss_shadow_img, TRUE, FALSE);
 		}
 		else if ((*it)->m_hp <= 150 && (*it)->m_type == body)
 		{
 			DrawRotaGraph((int)(*it)->m_pos.getX(), (int)(*it)->m_pos.getY(), 1, 0, m_boss_body_img[1], TRUE, FALSE);
-			DrawRotaGraph((int)(*it)->m_pos.getX() - 13, (int)(*it)->m_pos.getY() + 140, 1, 0, m_boss_shadow_img, TRUE, FALSE);
+			DrawRotaGraph((int)(*it)->m_pos.getX() - 7, (int)(*it)->m_pos.getY() + BOSS_SHADOW_POS1, BOSS_SHADOW_ALPHA1, 0, m_boss_shadow_img, TRUE, FALSE);
 		}
 	}
 #if defined(_DEBUG) | defined(DEBUG)

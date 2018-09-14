@@ -129,6 +129,7 @@ void CGameScreen::Update()
 					PlaySoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(GAME_BGM2), DX_PLAYTYPE_LOOP);	//New
 				}
 				else{
+					CBossManager::GetInstance()->GetBossAdress()->Movestop();
 					CTaskManager::GetInstance()->SerectUpdate(eDWP_ITEM, false);
 					CCharaData::GetInstance()->AssignmentDelete(ENEMY);
 					CEnemyManager::GetInstance()->GetEnemyAdress()->KillAll();

@@ -12,6 +12,11 @@ const float BOSS_SPEED = 0.0f;
 const float BOSS_BACK = 15.0f;
 const int BOSS_HP = 450;
 const int BOSS_DAMAGE = 8;
+const int BOSS_SHADOW_POS1 = 140;
+const int BOSS_SHADOW_POS2 = 150;
+const int BOSS_SHADOW_POS3 = 60;
+const float BOSS_SHADOW_ALPHA1 = 0.8;
+const float BOSS_SHADOW_ALPHA2 = 0.5;
 
 using namespace std;
 
@@ -72,6 +77,7 @@ private:
 	int m_attack_counter;	//çUåÇÇÃéÌóﬁ
 	int m_attack_interval;	//çUåÇî≠ìÆÇÃä‘äu
 	int m_hpboss;
+	int m_flag;
 public:
 	CBoss();
 	~CBoss(){};
@@ -79,6 +85,8 @@ public:
 
 	void KillAll();
 	void Delete();
+
+	void Movestop();
 
 	int Hp();
 	void Movestart(CBossData &cd, CVector2D &_pos, bool loop, int type);
