@@ -58,6 +58,7 @@ void CGameScreen::Init()
 	CTaskManager::GetInstance()->Add(new CEffect);
 	CTaskManager::GetInstance()->Add(new CItem);
 	PlaySoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(GAME_BGM1), DX_PLAYTYPE_LOOP);	//New
+	ChangeVolumeSoundMem(140, CSoundManager::GetInstance()->GetStatusAdress()->getSound(GAME_BGM1));
 	//if(CFieldManager::GetInstance()->GetFrameAdress()->GetFieldType() != M_BOSS)
 	CTaskManager::GetInstance()->NoUpdate(CFieldManager::GetInstance()->GetFrameAdress()->GetFieldType());
 	CCharaData::GetInstance()->AssignmentInvincible(CFieldManager::GetInstance()->GetFrameAdress()->GetFieldType());
@@ -123,10 +124,12 @@ void CGameScreen::Update()
 					CEnemyManager::GetInstance()->GetEnemyAdress()->KillAll();
 					CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->SetFieldEnemy();
 					CPlayerManager::GetInstance()->GetPlayerAdress()->GetData()->m_pos = CVector2D(640, 580);
+					CTaskManager::GetInstance()->SerectUpdate(eDWP_ITEM, true);
 					StopSoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(GAME_BGM1));	//New
 					PlaySoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(GAME_BGM2), DX_PLAYTYPE_LOOP);	//New
 				}
 				else{
+					CTaskManager::GetInstance()->SerectUpdate(eDWP_ITEM, false);
 					CCharaData::GetInstance()->AssignmentDelete(ENEMY);
 					CEnemyManager::GetInstance()->GetEnemyAdress()->KillAll();
 					CFieldManager::GetInstance()->GetFrameAdress()->SetFieldType(M_NORMAL);
@@ -151,7 +154,7 @@ void CGameScreen::Update()
 	if (!CChangeManager::GetInstance()->GetChangeAdress()->GetChangeFlag()){
 		//チュートリアルをする場合以下の処理
 		if (CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetTutorialFlag()&&
-			CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetTutorialData()->m_animtype == 5 &&
+			CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetTutorialData()->m_animtype == TUTORIAL_SELECT_IMG &&
 			CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetInvincible() == 0)
 			CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->SetInvincible(1);
 		}

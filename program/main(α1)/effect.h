@@ -128,6 +128,11 @@ class CEffectMovePattern11 :public CBaseEffectMove{
 public:
 	void Move(CEffectData *cd);
 };
+//ミステリーアイテムの爆破処理
+class CEffectMovePattern12 :public CBaseEffectMove{
+public:
+	void Move(CEffectData *cd);
+};
 
 
 #endif EFFECT_H

@@ -10,13 +10,13 @@ using namespace std;
 const float ITEM_EXRATE = 1.0f;
 const float ITEM_SPEED = 0.0f;
 const float ITEM_MASS = 1.0f;
-const int ITEM_HP = 1000;
+const int ITEM_HP = 50;
 const float ITEM_FRICTION = 0.05f;
 const float ITEM_COLLISION = 32.0f;
 
 //m_animtypeÇ≈égópÇµÇƒÇ¢ÇÈÅ@
 enum ITEM_TYPE{
-	STAN_ITEM, KNOCK_BACK_ITEM, BOMB_ITEM, HEEL_ITEM
+	STAN_ITEM, KNOCK_BACK_ITEM, BOMB_ITEM, HEEL_ITEM,MYSTERY
 };
 
 class CItemData : public CBaseData{
@@ -32,7 +32,7 @@ public:
 class CItem : public CTask{
 private:
 	list<CItemData*> m_items;
-	int m_item_img[4];
+	int m_item_img[5];
 	bool m_create_flag;
 public:
 	CItem();

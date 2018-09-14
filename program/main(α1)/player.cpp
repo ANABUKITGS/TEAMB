@@ -19,6 +19,7 @@ CStanUp			item_stan;
 CKnockBackUp	item_knock_back;
 CBombUp			item_bomb;
 CHeelUp			item_heel;
+CMystery		item_mystery;
 
 CPAtable player_attack_table[] = {
 	{ 0, &stan },
@@ -42,6 +43,7 @@ CItemTable item_table[] = {
 	{ KNOCK_BACK_ITEM, WIN_UP_NUM, WIN_UP, &item_knock_back },
 	{ BOMB_ITEM, EXP_UP_NUM, EXP_UP, &item_bomb },
 	{ HEEL_ITEM, PLAYER_HEEL_NUM, P_HEEL, &item_heel },
+	{ MYSTERY, PLAYER_HEEL_NUM, P_HEEL, &item_mystery },
 };
 
 CAttackRange::CAttackRange(CVector2D _pos, bool _living, float _rad, float _exrate, int _animtype, float _velocity, float _mass, int _hp, float _friction, float _collision, int _type)
@@ -546,7 +548,9 @@ void CPlayer::ItemGet(){
 }
 
 void CPlayerData::Flash(){
+	static bool _anim_pass;
 	if (m_damage_action.m_damage_flag){
+		_anim_pass = true;
 		if (m_damage_action.m_timer < 3){
 			m_damage_action.m_timer++;
 		}
@@ -565,10 +569,14 @@ void CPlayerData::Flash(){
 		m_amine_rate = 0;
 	}
 	else{
+		if (_anim_pass){
+			m_motion_type = 0;
+			_anim_pass = false;
+		}
 		m_alpha = 255;
 		m_damage_action.m_timer = 0;
 		m_damage_action.m_switch = false;
-		m_motion_type = 0;
+		//m_motion_type = 0;
 	}
 }
 

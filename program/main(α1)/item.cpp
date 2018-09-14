@@ -35,6 +35,7 @@ CItem::CItem()
 	m_item_img[KNOCK_BACK_ITEM] = LoadGraph("media\\img\\wind_buff_bg.png");
 	m_item_img[BOMB_ITEM] = LoadGraph("media\\img\\exp_buff_br.png");
 	m_item_img[HEEL_ITEM] = LoadGraph("media\\img\\recovery_bp.png");
+	m_item_img[MYSTERY] = LoadGraph("media\\img\\buff_q.png");
 
 	m_priority = eDWP_ITEM;
 	m_update = true;
@@ -59,13 +60,28 @@ void CItem::Update(){
 		//”½ŽËˆ—
 		Reflect((*it));
 
-		if ((*it)->m_animtype > 3)
-			(*it)->m_animtype = 0;
+		if ((*it)->m_hp < 1000){
+			if ((*it)->m_animtype > 3)
+				(*it)->m_animtype = 0;
+		}
+		else{
+			(*it)->m_animtype = 4;
+		}
 
 
 		(*it)->m_y_up += 2;
 		if ((*it)->m_y_up > 360){
 			(*it)->m_y_up = 0;
+		}
+
+		printfDx("kil = %d  ", (*it)->m_kill_flag);
+		printfDx("liv = %d  ", (*it)->m_living);
+		printfDx("anim = %d  ", (*it)->m_animtype);
+		printfDx("hp = %d\n", (*it)->m_hp);
+
+		if ((*it)->m_hp < 1){
+			(*it)->m_hp = 9999999;
+			(*it)->m_animtype = 4;
 		}
 	}
 

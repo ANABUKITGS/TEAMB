@@ -174,5 +174,6 @@ class CStanUp :			public CBaseItemType{ void Type(CPlayerData *cd); };
 class CKnockBackUp :	public CBaseItemType{ void Type(CPlayerData *cd); };
 class CBombUp :			public CBaseItemType{ void Type(CPlayerData *cd); };
 class CHeelUp :			public CBaseItemType{ void Type(CPlayerData *cd); };
+class CMystery :		public CBaseItemType{ void Type(CPlayerData *cd); };
 
 #endif PLAYER_H

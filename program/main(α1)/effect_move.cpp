@@ -12,26 +12,6 @@ CEffectMovePattern6 EMP6;
 CEffectMovePattern9 EMP9;
 CEffectMovePattern10 EMP10;
 
-//enemyの行動パターン
-/*CMovePattern1 MP1;
-CMovePattern2 MP2;
-CMovePattern4 MP4;
-CMovePattern5 MP5;
-CMovePattern6 MP6;
-CAttackPattern1 AP1;
-CAttackPattern2 AP2;
-CAttackPattern4 AP4;
-CAttackPattern5 AP5;
-CAttackPattern6 AP6;
-*/
-/*CECreateTable e_c_table[] = {
-	{ 0, NORMAL,ENEMY_EXRATE, ENEMY_NORMAL_SPEED, ENEMY_NORMAL_MASS, ENEMY_NORMAL_HP, ENEMY_COLLISION, &MP1, &AP1 },
-	{ 1, LONG_RANGE, ENEMY_LONG_EXRATE, ENEMY_LONG_SPEED, ENEMY_LONG_MASS, ENEMY_LONG_HP, ENEMY_LONG_COLLISION, &MP2, &AP2 },
-	{ 2, BIG, ENEMY_EXRATE, ENEMY_BIG_SPEED, ENEMY_BIG_MASS, ENEMY_BIG_HP, ENEMY_BIG_COLLISION, &MP4, &AP4 },
-	{ 3, SMALL, ENEMY_EXRATE, ENEMY_SMALL_SPEED, ENEMY_SMALL_MASS, ENEMY_SMALL_HP, ENEMY_SMALL_COLLISION, &MP5, &AP5 },
-	{ 4, E_BOMB, ENEMY_EXRATE, ENEMY_BOMB_SPEED, ENEMY_BOMB_MASS, ENEMY_BOMB_HP, ENEMY_ATTACK_BOMB_COLLISION, &MP6, &AP6 },
-};*/
-
 //爆発前の収縮
 void CEffectMovePattern1::Move(CEffectData *cd){
 	if (cd->m_amine_rate / cd->m_rate % cd->m_animtype == cd->m_animtype - 1){
@@ -165,10 +145,14 @@ void CEffectMovePattern6::Move(CEffectData *cd){
 				if ((*it1)->m_kill_flag){
 					if (IsHitCircle(cd->m_collision, (*it1)->m_collision, CVector2D(cd->m_pos.getX(),
 						cd->m_pos.getY()), (*it1)->m_pos)){
-						(*it1)->m_living = false;
+						if ((*it1)->m_type != ITEM){
+							(*it1)->m_living = false;
+						}
 					}
 					if (cd->m_collision >= cd->m_friction - 4){
-						(*it1)->m_living = false;
+						if ((*it1)->m_type != ITEM){
+							(*it1)->m_living = false;
+						}
 					}
 				}
 			}
@@ -240,4 +224,17 @@ void CEffectMovePattern11::Move(CEffectData *cd){
 			CEffectManager::GetInstance()->GetEffectAdress()->GetEffectData()->push_back(_temp2);
 		}
 	}
+}
+
+//ミステリーアイテムの爆破処理
+void CEffectMovePattern12::Move(CEffectData *cd){
+	/*if (cd->m_amine_rate / cd->m_rate % cd->m_animtype == cd->m_animtype - 1){
+		cd->m_type = BOMB;
+		cd->m_animtype = BOMB_NUM;
+		cd->m_amine_rate = 1;
+		cd->m_rate = 1;
+		cd->m_exrate += 0.4;
+		cd->BEMove = &EMP2;
+		PlaySoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(S_ATTACK_BOMB), DX_PLAYTYPE_BACK);
+	}*/
 }

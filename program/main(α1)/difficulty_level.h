@@ -4,6 +4,8 @@
 #include "task.h"
 #include "base_data.h"
 
+const int TUTORIAL_SELECT_IMG = 6;
+
 class CEnemyDifficultyTable{
 public:
 	int m_enemy_level;
@@ -58,7 +60,7 @@ public:
 	int m_add_alpha;			//チュートリアルの透過用
 
 	int m_select_type;
-	int m_tutorial_img[5];
+	int m_tutorial_img[6];
 	int m_serect_text_img[2][2];
 	int m_t_range_img[3];
 };

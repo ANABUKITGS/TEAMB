@@ -140,3 +140,84 @@ void CHeelUp::Type(CPlayerData *cd){
 	if (cd->m_hp < 64)
 		cd->m_hp += ITEM_HEEL_UP;
 }
+
+void CMystery::Type(CPlayerData *cd){
+	int _type = rand() % 14;
+	float _bomb_collision = 0;
+	float _bomb_exrate = 0;
+	//int _type = 0;//rand() % 2;
+	switch (_type)
+	{
+		/*case 0:
+			float _bomb_collision = 0;
+			float _bomb_exrate = 0;
+			_bomb_collision = PLAYER_BOMB_COLLISION * (1 + (int)cd->m_chage_count * 0.1f) * (1.0f + ITEM_BOMB_UP * MAX_LV);
+			_bomb_exrate = (PLAYER_BOMB_EXRATE + 0.1) * (1 + (int)cd->m_chage_count * 0.1f) * (1.0f + ITEM_BOMB_UP * MAX_LV);
+			for (int i = 0; i < 5; i++){
+			CEffectData *temp = new CEffectData(CVector2D(rand() % MAP_RANGE_X + 64, rand() % MAP_RANGE_Y + 73), true, cd->m_rad + radian(90), _bomb_exrate, BOMB_CHARGE_NUM, 0, 256, 0, 0, _bomb_collision, CHARGE_BOMB, 4, &EMP1);
+			CEffectManager::GetInstance()->GetEffectAdress()->GetEffectData()->push_back(temp);
+			}
+			break;
+
+			/*case 1:
+			cd->m_bomb = 1.0f;
+			CUiManager::GetInstance()->GetUiAdress()->GetLvUiData(2)->m_hp = 1;
+			CUiManager::GetInstance()->GetUiAdress()->GetLvUiData(2)->m_exrate = 1.3f;
+			break;*/
+
+	case 0:
+	case 1:
+	case 2:
+		cd->m_bomb += ITEM_BOMB_UP * 5;
+		CUiManager::GetInstance()->GetUiAdress()->GetLvUiData(2)->m_hp += 5;
+		if (CUiManager::GetInstance()->GetUiAdress()->GetLvUiData(2)->m_hp > (int)MAX_LV)
+			CUiManager::GetInstance()->GetUiAdress()->GetLvUiData(2)->m_hp = 10;
+		CUiManager::GetInstance()->GetUiAdress()->GetLvUiData(2)->m_exrate = 1.3f;
+		break;
+	case 3:
+	case 4:
+	case 5:
+		cd->m_knock_back += ITEM_KNOCK_BACK_UP * 5;
+		CUiManager::GetInstance()->GetUiAdress()->GetLvUiData(1)->m_hp += 5;
+		if (CUiManager::GetInstance()->GetUiAdress()->GetLvUiData(1)->m_hp > (int)MAX_LV)
+			CUiManager::GetInstance()->GetUiAdress()->GetLvUiData(1)->m_hp = 10;
+		CUiManager::GetInstance()->GetUiAdress()->GetLvUiData(1)->m_exrate = 1.3f;
+		break;
+	case 6:
+	case 7:
+	case 8:
+		cd->m_stan += ITEM_STAN_UP * 5;
+		CUiManager::GetInstance()->GetUiAdress()->GetLvUiData(0)->m_hp += 5;
+		if (CUiManager::GetInstance()->GetUiAdress()->GetLvUiData(0)->m_hp > (int)MAX_LV)
+			CUiManager::GetInstance()->GetUiAdress()->GetLvUiData(0)->m_hp = 10;
+		CUiManager::GetInstance()->GetUiAdress()->GetLvUiData(0)->m_exrate = 1.3f;
+		break;
+	case 9:
+		cd->m_bomb = 1.0f;
+		CUiManager::GetInstance()->GetUiAdress()->GetLvUiData(2)->m_hp = 1;
+		CUiManager::GetInstance()->GetUiAdress()->GetLvUiData(2)->m_exrate = 1.3f;
+		break;
+	case 10:
+		cd->m_knock_back = 1.0f;
+		CUiManager::GetInstance()->GetUiAdress()->GetLvUiData(1)->m_hp = 1;
+		CUiManager::GetInstance()->GetUiAdress()->GetLvUiData(1)->m_exrate = 1.3f;
+		break;
+	case 11:
+		cd->m_stan = 1.0f;
+		CUiManager::GetInstance()->GetUiAdress()->GetLvUiData(0)->m_hp = 1;
+		CUiManager::GetInstance()->GetUiAdress()->GetLvUiData(0)->m_exrate = 1.3f;
+		break;
+	case 12:
+	case 13:
+		_bomb_collision = PLAYER_BOMB_COLLISION * (1 + (int)cd->m_chage_count * 0.1f) * (1.0f + ITEM_BOMB_UP * MAX_LV);
+		_bomb_exrate = (PLAYER_BOMB_EXRATE + 0.1) * (1 + (int)cd->m_chage_count * 0.1f) * (1.0f + ITEM_BOMB_UP * MAX_LV);
+		for (int i = 0; i < 5; i++){
+			CEffectData *temp = new CEffectData(CVector2D(rand() % MAP_RANGE_X + 64, rand() % MAP_RANGE_Y + 73), true, cd->m_rad + radian(90), _bomb_exrate, BOMB_CHARGE_NUM, 0, 256, 0, 0, _bomb_collision, CHARGE_BOMB, 4, &EMP1);
+			CEffectManager::GetInstance()->GetEffectAdress()->GetEffectData()->push_back(temp);
+		}
+		break;
+
+	default:
+		break;
+	}
+}

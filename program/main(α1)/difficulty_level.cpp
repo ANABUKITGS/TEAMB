@@ -67,7 +67,8 @@ CTutorialData::CTutorialData(CVector2D _pos, bool _living, float _alpha, float _
 	m_tutorial_img[1] = LoadGraph("media\\img\\tutorial\\tutorial_1.jpg");
 	m_tutorial_img[2] = LoadGraph("media\\img\\tutorial\\tutorial_2.jpg");
 	m_tutorial_img[3] = LoadGraph("media\\img\\tutorial\\tutorial_3.jpg");
-	m_tutorial_img[4] = LoadGraph("media\\img\\tutorial\\tutorial_select.jpg");
+	m_tutorial_img[4] = LoadGraph("media\\img\\tutorial\\tutorial_4.jpg");
+	m_tutorial_img[5] = LoadGraph("media\\img\\tutorial\\tutorial_select.jpg");
 
 	m_t_range_img[0] = LoadGraph("media\\img\\arrow_head_ver2.png");
 	m_t_range_img[1] = LoadGraph("media\\img\\range_wind_o_ma.png");
@@ -89,7 +90,7 @@ CDifficultyLevel::CDifficultyLevel()
 {
 	m_tutorial = nullptr;
 	m_enemy_difficulty = new CEnemyDifficulty();
-	m_tutorial = new CTutorialData(CVector2D(350,0),false,0,0,1,5,0);
+	m_tutorial = new CTutorialData(CVector2D(350, 0), false, 0, 0, 1, TUTORIAL_SELECT_IMG, 0);
 	m_priority = 2;
 
 	CDifficultyLevelManager::GetInstance()->Init(this);
@@ -189,6 +190,9 @@ void CTutorialData::Update(){
 	int key = GetJoypadInputState(DX_INPUT_KEY_PAD1);
 	float _add = 0;
 	
+	printfDx("a_%d\n", m_animtype);
+	printfDx("i_%d\n", m_invincible);
+
 	if (m_invincible == 1){
 		m_pos.addX(-10);
 		
@@ -199,7 +203,11 @@ void CTutorialData::Update(){
 			m_pass_flag = false;
 			m_invincible = 0;
 			m_pos.setX(350);
-			if (m_animtype == 5){
+			if (m_animtype == 3){
+				m_invincible = 1;
+				m_animtype++;
+			}
+			else if (m_animtype == TUTORIAL_SELECT_IMG){
 				m_animtype = 0;
 				m_invincible = 1;
 			}
@@ -238,7 +246,7 @@ void CTutorialData::Update(){
 
 	}
 	else if (m_invincible == 2){
-		if (m_animtype == 5){
+		if (m_animtype == TUTORIAL_SELECT_IMG){
 			if (CKeyData::GetInstance()->IsKeyTrigger(key, PAD_INPUT_UP, KEY_UP)){
 				m_select_type++;
 				PlaySoundMem(CSoundManager::GetInstance()->GetStatusAdress()->getSound(S_T_SELECT), DX_PLAYTYPE_BACK);
@@ -273,8 +281,8 @@ void CTutorialData::Update(){
 			}
 		}
 	}
-	if (m_animtype != 5){
-		if (m_animtype > 3){
+	if (m_animtype != TUTORIAL_SELECT_IMG){		//６にしろ！！
+		if (m_animtype > 4){
 			CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->SetTutorialFlag(false);
 		}
 	}
@@ -358,6 +366,9 @@ void CTutorialData::Update(){
 				CEnemyManager::GetInstance()->GetEnemyAdress()->SetCreateTimer(210);
 			}
 			break;
+		case 4:	
+
+			break;
 		case 5:		//チュートリアルを行うかどうか
 			break;
 		default:
@@ -402,10 +413,10 @@ void CTutorialData::Draw(){
 	if (CDifficultyLevelManager::GetInstance()->GetDifficultyLevelAdress()->GetTutorialFlag()){
 		
 		SetDrawBlendMode(DX_BLENDMODE_ALPHA, m_alpha);
-		if (m_animtype < 4)
+		if (m_animtype < 5)
 		DrawGraph(m_pos.getX(), m_pos.getY(), m_tutorial_img[m_animtype], true);
-		else if (m_animtype == 5){
-			DrawGraph(m_pos.getX(), m_pos.getY(), m_tutorial_img[4], true);
+		else if (m_animtype == TUTORIAL_SELECT_IMG){
+			DrawGraph(m_pos.getX(), m_pos.getY(), m_tutorial_img[5], true);
 			if (m_select_type == 0){
 				DrawRotaGraph(m_pos.getX() + 640, 320, 1, 0, m_serect_text_img[0][1], true);
 				DrawRotaGraph(m_pos.getX() + 640, 470, 1, 0, m_serect_text_img[1][0], true);
